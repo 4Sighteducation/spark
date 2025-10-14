@@ -217,15 +217,23 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
               </div>
             </div>
             
-            {/* Slider input with LARGE clickable area */}
+            {/* Slider input with LARGE clickable area - Mobile optimized */}
             <input
               type="range"
               min="0"
               max="100"
               value={currentAnswer}
               onChange={(e) => handleSliderChange(Number(e.target.value))}
-              className="absolute top-0 left-0 w-full h-full bg-transparent cursor-pointer z-10"
-              style={{ WebkitAppearance: 'none', appearance: 'none' }}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
+              className="absolute top-0 left-0 w-full h-full bg-transparent cursor-pointer z-10 touch-none"
+              style={{ 
+                WebkitAppearance: 'none', 
+                appearance: 'none',
+                WebkitTapHighlightColor: 'transparent',
+                touchAction: 'none'
+              }}
             />
           </div>
 
@@ -241,7 +249,7 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
           </div>
         </div>
         
-        {/* COMPLETELY invisible slider - KILL the white dot! */}
+        {/* COMPLETELY invisible slider - Mobile optimized! */}
         <style jsx>{`
           input[type="range"] {
             -webkit-appearance: none;
@@ -250,19 +258,22 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
             background: transparent !important;
             outline: none !important;
             border: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            tap-highlight-color: transparent !important;
           }
           
-          /* WebKit/Chrome/Safari - INVISIBLE THUMB */
+          /* WebKit/iOS/Chrome - LARGE invisible thumb for touch */
           input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none !important;
             appearance: none !important;
-            width: 1px;
-            height: 1px;
-            background: transparent !important;
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0) !important;
             border: none !important;
             box-shadow: none !important;
             cursor: grab;
             opacity: 0 !important;
+            -webkit-tap-highlight-color: transparent !important;
           }
           input[type="range"]:active::-webkit-slider-thumb {
             cursor: grabbing;
@@ -274,11 +285,11 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
             box-shadow: none !important;
           }
           
-          /* Firefox - INVISIBLE THUMB */
+          /* Firefox - LARGE invisible thumb */
           input[type="range"]::-moz-range-thumb {
-            width: 1px;
-            height: 1px;
-            background: transparent !important;
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0) !important;
             border: none !important;
             box-shadow: none !important;
             cursor: grab;
@@ -297,10 +308,11 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
             background: transparent !important;
           }
           
-          /* Remove ALL focus states */
+          /* Remove ALL focus/tap highlights */
           input[type="range"]:focus {
             outline: none !important;
             box-shadow: none !important;
+            -webkit-tap-highlight-color: transparent !important;
           }
           input[type="range"]:focus::-webkit-slider-thumb {
             outline: none !important;
