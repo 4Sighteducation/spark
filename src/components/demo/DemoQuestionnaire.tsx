@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { calculateAssessmentScores, generateReportData } from '@/lib/scoring/calculate'
-import statementsData from '@/data/statements.json'
+import { calculateAssessmentScores } from '@/lib/scoring/calculate'
 import questionnaireData from '@/data/questionnaire.json'
 
 interface DemoQuestionnaireProps {
@@ -69,7 +68,17 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
 
     // Calculate scores
     const scores = calculateAssessmentScores(questionAnswers)
-    const report = generateReportData(scores, statementsData)
+    
+    // Simplified report for demo
+    const report = {
+      scores,
+      statements: {
+        self_direction: {
+          label: scores.self_direction.band.replace('_', ' '),
+          statement: 'Your results show strong potential in this area.'
+        }
+      }
+    }
 
     setReportData(report)
     setShowReport(true)
