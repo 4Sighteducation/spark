@@ -1,0 +1,185 @@
+{
+  "SPARK": {
+    "SelfDirection": {
+      "code": "S",
+      "name": "Self-Direction (Initiative)",
+      "breakpoints": [
+        {
+          "range": "0-3",
+          "label": "Low",
+          "statement": "Sometimes, it can feel really hard to get started on tasks or projects, and that's completely normal. Everyone has moments where they feel stuck or unsure about what to do next. The important thing is to remind yourself that even small steps can lead to progress. Setting a simple, achievable goal—like finishing a short task or making a plan for tomorrow—can give you a sense of accomplishment and help build momentum. It's also okay to try something new, even if you're unsure of the outcome. Taking small risks, like asking a question in class or trying a new study method, can open up opportunities to learn and grow. Remember, it's okay to ask for help or take things one step at a time—every action, no matter how small, counts towards progress.",
+          "personal_development_question": "What small goal could you set for yourself this week to help you get started?"
+        },
+        {
+          "range": "3-5",
+          "label": "Average",
+          "statement": "You're someone who is often willing to take action when needed, but there may be times when hesitation or doubt holds you back. It's clear that you want to do well and make progress, but sometimes it might feel like you're not entirely sure how to move forward. That's perfectly okay—most people feel this way at times. One way to move past this is to focus on setting specific, achievable goals that give you a clear sense of direction. Think about areas where you could push yourself a little further, like trying a challenging task or answering a question you're unsure about in class. Taking these small educational risks can help you discover what you're truly capable of. By focusing on your confidence and breaking tasks into smaller, manageable pieces, you'll find it easier to take that next step with certainty.",
+          "personal_development_question": "What is one thing you could do to feel more confident when starting a new task?"
+        },
+        {
+          "range": "5-8",
+          "label": "High",
+          "statement": "You are someone who has a strong ability to take initiative and act on your ideas. Whether it's tackling a big project or trying something new, you often step forward with a sense of purpose. You've shown that you can get things done and overcome obstacles when needed. To keep growing, it's worth focusing on setting meaningful goals that challenge you and align with what you want to achieve. Think about areas where you could step out of your comfort zone, like taking on a leadership role in a group project or exploring a subject you find difficult. Educational risks can feel uncomfortable, but they often lead to the biggest rewards. Reflecting on how you prioritise your time and ensuring your efforts align with your long-term goals will help you keep moving forward with confidence.",
+          "personal_development_question": "What is one challenging goal you could set for yourself, and how will you work towards it?"
+        },
+        {
+          "range": "8-10",
+          "label": "Very High",
+          "statement": "You have an impressive ability to take initiative, and your proactive attitude often inspires those around you. You're the kind of person who sees opportunities and takes action without waiting for others to lead the way. This quality sets you apart and will serve you well in both school and life. To continue thriving, think about how you can use goal setting to stretch your abilities even further. Consider tackling something ambitious, like developing a new skill or taking on a complex project that pushes you outside your comfort zone. Taking educational risks, such as sharing your work for feedback or challenging yourself in a new subject, will allow you to grow even more. Additionally, you could inspire and guide others by encouraging teamwork and helping them set their own goals.",
+          "personal_development_question": "How could you inspire others to take on new challenges while continuing to set ambitious goals for yourself?"
+        }
+      ]
+    },
+    "Purpose": {
+      "code": "P",
+      "name": "Purpose (Vision, Aspiration, Locus of Control)",
+      "breakpoints": [
+        {
+          "range": "0-3",
+          "label": "Low",
+          "statement": "Thinking about the future might feel overwhelming or even a little scary right now, and that's perfectly understandable. It's okay if you don't have all the answers yet—many people don't, and your plans don't have to be set in stone. This is a great time to start exploring what makes you happy and thinking about the kind of life you'd like to lead, rather than focusing on a specific outcome. You have the power to shape your vision, but it's also important to stay open to new possibilities and unexpected opportunities. Small steps, like exploring a hobby or learning more about a subject you enjoy, can help you discover what gives you a sense of purpose and fulfillment.",
+          "personal_development_question": "What's one thing you enjoy doing that you could explore further this week to help you discover what matters to you?"
+        },
+        {
+          "range": "3-5",
+          "label": "Average",
+          "statement": "You have some ideas about your future, but it seems like there's still a bit of uncertainty about the path you want to take—and that's completely normal at this stage in life. You've shown that you can set goals and work towards them, but it's also important to remember that goals can change. Life is full of surprises, and unexpected events or new interests may steer you in a different direction. What matters most is having a sense of purpose that guides you, rather than being too fixed on a particular outcome. By staying curious and flexible, you'll be better able to adapt to new opportunities and challenges, ensuring your vision grows with you.",
+          "personal_development_question": "What's one step you could take to explore a career, activity, or interest that feels exciting to you?"
+        },
+        {
+          "range": "5-8",
+          "label": "High",
+          "statement": "You're someone with a strong sense of purpose and a clear vision for what you want to achieve in life. You've likely set meaningful goals and are steadily working towards them, which is a fantastic skill to have. However, it's also important to remember that not every goal needs to be rigidly fixed. Sometimes, life takes us in unexpected directions, and being open to change ensures your purpose can adapt and grow. Rather than focusing solely on specific outcomes, consider how your actions align with your broader purpose—what truly inspires and motivates you. This mindset will help you make decisions that feel right, even if the path doesn't look exactly as you originally planned.",
+          "personal_development_question": "What's one challenge or opportunity you could take on to deepen your sense of purpose and strengthen your vision?"
+        },
+        {
+          "range": "8-10",
+          "label": "Very High",
+          "statement": "You have a powerful and inspiring vision that drives everything you do, and your sense of purpose is deeply connected to your actions. You're confident in your ability to achieve your goals and understand how much your own efforts shape your future. However, it's important to remember that life can sometimes present unexpected changes or obstacles. Staying focused on your purpose—your "why"—rather than a specific outcome, will help you navigate these moments with resilience and adaptability. This purpose-driven mindset not only keeps you grounded but also allows you to seize opportunities you might not have imagined. Sharing your vision and helping others develop their own sense of purpose can amplify the positive impact you're already making.",
+          "personal_development_question": "How could you share your vision and help others see how focusing on a purpose, rather than a fixed outcome, can lead to success?"
+        }
+      ]
+    },
+    "Awareness": {
+      "code": "A",
+      "name": "Awareness (Relationships, Empathy, and Openness to Difference)",
+      "breakpoints": [
+        {
+          "range": "0-3",
+          "label": "Low",
+          "statement": "Connecting with others and understanding their feelings can sometimes feel challenging, and that's okay. Building relationships takes time, and it's made up of small actions, like asking how someone's day is going or lending a hand when they need help. These small gestures can help you feel more connected and confident in your ability to support others. It's also important to recognise that everyone has different experiences and perspectives, which means they may see the world differently from you. By listening to others with an open mind, especially in class or group settings, you can begin to understand those differences and learn from them. Accepting that no one has all the answers—including yourself—can open the door to valuable learning and growth.",
+          "personal_development_question": "What's one small act of kindness you could do this week to show you care about someone's feelings?"
+        },
+        {
+          "range": "3-5",
+          "label": "Average",
+          "statement": "You care about others and try to be supportive when you can, but sometimes you might feel unsure about how much of a difference you're making. That's completely normal—many people feel this way. What's important is that your efforts to show empathy and kindness do matter, even if you don't see the impact straight away. In school or group activities, being willing to work with others and listen to their perspectives—even when they differ from your own—can help strengthen relationships and create new opportunities for learning. By opening yourself up to new ideas and approaches, you'll not only help others feel valued but also gain valuable insights that can help you grow.",
+          "personal_development_question": "What's one thing you could do this week to learn from someone with a different view or experience?"
+        },
+        {
+          "range": "5-8",
+          "label": "High",
+          "statement": "You have a strong sense of empathy and a natural ability to support others, whether it's through listening, offering help, or being there during tough times. You're also likely someone who values collaboration and enjoys working in groups where everyone can contribute. To continue growing, think about how you can use your empathy to embrace differences and learn from people with perspectives that challenge your own. It's in these moments—when you're exposed to new or opposing ideas—that the greatest learning happens. Remember, collaboration is a two-way street: as much as you help others, it's okay to let others help and teach you as well.",
+          "personal_development_question": "How could you approach a conversation or group project with an open mind to better understand others' views?"
+        },
+        {
+          "range": "8-10",
+          "label": "Very High",
+          "statement": "Your empathy and generosity shine brightly, and you consistently go out of your way to help and support others. People look up to you as someone they can trust and rely on. You're also likely someone who values working together and building strong, inclusive relationships. To deepen your impact, consider how you can actively celebrate and learn from differences in the people around you. Sharing ideas with those who have different viewpoints can help create a richer, more productive learning environment for everyone involved. Accepting that there is always more to learn—even from those who disagree with you—can strengthen your personal growth and inspire others to do the same.",
+          "personal_development_question": "How could you lead by example in encouraging collaboration and celebrating differences in your class or community?"
+        }
+      ]
+    },
+    "Resilience": {
+      "code": "R",
+      "name": "Resilience (Diligence, Reliability, Never Giving Up)",
+      "breakpoints": [
+        {
+          "range": "0-3",
+          "label": "Low",
+          "statement": "When things get difficult, it's natural to feel like giving up, but it's important to remember that every little effort counts. Even if you only make a small amount of progress, it's still progress. Challenges can feel overwhelming, but they're also opportunities to learn and grow stronger. One way to start building resilience is by focusing on completing small tasks on time. Being reliable and meeting deadlines helps others trust you and shows that you can take responsibility. Learning can sometimes feel uncomfortable, especially when you're tackling something new or difficult, but this is where growth happens—right at the edge of your knowledge. Celebrate your small wins and reward yourself for trying, even if you don't get everything perfect. Perseverance gets easier with practice.",
+          "personal_development_question": "What's one task you could commit to finishing on time this week, and how will you reward yourself for completing it?"
+        },
+        {
+          "range": "3-5",
+          "label": "Average",
+          "statement": "You try hard to stick with tasks, but there are times when frustration or distractions might get the better of you—and that's completely normal. Everyone struggles sometimes, especially when faced with challenging work. The important thing is to focus on the progress you're making, even if it feels slow. Meeting deadlines and being reliable are key skills that build trust with others, so aim to prioritise completing your tasks on time, even if they're small. When it comes to learning, remember that true progress happens when you push yourself to learn something just beyond what you already know. It's okay to feel challenged—that's where real growth begins. At the same time, remember to reward yourself when you've worked hard, as this will keep you motivated.",
+          "personal_development_question": "What's one deadline you can commit to meeting this week, and how will you make sure you stick to it?"
+        },
+        {
+          "range": "5-8",
+          "label": "High",
+          "statement": "You are determined and reliable, showing real grit in the face of challenges. You rarely let setbacks stop you, and others can count on you to get things done on time. This reliability not only builds trust but also shows that you value the commitments you make. When it comes to learning, you're willing to work hard and tackle challenging material, which is key to developing your skills. However, it's important to remember that resilience isn't a constant feeling—it's normal for things to feel harder at times. By continuing to build strong habits now, like meeting deadlines, pushing yourself to learn beyond your comfort zone, and rewarding yourself for progress, you'll be better prepared to stay resilient even when future challenges arise.",
+          "personal_development_question": "How could you challenge yourself to learn something new or difficult this week, and how will you reward yourself for trying?"
+        },
+        {
+          "range": "8-10",
+          "label": "Very High",
+          "statement": "Your resilience is a real strength, and you consistently show a determined and focused attitude that others admire. No matter how tough things get, you find a way to push through and achieve your goals. People trust you to complete tasks on time, and this reliability sets you apart as someone who can be depended upon. Your ability to push yourself to learn beyond your current limits shows your commitment to growth. However, even the most resilient people may face periods when things feel harder than usual. By continuing to develop strong habits—like prioritising deadlines, embracing challenging learning opportunities, and rewarding your own effort—you're setting yourself up to stay resilient in the long term. These habits will carry you through even the most difficult moments and help you continue to inspire others.",
+          "personal_development_question": "How can you help others understand the importance of meeting deadlines and challenging themselves to learn at the edge of their abilities, while staying adaptable to challenges?"
+        }
+      ]
+    },
+    "Knowledge": {
+      "code": "K",
+      "name": "Knowledge (Curiosity, Attention, Role of Student)",
+      "breakpoints": [
+        {
+          "range": "0-3",
+          "label": "Low",
+          "statement": "You might find it hard to stay focused or feel excited about learning, and that's okay. Not everyone feels enthusiastic about school all the time, but being a student is about more than just doing homework or attending classes—it's about being curious and discovering the joy of learning. Learning can go beyond school; it can involve exploring things you're naturally curious about, like hobbies, skills, or topics that catch your interest. Taking small steps to learn about something outside of class can help you see that education isn't just something you're told to do—it's something you can enjoy and pursue for yourself.",
+          "personal_development_question": "What's one subject, hobby, or question you've always been curious about that you could explore further?"
+        },
+        {
+          "range": "3-5",
+          "label": "Average",
+          "statement": "You care about learning and try to stay engaged, but there might be times when schoolwork feels repetitive or uninteresting. That's completely normal—many people feel this way. What's important is realising that education can be a personal journey, not just something given to you in the classroom. The most successful learners don't just accept what they're taught; they go further, asking questions, exploring new ideas, and finding ways to connect learning to their own lives. By experimenting with different ways to learn—like exploring subjects on your own or challenging yourself to understand something deeply—you can rediscover the excitement of gaining knowledge and see the role of \"student\" as an important and rewarding part of who you are.",
+          "personal_development_question": "What's one way you could take control of your learning and explore something new, even outside of class?"
+        },
+        {
+          "range": "5-8",
+          "label": "High",
+          "statement": "You're naturally curious and enjoy learning, especially when you see how it connects to your life and interests. You recognise that being a student isn't just about completing assignments—it's about growing as a person and discovering what excites you. This sense of curiosity makes you more independent in your pursuit of knowledge, and you likely look for opportunities to learn beyond the classroom. To keep growing, think about how you can take your learning even further—whether by diving deeper into a topic you enjoy, connecting with others who share your interests, or applying what you've learned to solve real-world challenges. Remember, the most meaningful learning happens when you're willing to go beyond what's required and seek out knowledge for yourself.",
+          "personal_development_question": "How could you take your learning to the next level by exploring a subject, question, or idea more deeply outside of school?"
+        },
+        {
+          "range": "8-10",
+          "label": "Very High",
+          "statement": "You have a deep love of learning and a genuine enthusiasm for gaining knowledge, which sets you apart. You see education as a way to grow, explore, and make sense of the world around you. For you, being a student is an important part of your identity, and it's likely that others look up to you for your dedication and curiosity. You don't just accept what's taught in school—you actively seek out opportunities to learn on your own, whether through books, projects, or conversations with others. To continue inspiring yourself and others, think about how you can use your knowledge to make a difference. Sharing what you've learned, encouraging others to ask questions, and finding ways to apply your education in the real world will deepen your sense of purpose and joy in learning.",
+          "personal_development_question": "How can you use your knowledge to make a difference, help others, or explore something completely new?"
+        }
+      ]
+    },
+    "Overall": {
+      "code": "O",
+      "name": "Overall",
+      "breakpoints": [
+        {
+          "range": "0-3",
+          "label": "Low",
+          "statement": "Right now, it seems you might be feeling a little stuck or unsure about how to approach your learning and personal growth, and that's okay. Everyone starts somewhere, and what's most important is that you're willing to take the first step toward improvement. It might feel like school and learning aren't for you, but education is about more than just getting grades—it's about discovering what excites you, building your confidence, and realising how capable you really are. Start by focusing on small, achievable goals in one area, like trying a bit harder to meet deadlines, asking questions in class, or exploring a topic that interests you outside of school. Progress takes time, and by building small successes, you'll develop the habits and mindset that help you grow.",
+          "personal_development_question": "What's one small change you could make this week to feel more positive about school or learning?"
+        },
+        {
+          "range": "3-5",
+          "label": "Average",
+          "statement": "You're doing reasonably well, but you might feel like you're not fully reaching your potential just yet. There's a solid foundation here, and it's clear you're trying in some areas, but you might find that inconsistency or uncertainty holds you back from making bigger progress. The key to improving is to build stronger habits across the board—like setting clear goals, being more proactive in your learning, or challenging yourself to go beyond what feels comfortable. Remember, education is about more than ticking boxes—it's about taking ownership of your learning, finding purpose in what you do, and seeing how it connects to your life and future. Focus on building momentum in one area at a time, and you'll start to see how small improvements can create a big difference.",
+          "personal_development_question": "What's one habit you could focus on improving this week to help you feel more in control of your progress?"
+        },
+        {
+          "range": "5-8",
+          "label": "High",
+          "statement": "You're doing really well, showing strength in several areas, and it's clear that you're motivated and focused on growth. You've likely built some strong habits, like meeting deadlines, working through challenges, and taking initiative in your learning. However, there's always room to refine and push yourself further. Think about how you could make your learning even more personal—exploring ideas that interest you, stepping out of your comfort zone, or seeking feedback to sharpen your skills. It's also worth reflecting on areas where you could be even more consistent to ensure all aspects of your learning are working together. With your strong mindset and dedication, you're in a great position to keep growing and achieve even more.",
+          "personal_development_question": "How could you challenge yourself to step out of your comfort zone and grow in a new area this week?"
+        },
+        {
+          "range": "8-10",
+          "label": "Very High",
+          "statement": "Your overall approach to learning and personal growth is exceptional, and your mindset sets you apart as someone who is deeply committed to achieving their best. You consistently demonstrate strong habits, such as taking initiative, embracing challenges, and staying focused on your goals. This balance across all areas shows that you've built a foundation for success that will serve you well in school and beyond. However, it's important to remember that even the most successful learners can face setbacks. By continuing to develop your habits and staying open to feedback, you'll ensure that your resilience and motivation remain strong no matter what challenges come your way. Consider how you might also inspire or mentor others to help them grow—sharing your approach could make a positive impact on those around you.",
+          "personal_development_question": "How can you inspire or support others while continuing to build on your own strong habits and achievements?"
+        }
+      ]
+    }
+  }
+}
+

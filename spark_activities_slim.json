@@ -1,0 +1,247 @@
+[
+  {
+    "id": "S_two_minute_takeoff",
+    "theme": "S",
+    "title": "Two-Minute Takeoff",
+    "time_minutes": 10
+  },
+  {
+    "id": "S_first_domino_minimum_viable_task",
+    "theme": "S",
+    "title": "First-Domino (Minimum Viable Task)",
+    "time_minutes": 15
+  },
+  {
+    "id": "S_risk_tokens",
+    "theme": "S",
+    "title": "Risk Tokens",
+    "time_minutes": 10
+  },
+  {
+    "id": "S_action_sprints_10_20_2",
+    "theme": "S",
+    "title": "Action Sprints (10–20–2)",
+    "time_minutes": 32
+  },
+  {
+    "id": "S_implementation_intentions_if_then",
+    "theme": "S",
+    "title": "Implementation Intentions (IF–THEN)",
+    "time_minutes": 12
+  },
+  {
+    "id": "S_action_priority_matrix",
+    "theme": "S",
+    "title": "Action Priority Matrix",
+    "time_minutes": 15
+  },
+  {
+    "id": "S_daily_start_line",
+    "theme": "S",
+    "title": "Daily Start Line",
+    "time_minutes": 8
+  },
+  {
+    "id": "S_the_48_hour_rule",
+    "theme": "S",
+    "title": "The 48-Hour Rule",
+    "time_minutes": 10
+  },
+  {
+    "id": "P_control_compass",
+    "theme": "P",
+    "title": "Control Compass",
+    "time_minutes": 15
+  },
+  {
+    "id": "P_purpose_circles",
+    "theme": "P",
+    "title": "Purpose Circles",
+    "time_minutes": 20
+  },
+  {
+    "id": "P_future_me_interview",
+    "theme": "P",
+    "title": "Future-Me Interview",
+    "time_minutes": 15
+  },
+  {
+    "id": "P_values_to_verbs",
+    "theme": "P",
+    "title": "Values to Verbs",
+    "time_minutes": 15
+  },
+  {
+    "id": "P_pathway_map_detours",
+    "theme": "P",
+    "title": "Pathway Map & Detours",
+    "time_minutes": 18
+  },
+  {
+    "id": "P_mentor_map",
+    "theme": "P",
+    "title": "Mentor Map",
+    "time_minutes": 12
+  },
+  {
+    "id": "P_opportunity_radar",
+    "theme": "P",
+    "title": "Opportunity Radar",
+    "time_minutes": 10
+  },
+  {
+    "id": "P_purpose_post_it_prompts",
+    "theme": "P",
+    "title": "Purpose Post-it Prompts",
+    "time_minutes": 8
+  },
+  { "id": "P_ikigai_mini_map", 
+  "theme": "P", 
+  "title": "Ikigai Mini-Map", 
+  "time_minutes": 20 
+  },
+  {
+    "id": "A_listening_ladders",
+    "theme": "A",
+    "title": "Listening Ladders",
+    "time_minutes": 15
+  },
+  {
+    "id": "A_red_blue_team_kind_edition",
+    "theme": "A",
+    "title": "Red/Blue Team (Kind Edition)",
+    "time_minutes": 20
+  },
+  {
+    "id": "A_difference_detective",
+    "theme": "A",
+    "title": "Difference Detective",
+    "time_minutes": 15
+  },
+  {
+    "id": "A_team_reliability_pact_check_in",
+    "theme": "A",
+    "title": "Team Reliability Pact + Check-In",
+    "time_minutes": 10
+  },
+  {
+    "id": "A_compliment_challenge_coach",
+    "theme": "A",
+    "title": "Compliment–Challenge–Coach",
+    "time_minutes": 15
+  },
+  {
+    "id": "A_name_noticing",
+    "theme": "A",
+    "title": "Name–Noticing",
+    "time_minutes": 10
+  },
+  {
+    "id": "A_roles_roulette",
+    "theme": "A",
+    "title": "Roles Roulette",
+    "time_minutes": 12
+  },
+  {
+    "id": "A_empathy_walk_texts_contexts",
+    "theme": "A",
+    "title": "Empathy Walk (Texts & Contexts)",
+    "time_minutes": 18
+  },
+  {
+    "id": "R_stuck_protocol_card_s_p_a_r_k",
+    "theme": "R",
+    "title": "Stuck Protocol Card (S-P-A-R-K)",
+    "time_minutes": 12
+  },
+  {
+    "id": "R_deadline_back_plan_buffer",
+    "theme": "R",
+    "title": "Deadline Back-Plan + Buffer",
+    "time_minutes": 18
+  },
+  {
+    "id": "R_recovery_reframes",
+    "theme": "R",
+    "title": "Recovery Reframes",
+    "time_minutes": 15
+  },
+  {
+    "id": "R_pomodoro_ladder",
+    "theme": "R",
+    "title": "Pomodoro Ladder",
+    "time_minutes": 20
+  },
+  {
+    "id": "R_milestone_receipts",
+    "theme": "R",
+    "title": "Milestone Receipts",
+    "time_minutes": 10
+  },
+  {
+    "id": "R_energy_audit",
+    "theme": "R",
+    "title": "Energy Audit",
+    "time_minutes": 15
+  },
+  {
+    "id": "R_plan_b_playbook",
+    "theme": "R",
+    "title": "Plan B Playbook",
+    "time_minutes": 12
+  },
+  {
+    "id": "R_reliability_scorecard",
+    "theme": "R",
+    "title": "Reliability Scorecard",
+    "time_minutes": 10
+  },
+  {
+    "id": "K_curiosity_tickets",
+    "theme": "K",
+    "title": "Curiosity Tickets",
+    "time_minutes": 12
+  },
+  {
+    "id": "K_3_2_1_wonder_wall_micro_inquiry",
+    "theme": "K",
+    "title": "3-2-1 Wonder Wall + Micro-Inquiry",
+    "time_minutes": 18
+  },
+  {
+    "id": "K_feynman_flip_teach_it_simple",
+    "theme": "K",
+    "title": "Feynman Flip (Teach It Simple)",
+    "time_minutes": 15
+  },
+  {
+    "id": "K_retrieval_scavenger_hunt",
+    "theme": "K",
+    "title": "Retrieval Scavenger Hunt",
+    "time_minutes": 16
+  },
+  {
+    "id": "K_source_swap_debate",
+    "theme": "K",
+    "title": "Source Swap Debate",
+    "time_minutes": 20
+  },
+  {
+    "id": "K_notebook_architecture",
+    "theme": "K",
+    "title": "Notebook Architecture",
+    "time_minutes": 14
+  },
+  {
+    "id": "K_question_quiver",
+    "theme": "K",
+    "title": "Question Quiver",
+    "time_minutes": 12
+  },
+  {
+    "id": "K_extension_quest",
+    "theme": "K",
+    "title": "Extension Quest",
+    "time_minutes": 20
+  }
+]

@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ikigai Quest – Explore Your Passions & Strengths</title>
+  <!-- Main app uses Sawarabi Mincho -->
+  <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+  <!-- Intro page uses Hina Mincho -->
+  <link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://www.vespa.academy/Japangarden.png') no-repeat center center;
+      background-size: cover;
+      font-family: "Sawarabi Mincho", serif;
+    }
+
+    /* ---------------------- Introductory Page Styles ---------------------- */
+    #introPage {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background: url('https://www.vespa.academy/Japangarden.png') no-repeat center center;
+      background-size: cover;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .introFlexContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      max-width: 900px;
+      margin: 200px auto 0 auto;
+    }
+    /* GIF on the intro page – unchanged */
+    .gifColumn {
+      position: fixed;
+      top: 50%;
+      left: calc(30% - 25vw);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translateY(-50%);
+    }
+    .gifColumn img {
+      display: block;
+      max-width: 300px;
+      width: 70%;
+      height: auto;
+      will-change: auto;
+      backface-visibility: hidden;
+      transform: none;
+      image-rendering: optimizeQuality;
+    }
+    /* Skip Intro button */
+    #skipIntro {
+      margin-top: 10px;
+      background: #792356;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    #skipIntro:hover {
+      background: #641f47;
+    }
+    /* Speech Bubble with animated text (Intro Page) */
+    .speechBubble {
+      position: relative;
+      background: rgba(0,0,0,0.5);
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 500px;
+      color: #fff;
+      font-family: 'Hina Mincho', serif;
+      font-size: 3em;
+      line-height: 1.3em;
+    }
+    .speechBubble:before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: -20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent rgba(0,0,0,0.5) transparent transparent;
+    }
+    /* Animated text container for the intro */
+    #animatedText { }
+    /* Start button inside speech bubble */
+    #startButton {
+      background: #792356;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1.2em;
+      display: none;
+      margin: 20px auto 0 auto;
+    }
+    #startButton:hover {
+      background: #641f47;
+    }
+
+    /* Final Ikigai Image Overlay */
+    #finalImageOverlay {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 0;
+      transition: transform 1s ease, opacity 1s ease;
+      z-index: 2000;
+      background: rgba(255,255,255,0.9);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    #finalImageOverlay img {
+      max-width: 480px;
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    #finalImageOverlay .closeBtn {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      background: #792356;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    /* Cherry blossom falling effect */
+    #blossomsContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1000;
+    }
+    .blossom {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      opacity: 0.8;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+      10%  { opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ---------------------- Main App Styles ---------------------- */
+    #app {
+      max-width: 1200px;
+      margin: 20px auto;
+      background: rgba(255,255,255,0.9);
+      padding: 20px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: none;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      margin: 10px 0;
+    }
+    /* Instruction Section in Main App */
+    #instructionSection {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    /* Ensure the GIF appears inline inside the instruction section */
+    .instructionGif {
+      width: 100px;
+      margin-right: 10px;
+    }
+    /* The instruction bubble – reduced padding, larger animated text, and relative positioning for the close button */
+    .instructionBubble {
+      background: #792356;
+      border-radius: 10px;
+      padding: 10px;
+      color: #fff;
+      font-family: 'Hina Mincho', serif;
+      font-size: 2.4em; /* animated size */
+      line-height: 1.3em;
+      text-align: left;
+      max-width: 800px;
+      min-height: 50px;
+      position: relative;
+      flex: 1;
+    }
+    .explanation {
+      text-align: center;
+      font-size: 0.95em;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    #canvasContainer {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ddd;
+      background: #fff;
+      overflow: hidden;
+    }
+    #leftBg, #rightBg {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      z-index: 0;
+    }
+    #leftBg {
+      left: 0;
+      background: #d0d8e8;
+    }
+    #rightBg {
+      right: 0;
+      background: #e0f4f0;
+    }
+    #divider {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      border-left: 2px dotted #aaa;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .side-title {
+      position: absolute;
+      top: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
+      z-index: 2;
+      color: #333;
+    }
+    #leftTitle {
+      left: 20px;
+    }
+    #rightTitle {
+      right: 20px;
+    }
+    #addNoteBtn {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 12px;
+      background: #792356;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      z-index: 3;
+    }
+    #addNoteBtn:hover {
+      background: #641f47;
+    }
+    .note {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      padding: 8px;
+      border: 3px solid;
+      border-radius: 4px;
+      background: #ffffcc;
+      cursor: move;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .note .note-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 90%;
+      font-size: 1em;
+      line-height: 1.2em;
+    }
+    .note .edit-btn, .note .connect-btn, .note .delete-btn {
+      position: absolute;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    .note .edit-btn { top: 2px; right: 2px; color: #555; }
+    .note .connect-btn { top: 2px; right: 28px; color: #555; }
+    .note .delete-btn { bottom: 2px; right: 2px; color: red; background: none; border: none; }
+    #svgOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: auto;
+      z-index: 1;
+    }
+    #globalSuggestions {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background: #fafafa;
+      border-radius: 8px;
+    }
+    #globalSuggestions h3 { margin-top: 0; }
+    #globalSuggestionList { list-style: disc; margin-left: 20px; padding: 0; }
+    #globalSuggestionList li { margin-bottom: 4px; }
+    #globalSuggestions button {
+      margin-left: 5px;
+      padding: 2px 5px;
+      font-size: 0.8em;
+      background: #792356;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #globalSuggestions button:hover { background: #641f47; }
+
+    /* ---------------------- Modal Styles ---------------------- */
+    #noteModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    #modalContent {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 400px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    #modalContent h3 { margin-top: 0; }
+    #modalContent input[type="text"] {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 5px;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+    .modal-inner-container {
+      display: flex;
+      gap: 20px;
+    }
+    .modal-left {
+      flex: 1;
+    }
+    .modal-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #colorGrid {
+      display: grid;
+      grid-template-columns: repeat(6, 30px);
+      grid-auto-rows: 30px;
+      gap: 5px;
+    }
+    .color-swatch {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      box-sizing: border-box;
+    }
+    .color-swatch.selected {
+      border-color: #000;
+    }
+    #modalButtons {
+      text-align: right;
+    }
+    #modalButtons button {
+      margin-left: 5px;
+      padding: 6px 10px;
+      background: #792356;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #modalButtons button:hover { background: #641f47; }
+
+    /* ---------------------- Mobile Responsiveness ---------------------- */
+    @media (max-width: 600px) {
+      .speechBubble {
+        font-size: 3em;
+        max-width: 90%;
+      }
+      .introFlexContainer {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 200px;
+        margin-left: 20px;
+      }
+      .gifColumn img {
+        max-width: 300px;
+      }
+      #modalContent {
+        width: 90%;
+      }
+      #instructionSection {
+        flex-direction: column;
+        align-items: center;
+      }
+      #instructionSection img {
+        position: static;
+        margin-bottom: 10px;
+      }
+    }
+
+    @media print {
+      #app { box-shadow: none; border: none; }
+      button, input, select { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Introductory Page -->
+  <div id="introPage">
+    <div class="introFlexContainer">
+      <div class="gifColumn">
+        <img src="https://www.vespa.academy/sensai3.gif" alt="Floating Figure">
+        <button id="skipIntro">Skip Intro</button>
+      </div>
+      <div class="speechBubble">
+        <div id="animatedText"></div>
+        <button id="startButton">Start Creating your own Ikigai</button>
+      </div>
+    </div>
+    <div id="blossomsContainer"></div>
+  </div>
+
+  <!-- Final Ikigai Image Overlay (hidden by default) -->
+  <div id="finalImageOverlay">
+    <button class="closeBtn" id="closeFinalImage">X</button>
+    <img src="https://www.vespa.academy/ikigai.png" alt="Final Ikigai">
+  </div>
+
+  <!-- Main App -->
+  <div id="app">
+    <header>
+      <h1>Ikigai Quest – Explore Your Passions & Strengths</h1>
+      <!-- Instruction Section with inline GIF inside the title box -->
+      <div id="instructionSection">
+        <img class="instructionGif" src="https://www.vespa.academy/sensai3.gif" alt="Floating Figure">
+        <div class="instructionBubble" id="instructionBubble"></div>
+      </div>
+    </header>
+    <div class="explanation">
+      <p><strong>Instructions:</strong> First, add all the things you <em>love doing</em> (they will appear on the left side) and then add all the things you are <em>good at</em>. You can drag notes across the dotted divider to change their section. Click the pencil icon to edit a note, the chain icon to connect it to another, and the red cross to delete it. In connect mode, editing is disabled until the connection is made.</p>
+    </div>
+    <div id="canvasContainer">
+      <div id="leftBg"></div>
+      <div id="rightBg"></div>
+      <div id="divider"></div>
+      <svg id="svgOverlay"></svg>
+      <div class="side-title" id="leftTitle" style="left: 20px; top: 10px;">What I Love</div>
+      <div class="side-title" id="rightTitle" style="right: 20px; top: 10px;">What I Am Good At</div>
+      <button id="addNoteBtn" onclick="openModal()">➕ Add New Note</button>
+    </div>
+    <div id="globalSuggestions">
+      <h3>Global AI Suggestions</h3>
+      <button onclick="refreshGlobalSuggestions()">Refresh Suggestions</button>
+      <ul id="globalSuggestionList"></ul>
+    </div>
+  </div>
+
+  <!-- Modal for Adding/Editing a Note -->
+  <div id="noteModal">
+    <div id="modalContent">
+      <div class="modal-inner-container">
+        <div class="modal-left">
+          <h3 id="modalTitleText">Add New Note</h3>
+          <input type="text" id="modalTitle" placeholder="Note Title (max 30 characters)" maxlength="30">
+        </div>
+        <div class="modal-right">
+          <div id="colorGrid"></div>
+        </div>
+      </div>
+      <div id="modalButtons">
+        <button onclick="saveModalNote()">Save Note</button>
+        <button onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**************************************
+     * Intro Page Text Animation Functions
+     **************************************/
+    const paragraphs = [
+      "Welcome to Ikigai Quest",
+      "Ikigai (pronounced i-kee-gai) is a Japanese concept—it means a reason for being, filled with joy and purpose.",
+      "While traditional education focuses on money and jobs, Ikigai helps you explore your inner values.",
+      "Imagine what you truly love, what you're good at, what the world needs, and what can sustain you.",
+      "This is what your final Ikigai will look like."
+    ];
+    
+    let introSkipped = false;
+    let currentParagraphIndex = 0;
+    
+    function typeWriter(text, element, callback) {
+      let i = 0;
+      element.innerHTML = "";
+      let interval = setInterval(() => {
+        if (introSkipped) {
+          clearInterval(interval);
+          callback();
+          return;
+        }
+        element.innerHTML += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          if (currentParagraphIndex === paragraphs.length - 1) {
+            setTimeout(() => {
+              callback();
+              showFinalImageOverlay();
+            }, 3000);
+          } else {
+            setTimeout(callback, 3000);
+          }
+        }
+      }, 50);
+    }
+    
+    function runTextAnimation(paragraphs, element) {
+      function nextParagraph() {
+        if (introSkipped) {
+          element.innerHTML = "";
+          document.getElementById("startButton").style.display = "inline-block";
+          return;
+        }
+        if (currentParagraphIndex < paragraphs.length) {
+          element.style.opacity = 1;
+          typeWriter(paragraphs[currentParagraphIndex], element, () => {
+            if (currentParagraphIndex < paragraphs.length - 1) {
+              let fadeOutInterval = setInterval(() => {
+                let op = parseFloat(element.style.opacity);
+                if (op > 0) {
+                  op -= 0.05;
+                  element.style.opacity = op;
+                } else {
+                  clearInterval(fadeOutInterval);
+                  currentParagraphIndex++;
+                  nextParagraph();
+                }
+              }, 50);
+            }
+          });
+        }
+      }
+      nextParagraph();
+    }
+    
+    window.addEventListener("load", function() {
+      const animatedTextElement = document.getElementById("animatedText");
+      animatedTextElement.style.opacity = 1;
+      runTextAnimation(paragraphs, animatedTextElement);
+    });
+    
+    document.getElementById("skipIntro").addEventListener("click", function() {
+      introSkipped = true;
+      document.getElementById("animatedText").innerHTML = "";
+      document.getElementById("startButton").style.display = "inline-block";
+    });
+    
+    function showFinalImageOverlay() {
+      const overlay = document.getElementById("finalImageOverlay");
+      overlay.style.display = "block";
+      setTimeout(() => {
+        overlay.style.transform = "translate(-50%, -50%) scale(1)";
+        overlay.style.opacity = "1";
+      }, 50);
+      setTimeout(closeFinalImageOverlay, 20000);
+    }
+    
+    function closeFinalImageOverlay() {
+      const overlay = document.getElementById("finalImageOverlay");
+      overlay.style.transform = "translate(-50%, -50%) scale(0.5)";
+      overlay.style.opacity = "0";
+      setTimeout(() => {
+        overlay.style.display = "none";
+        const animatedTextElement = document.getElementById("animatedText");
+        animatedTextElement.innerHTML = "Let's start by finding your Passion by considering all the things you both love and are good at.";
+        document.getElementById("startButton").style.display = "inline-block";
+      }, 1000);
+    }
+    
+    document.getElementById("closeFinalImage").addEventListener("click", closeFinalImageOverlay);
+    
+    // Start button click: transition from intro to main app and begin instruction animation
+    document.getElementById("startButton").addEventListener("click", function() {
+      document.getElementById("introPage").style.display = "none";
+      document.getElementById("app").style.display = "block";
+      if (localStorage.getItem("instructionsClosed") === "true") {
+        const instructionBubble = document.getElementById("instructionBubble");
+        instructionBubble.innerHTML = instructionSentences.join(" ");
+        instructionBubble.style.fontSize = "1.2em";
+      } else {
+        runInstructionAnimation(instructionSentences, document.getElementById("instructionBubble"));
+      }
+    });
+    
+    // Create falling cherry blossoms effect
+    function createBlossoms() {
+      const container = document.getElementById("blossomsContainer");
+      const blossomCount = 15;
+      for (let i = 0; i < blossomCount; i++) {
+        const blossom = document.createElement("img");
+        blossom.src = "https://www.vespa.academy/blossom.png";
+        blossom.className = "blossom";
+        blossom.style.left = Math.random() * 100 + "vw";
+        const duration = 8 + Math.random() * 4;
+        blossom.style.animationDuration = duration + "s";
+        blossom.style.animationDelay = Math.random() * 5 + "s";
+        container.appendChild(blossom);
+      }
+    }
+    createBlossoms();
+    
+    /**************************************
+     * Main App Functions
+     **************************************/
+    let notes = [];
+    let noteIdCounter = 0;
+    let connectionStartNote = null;
+    let connectionTimeout = null;
+    let connections = [];
+    let noteBeingEdited = null;
+    const bannedWords = ["fuck", "shit", "bitch", "asshole", "damn", "crap", "faggot", "nigger", "cunt", "dick", "cock", "pussy"];
+    
+    function containsProfanity(text) {
+      const lowerText = text.toLowerCase();
+      return bannedWords.some(word => lowerText.includes(word));
+    }
+    
+    /**************************************
+     * Color Grid & Modal Functions
+     **************************************/
+    let selectedColor = "#FFFFCC"; // default color
+    
+    const colorOptions = [
+      "#E6194B", "#3CB44B", "#FFE119", "#0082C8", "#F58231", "#911EB4",
+      "#46F0F0", "#F032E6", "#D2F53C", "#FF1493", "#00CED1", "#FF8C00",
+      "#8B0000", "#00FF7F", "#1E90FF", "#FFD700", "#DC143C", "#7FFF00",
+      "#00BFFF", "#FF69B4", "#BA55D3", "#3CB371", "#FF4500", "#2E8B57",
+      "#00FA9A", "#8A2BE2", "#FF6347", "#4682B4", "#ADFF2F", "#D2691E",
+      "#5F9EA0", "#9932CC", "#FF00FF", "#7CFC00", "#00FF00", "#FF7F50"
+    ];
+    
+    function populateColorGrid() {
+      const colorGrid = document.getElementById("colorGrid");
+      colorGrid.innerHTML = "";
+      colorOptions.forEach(color => {
+        const swatch = document.createElement("div");
+        swatch.classList.add("color-swatch");
+        swatch.style.backgroundColor = color;
+        swatch.addEventListener("click", () => {
+          document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
+          swatch.classList.add("selected");
+          selectedColor = color;
+        });
+        if (color === selectedColor) {
+          swatch.classList.add("selected");
+        }
+        colorGrid.appendChild(swatch);
+      });
+    }
+    
+    function openModal(noteToEdit = null) {
+      noteBeingEdited = noteToEdit;
+      const modal = document.getElementById("noteModal");
+      document.getElementById("modalTitleText").textContent = noteToEdit ? "Edit Note" : "Add New Note";
+      if (noteToEdit) {
+        document.getElementById("modalTitle").value = noteToEdit.title;
+        selectedColor = noteToEdit.color;
+      } else {
+        document.getElementById("modalTitle").value = "";
+        selectedColor = "#FFFFCC";
+      }
+      populateColorGrid();
+      if ((!noteToEdit || !noteToEdit.emoji) && document.getElementById("modalTitle").value.trim() !== "") {
+        getEmojiSuggestion(document.getElementById("modalTitle").value.trim()).then(emoji => {
+          if (!noteToEdit) {
+            modal.dataset.suggestedEmoji = emoji;
+          } else {
+            noteToEdit.emoji = emoji;
+          }
+        });
+      }
+      modal.style.display = "flex";
+    }
+    
+    // MODAL: Clicking outside modal content closes it
+    document.getElementById("noteModal").addEventListener("click", function(e) {
+      if (!document.getElementById("modalContent").contains(e.target)) {
+        closeModal();
+      }
+    });
+    
+    async function saveModalNote() {
+      const title = document.getElementById("modalTitle").value.trim();
+      const color = selectedColor;
+      if (!title) {
+        alert("Please enter a title.");
+        return;
+      }
+      if (containsProfanity(title)) {
+        alert("Profanity or racist language is not allowed.");
+        return;
+      }
+      let emoji = "";
+      if (noteBeingEdited) {
+        emoji = await getEmojiSuggestion(title);
+      } else {
+        emoji = document.getElementById("noteModal").dataset.suggestedEmoji || await getEmojiSuggestion(title);
+      }
+      if (noteBeingEdited) {
+        noteBeingEdited.title = title;
+        noteBeingEdited.color = color;
+        noteBeingEdited.emoji = emoji;
+        updateNoteElement(noteBeingEdited);
+      } else {
+        const note = {
+          id: "note_" + (++noteIdCounter),
+          title: title,
+          color: color,
+          emoji: emoji,
+          x: 20 + Math.random() * 100,
+          y: 20 + Math.random() * 100,
+          section: "love"
+        };
+        notes.push(note);
+        addNoteToCanvas(note);
+      }
+      closeModal();
+    }
+    
+    /**************************************
+     * Main App Note & Connection Functions
+     **************************************/
+    async function getEmojiSuggestion(text) {
+      if (text.trim().length < 3) return "";
+      const systemMessage = {
+        role: "system",
+        content: "You are an emoji generator for an Ikigai note. Provide one appropriate emoji based solely on the given text."
+      };
+      const userPrompt = {
+        role: "user",
+        content: `Text: "${text}". Suggest one emoji that best represents this.`
+      };
+      try {
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer YOUR_OPENAI_API_KEY_HERE"
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [systemMessage, userPrompt],
+            max_tokens: 10
+          })
+        });
+        const data = await response.json();
+        const emojiResponse = data.choices[0].message.content.trim();
+        const match = emojiResponse.match(/([\u{1F300}-\u{1F5FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}])/u);
+        return match ? match[0] : "😊";
+      } catch (error) {
+        console.error("Error fetching emoji suggestion:", error);
+        return "😊";
+      }
+    }
+    
+    function getRandomPastelColor() {
+      const hue = Math.floor(Math.random() * 360);
+      return `hsl(${hue}, 70%, 90%)`;
+    }
+    
+    function addNoteToCanvas(note) {
+      const canvas = document.getElementById("canvasContainer");
+      const noteEl = document.createElement("div");
+      noteEl.className = "note";
+      noteEl.id = note.id;
+      noteEl.style.left = note.x + "px";
+      noteEl.style.top = note.y + "px";
+      noteEl.style.background = note.color;
+      updateNoteBorder(note, noteEl);
+      noteEl.style.color = getContrastingTextColor(note.color);
+      noteEl.innerHTML = `
+        <div class="note-text">${note.emoji} ${note.title}</div>
+        <div class="note-icons">
+          <span class="connect-btn" onclick="initiateConnect('${note.id}'); event.stopPropagation();">🔗</span>
+          <span class="edit-btn" onclick="openModalForEdit('${note.id}'); event.stopPropagation();">✏️</span>
+        </div>
+        <button class="delete-btn" onclick="deleteNote('${note.id}'); event.stopPropagation();">✖</button>
+      `;
+      canvas.appendChild(noteEl);
+      noteEl.addEventListener("mousedown", (e) => {
+        dragNote(e, noteEl, note);
+      });
+    }
+    
+    function updateNoteElement(note) {
+      const noteEl = document.getElementById(note.id);
+      if (noteEl) {
+        noteEl.innerHTML = `
+          <div class="note-text">${note.emoji} ${note.title}</div>
+          <div class="note-icons">
+            <span class="connect-btn" onclick="initiateConnect('${note.id}'); event.stopPropagation();">🔗</span>
+            <span class="edit-btn" onclick="openModalForEdit('${note.id}'); event.stopPropagation();">✏️</span>
+          </div>
+          <button class="delete-btn" onclick="deleteNote('${note.id}'); event.stopPropagation();">✖</button>
+        `;
+        updateNoteBorder(note, noteEl);
+        noteEl.style.color = getContrastingTextColor(note.color);
+      }
+    }
+    
+    function updateNoteBorder(note, noteEl) {
+      const canvasRect = document.getElementById("canvasContainer").getBoundingClientRect();
+      const noteCenterX = note.x + (noteEl.offsetWidth / 2);
+      if (noteCenterX < canvasRect.width / 2) {
+        note.section = "love";
+        noteEl.style.borderColor = "#23356f";
+        noteEl.style.boxShadow = "0 0 8px #23356f";
+      } else {
+        note.section = "good";
+        noteEl.style.borderColor = "#7bd8d0";
+        noteEl.style.boxShadow = "0 0 8px #7bd8d0";
+      }
+    }
+    
+    function dragNote(e, noteEl, note) {
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const origX = note.x;
+      const origY = note.y;
+      function onMouseMove(ev) {
+        const dx = ev.clientX - startX;
+        const dy = ev.clientY - startY;
+        note.x = origX + dx;
+        note.y = origY + dy;
+        noteEl.style.left = note.x + "px";
+        noteEl.style.top = note.y + "px";
+        updateNoteBorder(note, noteEl);
+      }
+      function onMouseUp(ev) {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+        updateNoteBorder(note, noteEl);
+        checkAndConnect(note);
+      }
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    }
+    
+    function openModalForEdit(noteId) {
+      if (connectionStartNote) return;
+      const note = notes.find(n => n.id === noteId);
+      if (note) {
+        openModal(note);
+      }
+    }
+    
+    function deleteNote(noteId) {
+      const noteIndex = notes.findIndex(n => n.id === noteId);
+      if (noteIndex !== -1) {
+        connections = connections.filter(conn => {
+          if (conn.fromId === noteId || conn.toId === noteId) {
+            const svg = document.getElementById("svgOverlay");
+            if (conn.line) svg.removeChild(conn.line);
+            if (conn.circle) svg.removeChild(conn.circle);
+            return false;
+          }
+          return true;
+        });
+        const noteEl = document.getElementById(noteId);
+        if (noteEl) noteEl.remove();
+        notes.splice(noteIndex, 1);
+        refreshGlobalSuggestions();
+      }
+    }
+    
+    function getContrastingTextColor(hex) {
+      hex = hex.replace("#", "");
+      const r = parseInt(hex.substring(0,2), 16);
+      const g = parseInt(hex.substring(2,4), 16);
+      const b = parseInt(hex.substring(4,6), 16);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
+      return luminance > 186 ? "#000000" : "#ffffff";
+    }
+    
+    function initiateConnect(noteId) {
+      if (!connectionStartNote) {
+        connectionStartNote = noteId;
+        showConnectionPrompt();
+        connectionTimeout = setTimeout(() => {
+          clearConnectionPrompt();
+          connectionStartNote = null;
+        }, 5000);
+      } else if (connectionStartNote === noteId) {
+        alert("You cannot connect a note to itself.");
+      } else {
+        createConnection(connectionStartNote, noteId);
+        clearConnectionPrompt();
+        connectionStartNote = null;
+      }
+    }
+    
+    function showConnectionPrompt() {
+      const canvas = document.getElementById("canvasContainer");
+      let promptDiv = document.getElementById("connectPrompt");
+      if (!promptDiv) {
+        promptDiv = document.createElement("div");
+        promptDiv.id = "connectPrompt";
+        promptDiv.style.position = "absolute";
+        promptDiv.style.top = "50%";
+        promptDiv.style.left = "50%";
+        promptDiv.style.transform = "translate(-50%, -50%)";
+        promptDiv.style.background = "rgba(0,0,0,0.7)";
+        promptDiv.style.color = "#fff";
+        promptDiv.style.padding = "10px 20px";
+        promptDiv.style.borderRadius = "4px";
+        promptDiv.style.zIndex = "5";
+        promptDiv.textContent = "Select another note to connect";
+        canvas.appendChild(promptDiv);
+      }
+    }
+    
+    function clearConnectionPrompt() {
+      const promptDiv = document.getElementById("connectPrompt");
+      if (promptDiv) promptDiv.remove();
+    }
+    
+    function createConnection(id1, id2) {
+      const conn = { fromId: id1, toId: id2, line: null, circle: null };
+      connections.push(conn);
+      drawConnection(conn);
+    }
+    
+    function drawConnection(conn) {
+      const svg = document.getElementById("svgOverlay");
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("stroke", "#FF5733");
+      line.setAttribute("stroke-width", "3");
+      conn.line = line;
+      svg.appendChild(line);
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("r", "6");
+      circle.setAttribute("fill", "red");
+      circle.style.cursor = "pointer";
+      circle.style.pointerEvents = "auto";
+      circle.addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (confirm("Disconnect these notes?")) {
+          const svg = document.getElementById("svgOverlay");
+          if (line.parentNode) svg.removeChild(line);
+          if (circle.parentNode) svg.removeChild(circle);
+          connections = connections.filter(c => c !== conn);
+        }
+      });
+      conn.circle = circle;
+      svg.appendChild(circle);
+    }
+    
+    function updateConnections() {
+      const canvasRect = document.getElementById("canvasContainer").getBoundingClientRect();
+      connections.forEach(conn => {
+        const fromEl = document.getElementById(conn.fromId);
+        const toEl = document.getElementById(conn.toId);
+        if (fromEl && toEl && conn.line && conn.circle) {
+          const r1 = fromEl.getBoundingClientRect();
+          const r2 = toEl.getBoundingClientRect();
+          const dx = r2.left + r2.width/2 - (r1.left + r1.width/2);
+          const dy = r2.top + r2.height/2 - (r1.top + r1.height/2);
+          let fromPoint, toPoint;
+          if (Math.abs(dx) > Math.abs(dy)) {
+            fromPoint = dx > 0 ? { x: r1.right, y: r1.top + r1.height/2 } : { x: r1.left, y: r1.top + r1.height/2 };
+            toPoint = dx > 0 ? { x: r2.left, y: r2.top + r2.height/2 } : { x: r2.right, y: r2.top + r2.height/2 };
+          } else {
+            fromPoint = dy > 0 ? { x: r1.left + r1.width/2, y: r1.bottom } : { x: r1.left + r1.width/2, y: r1.top };
+            toPoint = dy > 0 ? { x: r2.left + r2.width/2, y: r2.top } : { x: r2.left + r2.width/2, y: r2.bottom };
+          }
+          const x1 = fromPoint.x - canvasRect.left;
+          const y1 = fromPoint.y - canvasRect.top;
+          const x2 = toPoint.x - canvasRect.left;
+          const y2 = toPoint.y - canvasRect.top;
+          conn.line.setAttribute("x1", x1);
+          conn.line.setAttribute("y1", y1);
+          conn.line.setAttribute("x2", x2);
+          conn.line.setAttribute("y2", y2);
+          const midX = (x1 + x2) / 2;
+          const midY = (y1 + y2) / 2;
+          conn.circle.setAttribute("cx", midX);
+          conn.circle.setAttribute("cy", midY);
+        }
+      });
+    }
+    
+    function animateConnections() {
+      updateConnections();
+      requestAnimationFrame(animateConnections);
+    }
+    animateConnections();
+    
+    async function refreshGlobalSuggestions() {
+      let contextText = notes.map(n => n.title).join("; ");
+      const suggestions = await getGlobalSuggestions(contextText);
+      const suggestionList = document.getElementById("globalSuggestionList");
+      suggestionList.innerHTML = "";
+      const lines = suggestions.split("\n").map(l => l.trim()).filter(Boolean);
+      lines.forEach(line => {
+        const suggestionText = line.substring(0, 30);
+        const li = document.createElement("li");
+        li.textContent = suggestionText;
+        const addBtn = document.createElement("button");
+        addBtn.textContent = "Add as Note";
+        addBtn.onclick = () => {
+          const note = {
+            id: "note_" + (++noteIdCounter),
+            title: suggestionText,
+            color: getRandomPastelColor(),
+            emoji: "",
+            x: 20 + Math.random() * 100,
+            y: 20 + Math.random() * 100,
+            section: "love"
+          };
+          getEmojiSuggestion(suggestionText).then(emoji => {
+            note.emoji = emoji;
+            notes.push(note);
+            addNoteToCanvas(note);
+          });
+        };
+        li.appendChild(addBtn);
+        suggestionList.appendChild(li);
+      });
+    }
+    
+    async function getGlobalSuggestions(contextText) {
+      if (contextText.trim().length < 5) return "";
+      const systemMessage = {
+        role: "system",
+        content: "You are a helpful assistant for an Ikigai activity for adolescents ages 11-18. Provide 3 concise bullet-point suggestions related to strengths and passions (each no longer than 30 characters)."
+      };
+      const userPrompt = {
+        role: "user",
+        content: `Based on the following note titles: "${contextText}", provide 3 short bullet-point suggestions related to strengths and passions (max 30 characters each).`
+      };
+      try {
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer YOUR_OPENAI_API_KEY_HERE"
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [systemMessage, userPrompt],
+            max_tokens: 60
+          })
+        });
+        const data = await response.json();
+        return data.choices[0].message.content.trim();
+      } catch (error) {
+        console.error("Error fetching global suggestions:", error);
+        return "";
+      }
+    }
+    
+    refreshGlobalSuggestions();
+
+    /**************************************
+     * Instruction Text Animation Functions
+     **************************************/
+    const instructionSentences = [
+      "Your first task is to add lots of notes to the screen.",
+      "First think of all the things you love doing, things that give you the most joy and pleasure.",
+      "Next, add all the things you are good at.",
+      "Lots of these may be the same, however you might, for example, have school subjects that you are good at, but don't necessarily love doing.",
+      "Once you have added everything to the canvas start dragging them into the correct sections and adding connecting lines to connect similar things together.",
+      "Good luck in your quest!"
+    ];
+    
+    function typeWriterInstruction(text, element, callback, cancelledFlag) {
+      let i = 0;
+      element.innerHTML = "";
+      let interval = setInterval(() => {
+        if (cancelledFlag.cancelled) {
+          clearInterval(interval);
+          return;
+        }
+        element.innerHTML += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          callback();
+        }
+      }, 50);
+    }
+    
+    function runInstructionAnimation(sentences, container) {
+      // Create a dedicated text element inside the container if not already present
+      container.innerHTML = "";
+      let textElement = document.createElement("div");
+      container.appendChild(textElement);
+      
+      // Create persistent close button (if not already present)
+      let closeButton = container.querySelector(".closeButton");
+      if (!closeButton) {
+        closeButton = document.createElement("button");
+        closeButton.innerText = "x";
+        closeButton.className = "closeButton";
+        closeButton.style.position = "absolute";
+        closeButton.style.top = "5px";
+        closeButton.style.right = "5px";
+        closeButton.style.background = "transparent";
+        closeButton.style.border = "none";
+        closeButton.style.color = "#fff";
+        closeButton.style.fontSize = "1em";
+        closeButton.style.cursor = "pointer";
+        container.appendChild(closeButton);
+      }
+      
+      let index = 0;
+      let animationCancelled = { cancelled: false };
+      
+      closeButton.addEventListener("click", function() {
+        animationCancelled.cancelled = true;
+        localStorage.setItem("instructionsClosed", "true");
+        textElement.innerHTML = sentences.join(" ");
+        container.style.fontSize = "1.2em";
+      });
+      
+      function animateNext() {
+        if (animationCancelled.cancelled) return;
+        if (index < sentences.length) {
+          textElement.innerHTML = "";
+          typeWriterInstruction(sentences[index], textElement, () => {
+            index++;
+            setTimeout(animateNext, 1000);
+          }, animationCancelled);
+        } else {
+          textElement.innerHTML = sentences.join(" ");
+          container.style.fontSize = "1.2em";
+        }
+      }
+      animateNext();
+    }
+  </script>
+</body>
+</html>

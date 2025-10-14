@@ -1,0 +1,31 @@
+﻿Summary,,,,,
+Dimension,Mean Score,Cronbach's Alpha,Cluster 1 Mean,Cluster 2 Mean,
+Awareness,72.02,0.89,83.37,57.47,
+Purpose,68.07,0.84,77.67,55.76,
+Knowledge,66.89,0.85,77.5,53.29,
+Resilience,63.35,0.81,72.81,51.23,
+Self-Direction,62.53,0.82,74.46,47.24,
+,,,,,
+,,,,,
+,,,,,
+Cluster Profiles:,,,,,
+Cluster,Self-Direction,Purpose,Awareness,Resilience,Knowledge
+0,74.455,77.67,83.36571429,72.81166667,77.5025
+1,47.23931624,55.75854701,57.47069597,51.22863248,53.2900641
+,,,,,
+,,,,,
+Correlation Matrix,,,,,
+,Self-Direction,Purpose,Awareness,Resilience,Knowledge
+Self-Direction,1,0.623523624,0.645413727,0.770194388,0.811019969
+Purpose,0.623523624,1,0.563415772,0.693786527,0.623709479
+Awareness,0.645413727,0.563415772,1,0.664175996,0.723519955
+Resilience,0.770194388,0.693786527,0.664175996,1,0.753936074
+Knowledge,0.811019969,0.623709479,0.723519955,0.753936074,1
+,,,,,
+Reliability,,,,,
+Dimension,Cronbach's Alpha,,,,
+Self-Direction,0.816966812,,,,
+Purpose,0.842108379,,,,
+Awareness,0.887498146,,,,
+Resilience,0.808358062,,,,
+Knowledge,0.847124567,,,,

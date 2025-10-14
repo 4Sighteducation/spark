@@ -1,0 +1,192 @@
+{
+  "version": "2.0",
+  "scale": {
+    "label": "Strongly Agree → Strongly Disagree",
+    "options": [
+      "Strongly Agree",
+      "Agree",
+      "Neither",
+      "Disagree",
+      "Strongly Disagree"
+    ],
+    "value_mapping_note": "Map as needed to your scoring system (e.g., SA=5… SD=1)."
+  },
+  "themes": [
+    {
+      "code": "S",
+      "name": "Self-direction (Initiative)",
+      "focus": "Taking initiative, being proactive, bias toward action",
+      "items": [
+        {
+          "id": "S01",
+          "text": "I am willing to risk failure to reach my goals."
+        },
+        {
+          "id": "S02",
+          "text": "When I work at something, I care about doing my best."
+        },
+        {
+          "id": "S03",
+          "text": "I like coming up with new ways to solve problems."
+        },
+        {
+          "id": "S04",
+          "text": "I take the initiative myself, rather than relying on others"
+        },
+        {
+          "id": "S05",
+          "text": "When I set a goal, I immediately start working on it"
+        },
+        {
+          "id": "S06",
+          "text": "I make plans that help me accomplish what I aim for."
+        }
+      ]
+    },
+    {
+      "code": "P",
+      "name": "Purpose (Hope, Aspiration, Locus of Control)",
+      "focus": "Hope, aspirations, sense of direction",
+      "items": [
+        {
+          "id": "P01",
+          "text": "I expect good things to happen to me."
+        },
+        {
+          "id": "P02",
+          "text": "I am excited about my future."
+        },
+        {
+          "id": "P03",
+          "text": "I trust that my future will turn out well."
+        },
+        {
+          "id": "P04",
+          "text": "My life will make a difference in the world."
+        },
+        {
+          "id": "P05",
+          "text": "I am doing things now that will help me to achieve my purpose in life."
+        },
+        {
+          "id": "P06",
+          "text": "I have long term dreams, and I am taking steps to achieve them"
+        }
+      ]
+    },
+    {
+      "code": "A",
+      "name": "Awareness (Relationships and Empathy)",
+      "focus": "Working with others, empathy, fostering relationships",
+      "items": [
+        {
+          "id": "A01",
+          "text": "I feel bad when someone gets their feelings hurt."
+        },
+        {
+          "id": "A02",
+          "text": "I understand how those close to me feel."
+        },
+        {
+          "id": "A03",
+          "text": "It is important to me to understand how other people feel."
+        },
+        {
+          "id": "A04",
+          "text": "I am happy when others succeed."
+        },
+        {
+          "id": "A05",
+          "text": "I go out of my way to help others."
+        },
+        {
+          "id": "A06",
+          "text": "I help others even if it requires a lot of my time."
+        },
+        {
+          "id": "A07",
+          "text": "I encourage my friends to be the best they can be."
+        }
+      ]
+    },
+    {
+      "code": "R",
+      "name": "Resilience (Diligence, Reliability, Never Giving Up)",
+      "focus": "Grit, perseverance, reliability",
+      "items": [
+        {
+          "id": "R01",
+          "text": "I put in more effort than many of my peers to achieve success."
+        },
+        {
+          "id": "R02",
+          "text": "I see tasks through to completion even when I encounter obstacles."
+        },
+        {
+          "id": "R03",
+          "text": "People can count on me to get tasks done"
+        },
+        {
+          "id": "R04",
+          "text": "I always do the things that I say I am going to do"
+        },
+        {
+          "id": "R05",
+          "text": "I persist and find ways to overcome challenges even when tasks become difficult."
+        },
+        {
+          "id": "R06",
+          "text": "I find creative ways to overcome challenges when things don't go as planned."
+        },
+        {
+          "id": "R07",
+          "text": "When I face setbacks, I reflect on what went wrong and adjust my approach."
+        }
+      ]
+    },
+    {
+      "code": "K",
+      "name": "Knowledge (Curiosity, Attention, Role of Student)",
+      "focus": "Curiosity, attention, valuing education",
+      "items": [
+        {
+          "id": "K01",
+          "text": "If something interests me, I try to learn more about it."
+        },
+        {
+          "id": "K02",
+          "text": "I use the knowledge I gain at school in my life."
+        },
+        {
+          "id": "K03",
+          "text": "Being a student is central to my identity "
+        },
+        {
+          "id": "K04",
+          "text": "I take charge of my own learning."
+        },
+        {
+          "id": "K05",
+          "text": "I care about doing well in school"
+        },
+        {
+          "id": "K06",
+          "text": "I always pay attention in class"
+        },
+        {
+          "id": "K07",
+          "text": "I always come to class well-prepared"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "S": 6,
+    "P": 6,
+    "A": 7,
+    "R": 7,
+    "K": 7,
+    "total_items": 33
+  }
+}
+
