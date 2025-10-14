@@ -121,14 +121,14 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
   }
 
   return (
-    <div className="p-8">
-      {/* Progress Bar */}
-      <div className="mb-8">
-        <div className="flex justify-between text-sm text-gray-600 mb-2">
-          <span>Question {currentQuestionIndex + 1} of {allQuestions.length}</span>
-          <span>{Math.round(progress)}% Complete</span>
+    <div className="p-6">
+      {/* Compact Progress Bar */}
+      <div className="mb-6">
+        <div className="flex justify-between text-xs text-gray-500 mb-1">
+          <span>Question {currentQuestionIndex + 1}/{allQuestions.length}</span>
+          <span>{Math.round(progress)}%</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+        <div className="w-full bg-gray-200 rounded-full h-2">
           <div
             className="bg-gradient-to-r from-spark-pink to-spark-purple h-full transition-all duration-300 rounded-full"
             style={{ width: `${progress}%` }}
@@ -136,40 +136,40 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
         </div>
       </div>
 
-      {/* Question Card - with Background */}
-      <div className="mb-8 animate-slide-up">
-        <div className="mb-6 text-center">
-          <span className="text-xs text-gray-400 uppercase tracking-wide">
+      {/* Question Card - PROMINENT */}
+      <div className="mb-6">
+        <div className="mb-3 text-center">
+          <span className="text-xs text-gray-400 uppercase tracking-wider">
             {currentQuestion.dimensionName}
           </span>
         </div>
 
-        {/* Question with prominent background */}
-        <div className="bg-gradient-to-r from-gray-50 to-white border-4 border-gray-200 rounded-2xl p-8 mb-10 shadow-lg">
-          <h3 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight text-center">
+        {/* Question with VERY prominent background */}
+        <div className="bg-gradient-to-br from-spark-pink/10 via-spark-purple/10 to-spark-cyan/10 border-4 border-spark-pink/30 rounded-2xl p-6 shadow-xl">
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-snug text-center">
             {currentQuestion.text}
           </h3>
         </div>
 
         {/* SIMPLE Slider with Single Emoji */}
-        <div className="mb-12">
-          <p className="text-center text-gray-600 mb-8 text-xl font-semibold">
-            Slide to show how you <strong className="text-spark-pink">feel</strong> about this statement
+        <div className="mb-8">
+          <p className="text-center text-gray-600 mb-6 text-lg font-semibold">
+            Slide to show how you <strong className="text-spark-pink">feel</strong>
           </p>
           
-          <div className="relative py-16 px-4">
+          <div className="relative py-12 px-2">
             {/* Gradient track */}
             <div className="h-6 rounded-full bg-gradient-to-r from-red-400 via-gray-300 to-green-400 shadow-lg" />
             
             {/* Single emoji that follows slider */}
             <div 
-              className="absolute top-8 pointer-events-none transition-all duration-100 ease-out"
+              className="absolute top-6 pointer-events-none transition-all duration-75 ease-out"
               style={{ 
-                left: `${currentAnswer}%`,
+                left: `calc(${currentAnswer}% + 8px)`,
                 transform: 'translateX(-50%)'
               }}
             >
-              <div className="text-6xl drop-shadow-2xl animate-bounce-gentle">
+              <div className="text-6xl drop-shadow-2xl">
                 {currentAnswer < 20 ? '😢' : 
                  currentAnswer < 35 ? '😟' : 
                  currentAnswer < 50 ? '😐' : 
@@ -178,44 +178,50 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
               </div>
             </div>
             
-            {/* Slider input */}
+            {/* Slider input with LARGE clickable area */}
             <input
               type="range"
               min="0"
               max="100"
               value={currentAnswer}
               onChange={(e) => handleSliderChange(Number(e.target.value))}
-              className="absolute top-0 left-0 w-full h-6 bg-transparent appearance-none cursor-pointer z-10"
+              className="absolute top-0 left-0 w-full h-full bg-transparent appearance-none cursor-pointer z-10"
             />
           </div>
 
-          <div className="flex justify-between items-center mt-8">
+          <div className="flex justify-between items-center mt-4">
             <div className="text-center">
-              <div className="text-5xl mb-3">😢</div>
-              <span className="text-base text-gray-700 font-semibold">Strongly Disagree</span>
+              <div className="text-4xl mb-2">😢</div>
+              <span className="text-sm text-gray-700 font-semibold">Strongly Disagree</span>
             </div>
             <div className="text-center">
-              <div className="text-5xl mb-3">😄</div>
-              <span className="text-base text-gray-700 font-semibold">Strongly Agree</span>
+              <div className="text-4xl mb-2">😄</div>
+              <span className="text-sm text-gray-700 font-semibold">Strongly Agree</span>
             </div>
           </div>
         </div>
         
-        {/* Hide default slider thumb */}
+        {/* Large invisible slider thumb for better dragging */}
         <style jsx>{`
           input[type="range"]::-webkit-slider-thumb {
             appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 80px;
+            height: 80px;
             background: transparent;
-            cursor: pointer;
+            cursor: grab;
+          }
+          input[type="range"]:active::-webkit-slider-thumb {
+            cursor: grabbing;
           }
           input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
+            width: 80px;
+            height: 80px;
             background: transparent;
             border: none;
-            cursor: pointer;
+            cursor: grab;
+          }
+          input[type="range"]:active::-moz-range-thumb {
+            cursor: grabbing;
           }
         `}</style>
 
