@@ -150,60 +150,76 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
           {currentQuestion.text}
         </h3>
 
-        {/* Slider with Emoji */}
+        {/* Slider with Pre-Positioned Emojis (Smooth!) */}
         <div className="mb-12">
           <p className="text-center text-gray-600 mb-6 text-lg font-medium">
             Slide to show how you <strong>feel</strong> about this statement
           </p>
           
-          <div className="relative px-8">
+          <div className="relative px-8 py-12">
             {/* Gradient track */}
             <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-4 rounded-full bg-gradient-to-r from-red-400 via-gray-300 to-green-400 shadow-inner" />
             
-            {/* Slider input */}
+            {/* Pre-positioned emojis every 5 points - NO ANIMATION NEEDED! */}
+            <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 pointer-events-none">
+              {Array.from({ length: 21 }, (_, i) => {
+                const position = i * 5
+                const getEmoji = (pos: number) => {
+                  if (pos < 20) return '😢'
+                  if (pos < 35) return '😟'
+                  if (pos < 50) return '😐'
+                  if (pos < 65) return '🙂'
+                  if (pos < 85) return '😊'
+                  return '😄'
+                }
+                
+                const isNearby = Math.abs(currentAnswer - position) < 6
+                
+                return (
+                  <div
+                    key={position}
+                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-75"
+                    style={{
+                      left: `${position}%`,
+                      opacity: isNearby ? 1 : 0,
+                      transform: isNearby 
+                        ? 'translate(-50%, -50%) scale(1.2)' 
+                        : 'translate(-50%, -50%) scale(0.8)',
+                      zIndex: isNearby ? 20 : 10,
+                    }}
+                  >
+                    <div className="text-5xl drop-shadow-2xl">
+                      {getEmoji(position)}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+            
+            {/* Invisible slider input */}
             <input
               type="range"
               min="0"
               max="100"
               value={currentAnswer}
               onChange={(e) => handleSliderChange(Number(e.target.value))}
-              className="relative w-full h-4 bg-transparent appearance-none cursor-pointer z-10"
-              style={{
-                WebkitAppearance: 'none',
-              }}
+              className="relative w-full h-4 bg-transparent appearance-none cursor-pointer z-30"
             />
-            
-            {/* Custom emoji thumb */}
-            <div 
-              className="absolute top-1/2 -translate-y-1/2 pointer-events-none transition-all duration-150"
-              style={{ 
-                left: `calc(${(currentAnswer / 100) * 100}% - 20px)`,
-                marginLeft: '32px'
-              }}
-            >
-              <div className="text-5xl drop-shadow-lg transform -translate-x-1/2">
-                {currentAnswer < 20 ? '😢' : 
-                 currentAnswer < 35 ? '😟' : 
-                 currentAnswer < 50 ? '😐' : 
-                 currentAnswer < 65 ? '🙂' : 
-                 currentAnswer < 85 ? '😊' : '😄'}
-              </div>
-            </div>
           </div>
 
-          <div className="flex justify-between items-center mt-8 px-4">
+          <div className="flex justify-between items-center mt-4 px-4">
             <div className="text-center">
-              <div className="text-3xl mb-2">😢</div>
-              <span className="text-sm text-gray-600 font-medium">Strongly Disagree</span>
+              <div className="text-4xl mb-2">😢</div>
+              <span className="text-sm text-gray-600 font-semibold">Strongly Disagree</span>
             </div>
             <div className="text-center">
-              <div className="text-3xl mb-2">😄</div>
-              <span className="text-sm text-gray-600 font-medium">Strongly Agree</span>
+              <div className="text-4xl mb-2">😄</div>
+              <span className="text-sm text-gray-600 font-semibold">Strongly Agree</span>
             </div>
           </div>
         </div>
         
-        {/* Custom slider styles */}
+        {/* Custom slider styles - Hide default thumb */}
         <style jsx>{`
           input[type="range"]::-webkit-slider-thumb {
             appearance: none;
