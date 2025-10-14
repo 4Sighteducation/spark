@@ -136,100 +136,86 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
         </div>
       </div>
 
-      {/* Question Card */}
+      {/* Question Card - with Background */}
       <div className="mb-8 animate-slide-up">
-        <div className="mb-6 flex justify-center">
+        <div className="mb-6 text-center">
           <span className="text-xs text-gray-400 uppercase tracking-wide">
             {currentQuestion.dimensionName}
           </span>
         </div>
 
-        <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-10 leading-tight text-center">
-          {currentQuestion.text}
-        </h3>
+        {/* Question with prominent background */}
+        <div className="bg-gradient-to-r from-gray-50 to-white border-4 border-gray-200 rounded-2xl p-8 mb-10 shadow-lg">
+          <h3 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight text-center">
+            {currentQuestion.text}
+          </h3>
+        </div>
 
-        {/* Slider with Pre-Positioned Emojis (Smooth!) */}
+        {/* SIMPLE Slider with Single Emoji */}
         <div className="mb-12">
-          <p className="text-center text-gray-600 mb-6 text-lg font-medium">
-            Slide to show how you <strong>feel</strong> about this statement
+          <p className="text-center text-gray-600 mb-8 text-xl font-semibold">
+            Slide to show how you <strong className="text-spark-pink">feel</strong> about this statement
           </p>
           
-          <div className="relative py-12">
-            {/* Gradient track - with proper bounds */}
-            <div className="h-4 rounded-full bg-gradient-to-r from-red-400 via-gray-300 to-green-400 shadow-inner" />
+          <div className="relative py-16 px-4">
+            {/* Gradient track */}
+            <div className="h-6 rounded-full bg-gradient-to-r from-red-400 via-gray-300 to-green-400 shadow-lg" />
             
-            {/* Pre-positioned emojis every 5 points */}
-            <div className="absolute inset-0 pointer-events-none">
-              {Array.from({ length: 21 }, (_, i) => {
-                const position = i * 5
-                const getEmoji = (pos: number) => {
-                  if (pos < 20) return '😢'
-                  if (pos < 35) return '😟'
-                  if (pos < 50) return '😐'
-                  if (pos < 65) return '🙂'
-                  if (pos < 85) return '😊'
-                  return '😄'
-                }
-                
-                // Show emoji when slider is within 6 points
-                const isNearby = Math.abs(currentAnswer - position) < 6
-                
-                return (
-                  <div
-                    key={position}
-                    className="absolute top-1/2 transition-all duration-75"
-                    style={{
-                      left: `${position}%`,
-                      transform: `translate(-50%, -50%) scale(${isNearby ? 1.2 : 0.8})`,
-                      opacity: isNearby ? 1 : 0,
-                      zIndex: isNearby ? 20 : 10,
-                    }}
-                  >
-                    <div className="text-5xl drop-shadow-2xl">
-                      {getEmoji(position)}
-                    </div>
-                  </div>
-                )
-              })}
+            {/* Single emoji that follows slider */}
+            <div 
+              className="absolute top-8 pointer-events-none transition-all duration-100 ease-out"
+              style={{ 
+                left: `${currentAnswer}%`,
+                transform: 'translateX(-50%)'
+              }}
+            >
+              <div className="text-6xl drop-shadow-2xl animate-bounce-gentle">
+                {currentAnswer < 20 ? '😢' : 
+                 currentAnswer < 35 ? '😟' : 
+                 currentAnswer < 50 ? '😐' : 
+                 currentAnswer < 65 ? '🙂' : 
+                 currentAnswer < 85 ? '😊' : '😄'}
+              </div>
             </div>
             
-            {/* Slider input - perfectly aligned */}
+            {/* Slider input */}
             <input
               type="range"
               min="0"
               max="100"
               value={currentAnswer}
               onChange={(e) => handleSliderChange(Number(e.target.value))}
-              className="absolute inset-0 w-full h-4 bg-transparent appearance-none cursor-pointer z-30"
+              className="absolute top-0 left-0 w-full h-6 bg-transparent appearance-none cursor-pointer z-10"
             />
           </div>
 
-          <div className="flex justify-between items-center mt-4 px-4">
+          <div className="flex justify-between items-center mt-8">
             <div className="text-center">
-              <div className="text-4xl mb-2">😢</div>
-              <span className="text-sm text-gray-600 font-semibold">Strongly Disagree</span>
+              <div className="text-5xl mb-3">😢</div>
+              <span className="text-base text-gray-700 font-semibold">Strongly Disagree</span>
             </div>
             <div className="text-center">
-              <div className="text-4xl mb-2">😄</div>
-              <span className="text-sm text-gray-600 font-semibold">Strongly Agree</span>
+              <div className="text-5xl mb-3">😄</div>
+              <span className="text-base text-gray-700 font-semibold">Strongly Agree</span>
             </div>
           </div>
         </div>
         
-        {/* Custom slider styles - Hide default thumb */}
+        {/* Hide default slider thumb */}
         <style jsx>{`
           input[type="range"]::-webkit-slider-thumb {
             appearance: none;
-            width: 0;
-            height: 0;
-            opacity: 0;
+            width: 24px;
+            height: 24px;
+            background: transparent;
+            cursor: pointer;
           }
           input[type="range"]::-moz-range-thumb {
-            width: 0;
-            height: 0;
-            opacity: 0;
-            border: none;
+            width: 24px;
+            height: 24px;
             background: transparent;
+            border: none;
+            cursor: pointer;
           }
         `}</style>
 
