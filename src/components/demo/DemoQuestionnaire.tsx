@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { calculateAssessmentScores } from '@/lib/scoring/calculate'
 import questionnaireData from '@/data/questionnaire.json'
+import statementsData from '@/data/statements.json'
 import { DemoReport } from './DemoReport'
 
 interface DemoQuestionnaireProps {
@@ -85,14 +86,27 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
     // Calculate scores
     const scores = calculateAssessmentScores(questionAnswers)
     
-    // Simplified report for demo
+    // Get proper statements from JSON based on scores
+    const getStatement = (dimKey: string, score: number) => {
+      const data = (statementsData as any).SPARK[dimKey]
+      if (!data) return null
+      
+      const breakpoint = data.breakpoints.find((bp: any) => {
+        const [min, max] = bp.range.split('-').map(Number)
+        return score >= min && score <= max
+      })
+      
+      return breakpoint
+    }
+    
     const report = {
       scores,
       statements: {
-        self_direction: {
-          label: scores.self_direction.band.replace('_', ' '),
-          statement: 'Your results show strong potential in this area.'
-        }
+        self_direction: getStatement('SelfDirection', scores.self_direction.score),
+        purpose: getStatement('Purpose', scores.purpose.score),
+        awareness: getStatement('Awareness', scores.awareness.score),
+        resilience: getStatement('Resilience', scores.resilience.score),
+        knowledge: getStatement('Knowledge', scores.knowledge.score),
       }
     }
 

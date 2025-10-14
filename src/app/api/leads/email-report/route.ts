@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateReportPDF } from '@/lib/pdf/generateReport'
+import { generateReportPDF } from '@/lib/pdf/generateReportWithStatements'
 
 export async function POST(request: NextRequest) {
   try {
