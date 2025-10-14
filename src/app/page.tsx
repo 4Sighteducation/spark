@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { DemoQuestionnaire } from '@/components/demo/DemoQuestionnaire'
 
 export default function Home() {
   const [showDemo, setShowDemo] = useState(false)
@@ -13,12 +14,68 @@ export default function Home() {
     role: '',
   })
   const [showQuestionnaire, setShowQuestionnaire] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Store in Supabase
-    console.log('Lead captured:', leadFormData)
-    setShowQuestionnaire(true)
+    setIsSubmitting(true)
+
+    try {
+      // Submit lead data
+      const response = await fetch('/api/leads/demo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...leadFormData,
+          source: 'demo',
+          demo_completed: false,
+        }),
+      })
+
+      if (response.ok) {
+        setShowQuestionnaire(true)
+      } else {
+        const error = await response.json()
+        alert(error.message || 'Failed to submit. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error submitting lead:', error)
+      alert('Network error. Please check your connection and try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const formData = new FormData(e.target as HTMLFormElement)
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/leads/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          email: formData.get('email'),
+          school: formData.get('school'),
+          role: formData.get('role'),
+        }),
+      })
+
+      if (response.ok) {
+        alert('✅ Thank you! You\'re on the waitlist. We\'ll be in touch soon!')
+        ;(e.target as HTMLFormElement).reset()
+      } else {
+        const error = await response.json()
+        alert(error.message || 'Failed to submit. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error submitting waitlist:', error)
+      alert('Network error. Please check your connection and try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -352,27 +409,31 @@ export default function Home() {
             </p>
           </div>
 
-          <form className="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl p-8 border border-gray-200">
+          <form onSubmit={handleWaitlistSubmit} className="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl p-8 border border-gray-200">
             <div className="space-y-4">
               <input
+                name="name"
                 type="text"
                 placeholder="Your Name"
                 className="w-full px-6 py-4 rounded-lg border-2 border-gray-200 focus:border-spark-pink focus:outline-none text-lg"
                 required
               />
               <input
+                name="email"
                 type="email"
                 placeholder="Email Address"
                 className="w-full px-6 py-4 rounded-lg border-2 border-gray-200 focus:border-spark-pink focus:outline-none text-lg"
                 required
               />
               <input
+                name="school"
                 type="text"
                 placeholder="School Name"
                 className="w-full px-6 py-4 rounded-lg border-2 border-gray-200 focus:border-spark-pink focus:outline-none text-lg"
                 required
               />
               <select
+                name="role"
                 className="w-full px-6 py-4 rounded-lg border-2 border-gray-200 focus:border-spark-pink focus:outline-none text-lg text-gray-700"
                 required
               >
@@ -387,9 +448,10 @@ export default function Home() {
               
               <button
                 type="submit"
-                className="w-full px-8 py-5 bg-gradient-to-r from-spark-pink to-spark-purple text-white text-xl rounded-lg font-bold hover:opacity-90 transition-all shadow-spark"
+                disabled={isSubmitting}
+                className="w-full px-8 py-5 bg-gradient-to-r from-spark-pink to-spark-purple text-white text-xl rounded-lg font-bold hover:opacity-90 transition-all shadow-spark disabled:opacity-50"
               >
-                Join the Waitlist
+                {isSubmitting ? 'Joining...' : 'Join the Waitlist'}
               </button>
             </div>
             
@@ -501,9 +563,10 @@ export default function Home() {
                   
                   <button
                     type="submit"
-                    className="w-full px-8 py-5 bg-gradient-to-r from-spark-pink to-spark-purple text-white text-xl rounded-lg font-bold hover:opacity-90 transition-all shadow-spark"
+                    disabled={isSubmitting}
+                    className="w-full px-8 py-5 bg-gradient-to-r from-spark-pink to-spark-purple text-white text-xl rounded-lg font-bold hover:opacity-90 transition-all shadow-spark disabled:opacity-50"
                   >
-                    Start Demo →
+                    {isSubmitting ? 'Starting...' : 'Start Demo →'}
                   </button>
                 </div>
                 
@@ -512,19 +575,14 @@ export default function Home() {
                 </p>
               </form>
             ) : (
-              <div className="p-8">
-                <p className="text-gray-600 text-lg text-center">
-                  Thank you, <strong>{leadFormData.name}</strong>! The interactive demo questionnaire will be available soon.
-                  <br /><br />
-                  We'll email you at <strong>{leadFormData.email}</strong> when it's ready!
-                </p>
-                <button
-                  onClick={() => { setShowDemo(false); setShowQuestionnaire(false); }}
-                  className="mt-6 w-full px-8 py-4 bg-spark-pink text-white text-lg rounded-lg font-bold hover:bg-spark-pink-600 transition-colors"
-                >
-                  Close
-                </button>
-              </div>
+              <DemoQuestionnaire 
+                leadData={leadFormData} 
+                onComplete={() => {
+                  setShowDemo(false)
+                  setShowQuestionnaire(false)
+                  setLeadFormData({ name: '', email: '', school: '', role: '' })
+                }}
+              />
             )}
           </div>
         </div>
