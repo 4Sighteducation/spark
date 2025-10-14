@@ -150,36 +150,75 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
           {currentQuestion.text}
         </h3>
 
-        {/* Slider */}
+        {/* Slider with Emoji */}
         <div className="mb-12">
-          <div className="relative">
+          <p className="text-center text-gray-600 mb-6 text-lg font-medium">
+            Slide to show how you <strong>feel</strong> about this statement
+          </p>
+          
+          <div className="relative px-8">
+            {/* Gradient track */}
+            <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-4 rounded-full bg-gradient-to-r from-red-400 via-gray-300 to-green-400 shadow-inner" />
+            
+            {/* Slider input */}
             <input
               type="range"
               min="0"
               max="100"
               value={currentAnswer}
               onChange={(e) => handleSliderChange(Number(e.target.value))}
-              className={`w-full h-3 rounded-full appearance-none cursor-pointer bg-gradient-to-r from-red-400 via-yellow-400 to-green-400`}
+              className="relative w-full h-4 bg-transparent appearance-none cursor-pointer z-10"
               style={{
-                background: `linear-gradient(to right, 
-                  #ef4444 0%, 
-                  #f59e0b 50%, 
-                  #10b981 100%)`
+                WebkitAppearance: 'none',
               }}
             />
+            
+            {/* Custom emoji thumb */}
+            <div 
+              className="absolute top-1/2 -translate-y-1/2 pointer-events-none transition-all duration-150"
+              style={{ 
+                left: `calc(${(currentAnswer / 100) * 100}% - 20px)`,
+                marginLeft: '32px'
+              }}
+            >
+              <div className="text-5xl drop-shadow-lg transform -translate-x-1/2">
+                {currentAnswer < 20 ? '😢' : 
+                 currentAnswer < 35 ? '😟' : 
+                 currentAnswer < 50 ? '😐' : 
+                 currentAnswer < 65 ? '🙂' : 
+                 currentAnswer < 85 ? '😊' : '😄'}
+              </div>
+            </div>
           </div>
 
-          <div className="flex justify-between items-center mt-6">
-            <span className="text-sm text-gray-500 font-medium">Strongly Disagree</span>
+          <div className="flex justify-between items-center mt-8 px-4">
             <div className="text-center">
-              <div className={`text-4xl font-bold text-${getDimensionColor(currentQuestion.dimension)} mb-1`}>
-                {(currentAnswer / 10).toFixed(1)}
-              </div>
-              <div className="text-xs text-gray-500">Your Score</div>
+              <div className="text-3xl mb-2">😢</div>
+              <span className="text-sm text-gray-600 font-medium">Strongly Disagree</span>
             </div>
-            <span className="text-sm text-gray-500 font-medium">Strongly Agree</span>
+            <div className="text-center">
+              <div className="text-3xl mb-2">😄</div>
+              <span className="text-sm text-gray-600 font-medium">Strongly Agree</span>
+            </div>
           </div>
         </div>
+        
+        {/* Custom slider styles */}
+        <style jsx>{`
+          input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 0;
+            height: 0;
+            opacity: 0;
+          }
+          input[type="range"]::-moz-range-thumb {
+            width: 0;
+            height: 0;
+            opacity: 0;
+            border: none;
+            background: transparent;
+          }
+        `}</style>
 
         {/* Navigation Buttons */}
         <div className="flex gap-4">
@@ -200,27 +239,10 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
         </div>
       </div>
 
-      {/* Question Navigator */}
-      <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-        <div className="flex flex-wrap gap-2 justify-center">
-          {allQuestions.map((q, index) => (
-            <button
-              key={q.id}
-              onClick={() => setCurrentQuestionIndex(index)}
-              className={`w-10 h-10 rounded-full font-bold text-sm transition-all ${
-                answers[q.id] !== undefined
-                  ? `bg-${getDimensionColor(q.dimension)} text-white`
-                  : 'bg-gray-200 text-gray-500'
-              } ${
-                index === currentQuestionIndex ? 'ring-4 ring-offset-2 ring-spark-pink' : ''
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-        <p className="text-center text-sm text-gray-500 mt-3">
-          {Object.keys(answers).length} of {allQuestions.length} answered
+      {/* Simple completion status */}
+      <div className="mt-8 text-center">
+        <p className="text-sm text-gray-500">
+          <strong>{Object.keys(answers).length}</strong> of <strong>{allQuestions.length}</strong> questions answered
         </p>
       </div>
     </div>
