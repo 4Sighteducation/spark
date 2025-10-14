@@ -117,7 +117,7 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
   }
 
   if (showReport && reportData) {
-    return <DemoReport reportData={reportData} leadName={leadData.name} onClose={onComplete} />
+    return <DemoReport reportData={reportData} leadName={leadData.name} leadData={leadData} onClose={onComplete} />
   }
 
   return (
@@ -228,7 +228,7 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
 }
 
 // Demo Report Component
-function DemoReport({ reportData, leadName, onClose }: any) {
+function DemoReport({ reportData, leadName, leadData, onClose }: any) {
   const dimensions = [
     { key: 'self_direction', label: 'Self-Direction', color: 'spark-pink', icon: 'S' },
     { key: 'purpose', label: 'Purpose', color: 'spark-purple', icon: 'P' },
