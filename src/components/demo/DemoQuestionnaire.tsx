@@ -138,15 +138,13 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
 
       {/* Question Card */}
       <div className="mb-8 animate-slide-up">
-        <div className="mb-4">
-          <span
-            className={`inline-block px-4 py-2 rounded-full text-sm font-bold text-white bg-${getDimensionColor(currentQuestion.dimension)}`}
-          >
+        <div className="mb-6 flex justify-center">
+          <span className="text-xs text-gray-400 uppercase tracking-wide">
             {currentQuestion.dimensionName}
           </span>
         </div>
 
-        <h3 className="text-3xl font-bold text-gray-900 mb-8 leading-relaxed">
+        <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-10 leading-tight text-center">
           {currentQuestion.text}
         </h3>
 
@@ -156,12 +154,12 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
             Slide to show how you <strong>feel</strong> about this statement
           </p>
           
-          <div className="relative px-8 py-12">
-            {/* Gradient track */}
-            <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 h-4 rounded-full bg-gradient-to-r from-red-400 via-gray-300 to-green-400 shadow-inner" />
+          <div className="relative py-12">
+            {/* Gradient track - with proper bounds */}
+            <div className="h-4 rounded-full bg-gradient-to-r from-red-400 via-gray-300 to-green-400 shadow-inner" />
             
-            {/* Pre-positioned emojis every 5 points - NO ANIMATION NEEDED! */}
-            <div className="absolute left-8 right-8 top-1/2 -translate-y-1/2 pointer-events-none">
+            {/* Pre-positioned emojis every 5 points */}
+            <div className="absolute inset-0 pointer-events-none">
               {Array.from({ length: 21 }, (_, i) => {
                 const position = i * 5
                 const getEmoji = (pos: number) => {
@@ -173,18 +171,17 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
                   return '😄'
                 }
                 
+                // Show emoji when slider is within 6 points
                 const isNearby = Math.abs(currentAnswer - position) < 6
                 
                 return (
                   <div
                     key={position}
-                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-75"
+                    className="absolute top-1/2 transition-all duration-75"
                     style={{
                       left: `${position}%`,
+                      transform: `translate(-50%, -50%) scale(${isNearby ? 1.2 : 0.8})`,
                       opacity: isNearby ? 1 : 0,
-                      transform: isNearby 
-                        ? 'translate(-50%, -50%) scale(1.2)' 
-                        : 'translate(-50%, -50%) scale(0.8)',
                       zIndex: isNearby ? 20 : 10,
                     }}
                   >
@@ -196,14 +193,14 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
               })}
             </div>
             
-            {/* Invisible slider input */}
+            {/* Slider input - perfectly aligned */}
             <input
               type="range"
               min="0"
               max="100"
               value={currentAnswer}
               onChange={(e) => handleSliderChange(Number(e.target.value))}
-              className="relative w-full h-4 bg-transparent appearance-none cursor-pointer z-30"
+              className="absolute inset-0 w-full h-4 bg-transparent appearance-none cursor-pointer z-30"
             />
           </div>
 
