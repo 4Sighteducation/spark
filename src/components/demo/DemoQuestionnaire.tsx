@@ -159,13 +159,14 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
               <button
                 type="button"
                 onClick={() => setShowExample(!showExample)}
-                className="text-sm text-spark-purple hover:text-spark-pink font-semibold underline transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-spark-purple/10 hover:bg-spark-purple/20 text-spark-purple hover:text-spark-pink font-semibold rounded-lg border-2 border-spark-purple/30 transition-all text-sm"
               >
-                {showExample ? '✕ Hide Example' : '💡 Don\'t understand? Click for an example'}
+                <span>{showExample ? '✕' : '💡'}</span>
+                <span>{showExample ? 'Hide Example' : 'Don\'t understand? Click for an example'}</span>
               </button>
               
               {showExample && (
-                <div className="mt-4 p-4 bg-white/80 rounded-lg border-2 border-spark-purple/20 animate-slide-up">
+                <div className="mt-4 p-4 bg-white/80 rounded-lg border-2 border-spark-purple/30 animate-slide-up shadow-lg">
                   <p className="text-sm text-gray-700 italic">
                     <strong>For example:</strong> {currentQuestion.examples[0]}
                   </p>
@@ -185,12 +186,13 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
             {/* Gradient track */}
             <div className="h-6 rounded-full bg-gradient-to-r from-red-400 via-gray-300 to-green-400 shadow-lg" />
             
-            {/* Single emoji that follows slider */}
+            {/* Single emoji that follows slider - CENTERED */}
             <div 
-              className="absolute top-6 pointer-events-none transition-all duration-75 ease-out"
+              className="absolute pointer-events-none transition-all duration-75 ease-out"
               style={{ 
-                left: `calc(${currentAnswer}% + 8px)`,
-                transform: 'translateX(-50%)'
+                left: `${currentAnswer}%`,
+                top: '50%',
+                transform: 'translate(-50%, -50%)'
               }}
             >
               <div className="text-6xl drop-shadow-2xl">
@@ -209,7 +211,8 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
               max="100"
               value={currentAnswer}
               onChange={(e) => handleSliderChange(Number(e.target.value))}
-              className="absolute top-0 left-0 w-full h-full bg-transparent appearance-none cursor-pointer z-10"
+              className="absolute top-0 left-0 w-full h-full bg-transparent cursor-pointer z-10"
+              style={{ WebkitAppearance: 'none', appearance: 'none' }}
             />
           </div>
 
@@ -225,45 +228,68 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
           </div>
         </div>
         
-        {/* Completely invisible but large draggable thumb */}
+        {/* COMPLETELY invisible slider - no white circles! */}
         <style jsx>{`
           input[type="range"] {
             -webkit-appearance: none;
+            -moz-appearance: none;
             appearance: none;
+            background: transparent;
+            outline: none;
           }
+          
+          /* WebKit/Chrome/Safari */}
           input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
             width: 80px;
             height: 80px;
-            background: transparent;
+            background: rgba(0, 0, 0, 0);
             border: none;
+            box-shadow: none;
             cursor: grab;
-            border-radius: 50%;
           }
           input[type="range"]:active::-webkit-slider-thumb {
-            cursor: grabbing;
-          }
-          input[type="range"]::-moz-range-thumb {
-            width: 80px;
-            height: 80px;
-            background: transparent;
-            border: none;
-            cursor: grab;
-            border-radius: 50%;
-          }
-          input[type="range"]:active::-moz-range-thumb {
             cursor: grabbing;
           }
           input[type="range"]::-webkit-slider-runnable-track {
             height: 6px;
             background: transparent;
             border: none;
+            box-shadow: none;
+          }
+          
+          /* Firefox */
+          input[type="range"]::-moz-range-thumb {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 0, 0, 0);
+            border: none;
+            box-shadow: none;
+            cursor: grab;
+          }
+          input[type="range"]:active::-moz-range-thumb {
+            cursor: grabbing;
           }
           input[type="range"]::-moz-range-track {
             height: 6px;
             background: transparent;
             border: none;
+            box-shadow: none;
+          }
+          
+          /* Remove any focus outlines */
+          input[type="range"]:focus {
+            outline: none;
+            box-shadow: none;
+          }
+          input[type="range"]:focus::-webkit-slider-thumb {
+            outline: none;
+            box-shadow: none;
+          }
+          input[type="range"]:focus::-moz-range-thumb {
+            outline: none;
+            box-shadow: none;
           }
         `}</style>
 
