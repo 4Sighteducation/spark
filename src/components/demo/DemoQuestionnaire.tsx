@@ -44,11 +44,23 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
 
   const handleNext = () => {
     setShowExample(false) // Hide example when moving to next question
+    
+    // Save current answer if not already saved (even if they didn't move slider)
+    if (!answers[currentQuestion.id]) {
+      setAnswers({
+        ...answers,
+        [currentQuestion.id]: currentAnswer,
+      })
+    }
+    
     if (currentQuestionIndex < allQuestions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1)
     } else {
       // All questions answered - calculate results
-      calculateResults()
+      // Use setTimeout to ensure state is updated
+      setTimeout(() => {
+        calculateResults()
+      }, 100)
     }
   }
 
