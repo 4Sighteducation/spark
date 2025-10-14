@@ -19,6 +19,7 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
   const [answers, setAnswers] = useState<Record<string, number>>({})
   const [showReport, setShowReport] = useState(false)
   const [reportData, setReportData] = useState<any>(null)
+  const [showExample, setShowExample] = useState(false)
 
   // Flatten all questions
   const allQuestions = questionnaireData.themes.flatMap((theme) =>
@@ -41,6 +42,7 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
   }
 
   const handleNext = () => {
+    setShowExample(false) // Hide example when moving to next question
     if (currentQuestionIndex < allQuestions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1)
     } else {
@@ -50,6 +52,7 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
   }
 
   const handlePrevious = () => {
+    setShowExample(false) // Hide example when going back
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1)
     }
@@ -146,9 +149,30 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
 
         {/* Question with VERY prominent background */}
         <div className="bg-gradient-to-br from-spark-pink/10 via-spark-purple/10 to-spark-cyan/10 border-4 border-spark-pink/30 rounded-2xl p-6 shadow-xl">
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-snug text-center">
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-snug text-center mb-4">
             {currentQuestion.text}
           </h3>
+          
+          {/* Example button */}
+          {currentQuestion.examples && currentQuestion.examples.length > 0 && (
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setShowExample(!showExample)}
+                className="text-sm text-spark-purple hover:text-spark-pink font-semibold underline transition-colors"
+              >
+                {showExample ? '✕ Hide Example' : '💡 Don\'t understand? Click for an example'}
+              </button>
+              
+              {showExample && (
+                <div className="mt-4 p-4 bg-white/80 rounded-lg border-2 border-spark-purple/20 animate-slide-up">
+                  <p className="text-sm text-gray-700 italic">
+                    <strong>For example:</strong> {currentQuestion.examples[0]}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* SIMPLE Slider with Single Emoji */}
@@ -201,14 +225,21 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
           </div>
         </div>
         
-        {/* Large invisible slider thumb for better dragging */}
+        {/* Completely invisible but large draggable thumb */}
         <style jsx>{`
+          input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+          }
           input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
             appearance: none;
             width: 80px;
             height: 80px;
             background: transparent;
+            border: none;
             cursor: grab;
+            border-radius: 50%;
           }
           input[type="range"]:active::-webkit-slider-thumb {
             cursor: grabbing;
@@ -219,9 +250,20 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
             background: transparent;
             border: none;
             cursor: grab;
+            border-radius: 50%;
           }
           input[type="range"]:active::-moz-range-thumb {
             cursor: grabbing;
+          }
+          input[type="range"]::-webkit-slider-runnable-track {
+            height: 6px;
+            background: transparent;
+            border: none;
+          }
+          input[type="range"]::-moz-range-track {
+            height: 6px;
+            background: transparent;
+            border: none;
           }
         `}</style>
 
