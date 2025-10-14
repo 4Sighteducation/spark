@@ -90,30 +90,28 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-4 py-20 text-center">
-          {/* Logo */}
-          <div className="flex justify-center mb-8 animate-scale-in">
-            <Image
-              src="/spark-logo.png"
-              alt="SPARK Logo"
-              width={300}
-              height={300}
-              priority
-              className="drop-shadow-2xl"
-            />
+          {/* Logo - Hero Treatment */}
+          <div className="flex justify-center mb-16 animate-scale-in">
+            <div className="relative group">
+              {/* Glow effect layers */}
+              <div className="absolute inset-0 bg-gradient-to-r from-spark-pink via-spark-purple to-spark-cyan rounded-full blur-3xl opacity-60 group-hover:opacity-80 transition-opacity duration-500 scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-r from-spark-cyan via-spark-purple to-spark-pink rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500 scale-105 animate-pulse-gentle" />
+              
+              {/* Logo */}
+              <div className="relative">
+                <Image
+                  src="/spark-logo.png"
+                  alt="SPARK - Developing Student Mindset"
+                  width={400}
+                  height={400}
+                  priority
+                  className="drop-shadow-2xl relative z-10 hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            </div>
           </div>
 
-          {/* Main Headline */}
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 animate-fade-in">
-            <span className="bg-gradient-to-r from-spark-pink via-spark-purple to-spark-cyan bg-clip-text text-transparent">
-              SPARK
-            </span>
-          </h1>
-
-          <h2 className="text-3xl md:text-4xl font-light text-gray-200 mb-8 animate-slide-up">
-            Developing Student Mindset
-          </h2>
-
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed animate-slide-up">
             A breakthrough psychometric tool for <strong className="text-spark-pink">Key Stage 3 students</strong> (ages 11-14), 
             measuring the attributes that truly matter for student success.
           </p>
