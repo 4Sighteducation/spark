@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DemoQuestionnaire } from '@/components/demo/DemoQuestionnaire'
 
 export default function Home() {
@@ -15,6 +15,15 @@ export default function Home() {
   })
   const [showQuestionnaire, setShowQuestionnaire] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [leadCount, setLeadCount] = useState<number | null>(null)
+
+  // Fetch lead count on mount
+  useEffect(() => {
+    fetch('/api/leads/count')
+      .then(res => res.json())
+      .then(data => setLeadCount(data.count))
+      .catch(() => setLeadCount(null))
+  }, [])
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -63,9 +72,17 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Promotional Banner */}
+      {/* Promotional Banner with Counter */}
       <div className="bg-gradient-to-r from-spark-pink via-spark-purple to-spark-cyan text-white py-3 px-4 text-center font-semibold sticky top-0 z-50 shadow-lg">
-        🎉 <strong>Limited Offer:</strong> The first 20 schools to express interest will receive FREE access for the entire first year! 🎉
+        <div className="flex items-center justify-center gap-4 flex-wrap">
+          <span>🎉 <strong>Limited Offer:</strong> The first 20 schools to express interest will receive FREE access for the entire first year!</span>
+          {leadCount !== null && leadCount > 0 && (
+            <span className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+              <span className="animate-pulse">🔥</span>
+              <strong>{leadCount}</strong> {leadCount === 1 ? 'school has' : 'schools have'} already joined!
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Hero Section */}
