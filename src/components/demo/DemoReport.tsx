@@ -16,6 +16,12 @@ interface DemoReportProps {
 
 export function DemoReport({ reportData, leadData, onClose }: DemoReportProps) {
   const [emailSent, setEmailSent] = useState(false)
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  const [emailFormData, setEmailFormData] = useState({
+    name: leadData.name,
+    email: leadData.email
+  })
+  const [isSendingEmail, setIsSendingEmail] = useState(false)
 
   const dimensions = [
     { 
@@ -55,24 +61,35 @@ export function DemoReport({ reportData, leadData, onClose }: DemoReportProps) {
     },
   ]
 
-  const handleEmailReport = async () => {
+  const handleEmailReport = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSendingEmail(true)
+
     try {
       const response = await fetch('/api/leads/email-report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...leadData,
+          name: emailFormData.name,
+          email: emailFormData.email,
+          school: leadData.school,
+          role: leadData.role,
           reportData,
         }),
       })
       
       if (response.ok) {
         setEmailSent(true)
-        setTimeout(() => setEmailSent(false), 3000)
+        setShowEmailModal(false)
+        setTimeout(() => setEmailSent(false), 5000)
+      } else {
+        alert('Failed to send email. Please try again.')
       }
     } catch (error) {
       console.error('Error sending email:', error)
-      alert('Failed to send email. Please try again.')
+      alert('Network error. Please check your connection.')
+    } finally {
+      setIsSendingEmail(false)
     }
   }
 
@@ -159,7 +176,7 @@ export function DemoReport({ reportData, leadData, onClose }: DemoReportProps) {
                     alt={dim.label} 
                     width={64} 
                     height={64} 
-                    className="w-full h-full object-contain filter brightness-0 invert"
+                    className="w-full h-full object-contain"
                   />
                 </div>
                 
@@ -222,11 +239,11 @@ export function DemoReport({ reportData, leadData, onClose }: DemoReportProps) {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
           <button
-            onClick={handleEmailReport}
+            onClick={() => emailSent ? null : setShowEmailModal(true)}
             disabled={emailSent}
             className="px-8 py-4 bg-white text-spark-pink text-lg rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-2xl disabled:opacity-70"
           >
-            {emailSent ? '✅ Sent to ' + leadData.email.split('@')[0] + '...' : '📧 Email Me This Report'}
+            {emailSent ? '✅ Email Sent Successfully!' : '📧 Email Me This Report'}
           </button>
           
           <button
@@ -238,9 +255,60 @@ export function DemoReport({ reportData, leadData, onClose }: DemoReportProps) {
         </div>
         
         <p className="text-sm opacity-90">
-          We'll contact you at <strong className="underline">{leadData.email}</strong> when SPARK launches!
+          We'll contact you when SPARK launches for schools!
         </p>
       </div>
+
+      {/* Email Modal */}
+      {showEmailModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowEmailModal(false)}>
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">📧 Email Your Report</h3>
+            <p className="text-gray-600 mb-6">We'll send your personalized SPARK report to your email</p>
+            
+            <form onSubmit={handleEmailReport} className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Your Name</label>
+                <input
+                  type="text"
+                  value={emailFormData.name}
+                  onChange={(e) => setEmailFormData({ ...emailFormData, name: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-spark-pink focus:outline-none"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                <input
+                  type="email"
+                  value={emailFormData.email}
+                  onChange={(e) => setEmailFormData({ ...emailFormData, email: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-spark-pink focus:outline-none"
+                  required
+                />
+              </div>
+              
+              <div className="flex gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setShowEmailModal(false)}
+                  className="flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSendingEmail}
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-spark-pink to-spark-purple text-white rounded-lg font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  {isSendingEmail ? 'Sending...' : 'Send Report'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
