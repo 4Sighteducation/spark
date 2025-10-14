@@ -50,23 +50,23 @@ export function generateReportPDF(
 
   // Helper function to add page header
   const addHeader = () => {
-    // Black background for logo area
+    // SPARK Logo box - black background
     doc.setFillColor(0, 0, 0)
-    doc.rect(margin, y, 50, 25, 'F')
+    doc.rect(margin, y, 40, 20, 'F')
     
-    // SPARK text on black background
-    doc.setTextColor(233, 30, 140) // Pink
-    doc.setFontSize(18)
+    // SPARK text in pink
+    doc.setTextColor(233, 30, 140)
+    doc.setFontSize(16)
     doc.setFont('helvetica', 'bold')
-    doc.text('SPARK', margin + 25, y + 12, { align: 'center' })
-    doc.setFontSize(7)
-    doc.text('DEVELOPING STUDENT MINDSET', margin + 25, y + 18, { align: 'center' })
+    doc.text('SPARK', margin + 20, y + 10, { align: 'center' })
+    doc.setFontSize(6)
+    doc.text('DEVELOPING STUDENT MINDSET', margin + 20, y + 15, { align: 'center' })
     
     // Student details table
-    const tableX = margin + 55
+    const tableX = margin + 45
     const tableY = y
-    const cellHeight = 8
-    const colWidths = [30, 35, 25, 35]
+    const cellHeight = 10
+    const colWidths = [35, 20, 20, 40]
     
     // Header row - black background
     doc.setFillColor(0, 0, 0)
@@ -75,9 +75,9 @@ export function generateReportPDF(
     headers.forEach((header, i) => {
       doc.rect(xPos, tableY, colWidths[i], cellHeight, 'F')
       doc.setTextColor(255, 255, 255)
-      doc.setFontSize(8)
+      doc.setFontSize(9)
       doc.setFont('helvetica', 'bold')
-      doc.text(header, xPos + colWidths[i] / 2, tableY + 5.5, { align: 'center' })
+      doc.text(header, xPos + colWidths[i] / 2, tableY + 7, { align: 'center' })
       xPos += colWidths[i]
     })
     
@@ -93,13 +93,13 @@ export function generateReportPDF(
       doc.setFillColor(255, 255, 255)
       doc.rect(xPos, tableY + cellHeight, colWidths[i], cellHeight, 'FD')
       doc.setTextColor(0, 0, 0)
-      doc.setFontSize(8)
+      doc.setFontSize(9)
       doc.setFont('helvetica', 'normal')
-      doc.text(value, xPos + colWidths[i] / 2, tableY + cellHeight + 5.5, { align: 'center' })
+      doc.text(value, xPos + colWidths[i] / 2, tableY + cellHeight + 7, { align: 'center' })
       xPos += colWidths[i]
     })
     
-    y += 30
+    y += 25
   }
 
   // Add first page header
@@ -126,91 +126,131 @@ export function generateReportPDF(
   
   y += 26
 
-  // Dimensions - matching sample report layout
+  // Add score cards section (5 cards across top of page after welcome)
+  doc.setFontSize(9)
+  doc.setFont('helvetica', 'bold')
+  doc.setTextColor(100, 100, 100)
+  doc.text('Your SPARK Scores:', margin, y)
+  y += 6
+
+  const cardWidth = 37
+  const cardHeight = 25
+  const cardGap = 1.5
+  
+  dimensions.forEach((dim, idx) => {
+    const score = reportData.scores[dim.key]
+    const cardX = margin + (idx * (cardWidth + cardGap))
+    
+    // Score card background
+    doc.setFillColor(dim.color[0], dim.color[1], dim.color[2])
+    doc.setDrawColor(233, 30, 140)
+    doc.setLineWidth(0.5)
+    doc.roundedRect(cardX, y, cardWidth, cardHeight, 2, 2, 'FD')
+    
+    // Dimension name
+    doc.setTextColor(255, 255, 255)
+    doc.setFontSize(8)
+    doc.setFont('helvetica', 'bold')
+    doc.text(dim.label, cardX + cardWidth / 2, y + 6, { align: 'center' })
+    
+    // Score
+    doc.setFontSize(18)
+    doc.text(score.score.toFixed(1), cardX + cardWidth / 2, y + 16, { align: 'center' })
+    
+    // Band
+    doc.setFontSize(6)
+    doc.setFont('helvetica', 'normal')
+    doc.text(score.band.replace('_', ' ').toUpperCase(), cardX + cardWidth / 2, y + 21, { align: 'center' })
+  })
+  
+  y += cardHeight + 8
+
+  // Dimensions - Each as full-width section
   dimensions.forEach((dim, index) => {
     const score = reportData.scores[dim.key]
     
     // Check if we need a new page
-    if (y > 220) {
+    if (y > 210) {
       doc.addPage()
       y = margin
       addHeader()
     }
 
-    // Dimension section with two-column layout
-    const sectionHeight = 70 // Approximate, will adjust
+    // Two-column layout: Icon box (40mm) + Content box (rest)
+    const iconBoxWidth = 40
+    const contentX = margin + iconBoxWidth + 2
+    const contentWidth = pageWidth - contentX - margin
     
-    // Left column - Colored box with dimension name (50mm wide)
+    // LEFT: Colored box with icon and dimension name
     doc.setFillColor(dim.color[0], dim.color[1], dim.color[2])
-    doc.roundedRect(margin, y, 50, sectionHeight, 2, 2, 'F')
+    doc.roundedRect(margin, y, iconBoxWidth, 75, 2, 2, 'F')
     
     // Dimension label in white
     doc.setTextColor(255, 255, 255)
-    doc.setFontSize(14)
+    doc.setFontSize(13)
     doc.setFont('helvetica', 'bold')
-    const labelLines = doc.splitTextToSize(dim.label, 45)
-    doc.text(labelLines, margin + 25, y + 25, { align: 'center' })
+    const labelLines = doc.splitTextToSize(dim.label, 35)
+    doc.text(labelLines, margin + iconBoxWidth / 2, y + 35, { align: 'center' })
     
-    doc.setFontSize(8)
+    doc.setFontSize(7)
     doc.setFont('helvetica', 'italic')
-    const subtitleLines = doc.splitTextToSize(dim.subtitle, 45)
-    doc.text(subtitleLines, margin + 25, y + 35, { align: 'center' })
+    const subtitleLines = doc.splitTextToSize(dim.subtitle, 35)
+    doc.text(subtitleLines, margin + iconBoxWidth / 2, y + 50, { align: 'center', maxWidth: 35 })
     
-    // Right column - Pink bordered box with feedback (140mm wide)
-    const rightX = margin + 52
-    const rightWidth = pageWidth - rightX - margin
+    // RIGHT: Three stacked rows (Comment, Question, Activities)
+    let contentY = y
     
+    // ROW 1: Feedback Statement
+    const commentHeight = 30
     doc.setDrawColor(233, 30, 140)
     doc.setLineWidth(1)
     doc.setFillColor(dim.bgColor[0], dim.bgColor[1], dim.bgColor[2])
-    doc.roundedRect(rightX, y, rightWidth, sectionHeight, 2, 2, 'FD')
+    doc.roundedRect(contentX, contentY, contentWidth, commentHeight, 2, 2, 'FD')
     
-    // Feedback text
     doc.setTextColor(0, 0, 0)
     doc.setFontSize(8)
     doc.setFont('helvetica', 'normal')
+    const statement = reportData.statements[dim.key]?.statement || `You show strong ${dim.label} skills.`
+    const statementLines = doc.splitTextToSize(statement, contentWidth - 6)
+    doc.text(statementLines, contentX + 3, contentY + 5)
     
-    const statement = reportData.statements[dim.key]?.statement || 
-                      `You show strong ${dim.label.toLowerCase()} skills.`
-    const statementLines = doc.splitTextToSize(statement, rightWidth - 6)
-    doc.text(statementLines, rightX + 3, y + 5)
+    contentY += commentHeight + 1
     
-    const textHeight = statementLines.length * 3.5
-    let questionY = y + 5 + textHeight + 3
+    // ROW 2: Personal Development Question
+    const questionHeight = 18
+    doc.setFillColor(dim.bgColor[0] - 10, dim.bgColor[1] - 10, dim.bgColor[2] - 10)
+    doc.roundedRect(contentX, contentY, contentWidth, questionHeight, 2, 2, 'FD')
     
-    // Personal Development Question
-    if (reportData.statements[dim.key]?.personal_development_question) {
-      doc.setFont('helvetica', 'bold')
-      doc.setTextColor(dim.color[0], dim.color[1], dim.color[2])
-      doc.setFontSize(7)
-      doc.text('Personal Development Question:', rightX + 3, questionY)
-      questionY += 4
-      
-      doc.setFont('helvetica', 'italic')
-      doc.setTextColor(0, 0, 0)
-      const questionLines = doc.splitTextToSize(
-        reportData.statements[dim.key].personal_development_question,
-        rightWidth - 6
-      )
-      doc.text(questionLines, rightX + 3, questionY)
-      questionY += questionLines.length * 3.5 + 2
-    }
-    
-    // Suggested Activities
+    doc.setFontSize(7)
     doc.setFont('helvetica', 'bold')
     doc.setTextColor(dim.color[0], dim.color[1], dim.color[2])
+    doc.text('Personal Development Question:', contentX + 3, contentY + 5)
+    
+    doc.setFont('helvetica', 'italic')
+    doc.setTextColor(0, 0, 0)
     doc.setFontSize(7)
-    doc.text('Suggested Activities:', rightX + 3, questionY)
-    questionY += 4
+    const question = reportData.statements[dim.key]?.personal_development_question || 
+                     `How can you grow your ${dim.label.toLowerCase()}?`
+    const questionLines = doc.splitTextToSize(question, contentWidth - 6)
+    doc.text(questionLines, contentX + 3, contentY + 10)
+    
+    contentY += questionHeight + 1
+    
+    // ROW 3: Suggested Activities
+    const activitiesHeight = 12
+    doc.setFillColor(dim.bgColor[0] - 20, dim.bgColor[1] - 20, dim.bgColor[2] - 20)
+    doc.roundedRect(contentX, contentY, contentWidth, activitiesHeight, 2, 2, 'FD')
+    
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(dim.color[0], dim.color[1], dim.color[2])
+    doc.text('Suggested Activities:', contentX + 3, contentY + 5)
     
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(0, 0, 0)
-    doc.setFontSize(7)
-    // Sample activities based on dimension
-    const activities = getSuggestedActivities(dim.key)
-    doc.text(activities, rightX + 3, questionY)
+    doc.text(getSuggestedActivities(dim.key), contentX + 3, contentY + 9)
     
-    y += sectionHeight + 3
+    y += 77 // Total height + gap
   })
 
   // Footer
