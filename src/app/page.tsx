@@ -173,7 +173,7 @@ export default function Home() {
                 description: 'Initiative, proactiveness, and a bias toward action.',
                 color: 'spark-pink',
                 gradient: 'from-spark-pink-400 to-spark-pink-600',
-                alpha: '0.73',
+                icon: '/icon-self-direction.png',
                 questions: [
                   'I am willing to risk failure to reach my goals',
                   'When I work at something, I care about doing my best',
@@ -186,7 +186,7 @@ export default function Home() {
                 description: 'Hope, aspirations, and sense of direction.',
                 color: 'spark-purple',
                 gradient: 'from-spark-purple-400 to-spark-purple-600',
-                alpha: '0.84',
+                icon: '/icon-purpose.png',
                 questions: [
                   'I expect good things to happen to me',
                   'I am excited about my future',
@@ -199,7 +199,7 @@ export default function Home() {
                 description: 'Empathy, relationships, and understanding others.',
                 color: 'spark-cyan',
                 gradient: 'from-spark-cyan-400 to-spark-cyan-600',
-                alpha: '0.81',
+                icon: '/icon-awareness.png',
                 questions: [
                   'I feel bad when someone gets their feelings hurt',
                   'I understand how those close to me feel',
@@ -212,7 +212,7 @@ export default function Home() {
                 description: 'Grit, perseverance, and reliability.',
                 color: 'spark-lime',
                 gradient: 'from-spark-lime-400 to-spark-lime-600',
-                alpha: '0.81',
+                icon: '/icon-resilience.png',
                 questions: [
                   'I see tasks through to completion even when I encounter obstacles',
                   'People can count on me to get tasks done',
@@ -225,7 +225,7 @@ export default function Home() {
                 description: 'Curiosity, attention, and valuing education.',
                 color: 'spark-yellow',
                 gradient: 'from-spark-yellow-400 to-spark-yellow-600',
-                alpha: '0.85',
+                icon: '/icon-knowledge.png',
                 questions: [
                   'If something interests me, I try to learn more about it',
                   'I care about doing well in school',
@@ -240,15 +240,20 @@ export default function Home() {
                 <div className={`absolute inset-0 bg-gradient-to-br ${dimension.gradient} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity`} />
                 
                 <div className="flex items-start gap-6 mb-4">
-                  <div className={`w-24 h-24 bg-gradient-to-br ${dimension.gradient} rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-lg flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                    {dimension.letter}
+                  <div className={`w-28 h-28 bg-gradient-to-br ${dimension.gradient} rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0 group-hover:scale-110 transition-transform p-4`}>
+                    <Image
+                      src={dimension.icon}
+                      alt={dimension.name}
+                      width={80}
+                      height={80}
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                   
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">
                       {dimension.name}
                     </h3>
-                    <p className="text-sm text-gray-500 font-mono mb-2">α = {dimension.alpha}</p>
                     <p className="text-gray-600 leading-relaxed">
                       {dimension.description}
                     </p>
@@ -399,6 +404,72 @@ export default function Home() {
                   </li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Flourishing Children Research Foundation */}
+      <section className="py-20 bg-gradient-to-br from-spark-purple/5 to-spark-cyan/5">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">
+              Measuring <span className="text-spark-purple">Flourishing</span>, Not Just Achievement
+            </h2>
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              SPARK goes beyond academic metrics. Drawing on research from the <strong>Flourishing Children Project</strong>, 
+              our indicators capture positive development across relationships, personal growth, and well-being.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-xl p-10 max-w-4xl mx-auto border-2 border-gray-200">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="text-5xl">📖</div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  Built on Leading Research
+                </h3>
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  The Flourishing Children Project responded to a call for <strong>rigorous indicators of positive development 
+                  in adolescents</strong>. Much research over the last decade has demonstrated that positive (promotive) and 
+                  protective factors are linked to positive outcomes for young people.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 mt-8">
+              <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl">
+                <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <span className="text-2xl">💪</span>
+                  What Gets Measured Gets Valued
+                </h4>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  By measuring flourishing alongside academic progress, we help schools focus on developing 
+                  the strengths that lead to long-term positive outcomes.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl">
+                <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <span className="text-2xl">🌱</span>
+                  Beyond Problem Prevention
+                </h4>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Rather than just identifying deficits, SPARK helps educators understand and build upon 
+                  each student's unique strengths and assets.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 p-6 bg-spark-purple/5 rounded-xl border-2 border-spark-purple/20">
+              <p className="text-gray-700 italic leading-relaxed">
+                "Adolescents themselves talk about positive attitudes, qualities, competencies, behaviors, and 
+                relationships when interviewed about their well-being. They do not identify with, nor wish to be known by, 
+                problem behaviors." 
+                <span className="block mt-2 not-italic text-sm text-gray-600">
+                  — Flourishing Children Project, Child Trends Research
+                </span>
+              </p>
             </div>
           </div>
         </div>
