@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { generateReportPDF } from '@/lib/pdf/generateReport'
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,10 +11,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
+    // Generate PDF attachment
+    const { pdfBase64, fileName } = generateReportPDF(name, reportData)
+
     // Generate HTML email
     const htmlEmail = generateReportEmail(name, email, school, role, reportData)
 
-    // Send via SendGrid
+    // Send via SendGrid with PDF attachment
     const sendGridResponse = await fetch('https://api.sendgrid.com/v3/mail/send', {
       method: 'POST',
       headers: {
@@ -32,6 +36,12 @@ export async function POST(request: NextRequest) {
         content: [{
           type: 'text/html',
           value: htmlEmail,
+        }],
+        attachments: [{
+          content: pdfBase64,
+          filename: fileName,
+          type: 'application/pdf',
+          disposition: 'attachment',
         }],
       }),
     })
@@ -72,6 +82,7 @@ function generateReportEmail(name: string, email: string, school: string, role: 
   <div style="background: linear-gradient(135deg, #E91E8C 0%, #7C3AED 50%, #06B6D4 100%); padding: 40px 20px; text-align: center; color: white;">
     <h1 style="margin: 0 0 10px 0; font-size: 36px; font-weight: bold;">🎉 Your SPARK Report</h1>
     <p style="margin: 0; font-size: 18px; opacity: 0.95;">Congratulations, ${name}!</p>
+    <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">📎 Printable PDF attached below</p>
   </div>
 
   <!-- Welcome Box -->
