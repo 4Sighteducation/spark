@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { calculateAssessmentScores } from '@/lib/scoring/calculate'
 import questionnaireData from '@/data/questionnaire.json'
+import { DemoReport } from './DemoReport'
 
 interface DemoQuestionnaireProps {
   leadData: {
@@ -120,7 +121,7 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
   }
 
   if (showReport && reportData) {
-    return <DemoReport reportData={reportData} leadName={leadData.name} leadData={leadData} onClose={onComplete} />
+    return <DemoReport reportData={reportData} leadData={leadData} onClose={onComplete} />
   }
 
   return (
@@ -228,68 +229,74 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
           </div>
         </div>
         
-        {/* COMPLETELY invisible slider - no white circles! */}
+        {/* COMPLETELY invisible slider - KILL the white dot! */}
         <style jsx>{`
           input[type="range"] {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            background: transparent;
-            outline: none;
+            background: transparent !important;
+            outline: none !important;
+            border: none !important;
           }
           
-          /* WebKit/Chrome/Safari */}
+          /* WebKit/Chrome/Safari - INVISIBLE THUMB */
           input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 80px;
-            height: 80px;
-            background: rgba(0, 0, 0, 0);
-            border: none;
-            box-shadow: none;
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            width: 1px;
+            height: 1px;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
             cursor: grab;
+            opacity: 0 !important;
           }
           input[type="range"]:active::-webkit-slider-thumb {
             cursor: grabbing;
           }
           input[type="range"]::-webkit-slider-runnable-track {
-            height: 6px;
-            background: transparent;
-            border: none;
-            box-shadow: none;
+            height: 100%;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
           }
           
-          /* Firefox */
+          /* Firefox - INVISIBLE THUMB */
           input[type="range"]::-moz-range-thumb {
-            width: 80px;
-            height: 80px;
-            background: rgba(0, 0, 0, 0);
-            border: none;
-            box-shadow: none;
+            width: 1px;
+            height: 1px;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
             cursor: grab;
+            opacity: 0 !important;
           }
           input[type="range"]:active::-moz-range-thumb {
             cursor: grabbing;
           }
           input[type="range"]::-moz-range-track {
-            height: 6px;
-            background: transparent;
-            border: none;
-            box-shadow: none;
+            height: 100%;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
+          input[type="range"]::-moz-range-progress {
+            background: transparent !important;
           }
           
-          /* Remove any focus outlines */
+          /* Remove ALL focus states */
           input[type="range"]:focus {
-            outline: none;
-            box-shadow: none;
+            outline: none !important;
+            box-shadow: none !important;
           }
           input[type="range"]:focus::-webkit-slider-thumb {
-            outline: none;
-            box-shadow: none;
+            outline: none !important;
+            box-shadow: none !important;
           }
           input[type="range"]:focus::-moz-range-thumb {
-            outline: none;
-            box-shadow: none;
+            outline: none !important;
+            box-shadow: none !important;
           }
         `}</style>
 
@@ -322,125 +329,4 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
   )
 }
 
-// Demo Report Component
-function DemoReport({ reportData, leadName, leadData, onClose }: any) {
-  const dimensions = [
-    { key: 'self_direction', label: 'Self-Direction', color: 'spark-pink', icon: 'S' },
-    { key: 'purpose', label: 'Purpose', color: 'spark-purple', icon: 'P' },
-    { key: 'awareness', label: 'Awareness', color: 'spark-cyan', icon: 'A' },
-    { key: 'resilience', label: 'Resilience', color: 'spark-lime', icon: 'R' },
-    { key: 'knowledge', label: 'Knowledge', color: 'spark-yellow', icon: 'K' },
-  ]
-
-  return (
-    <div className="p-8 max-h-[80vh] overflow-y-auto custom-scrollbar">
-      {/* Celebration */}
-      <div className="text-center mb-8 animate-scale-in">
-        <div className="text-6xl mb-4">🎉</div>
-        <h2 className="text-4xl font-bold text-gray-900 mb-2">
-          Congratulations, {leadName}!
-        </h2>
-        <p className="text-xl text-gray-600">
-          Here's your personalized SPARK report
-        </p>
-      </div>
-
-      {/* Overall Score Circle */}
-      <div className="flex justify-center mb-12">
-        <div className="relative w-48 h-48">
-          <svg className="transform -rotate-90" width="192" height="192">
-            <circle
-              cx="96"
-              cy="96"
-              r="88"
-              stroke="#e5e7eb"
-              strokeWidth="12"
-              fill="none"
-            />
-            <circle
-              cx="96"
-              cy="96"
-              r="88"
-              stroke="url(#gradient)"
-              strokeWidth="12"
-              fill="none"
-              strokeDasharray={`${(reportData.scores.overall.score / 10) * 553} 553`}
-              className="transition-all duration-1000"
-            />
-            <defs>
-              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#E91E8C" />
-                <stop offset="50%" stopColor="#7C3AED" />
-                <stop offset="100%" stopColor="#06B6D4" />
-              </linearGradient>
-            </defs>
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="text-5xl font-bold text-gray-900">
-              {reportData.scores.overall.score.toFixed(1)}
-            </div>
-            <div className="text-sm text-gray-500">Overall Score</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Dimension Scores */}
-      <div className="grid md:grid-cols-5 gap-4 mb-12">
-        {dimensions.map((dim) => {
-          const score = reportData.scores[dim.key]
-          return (
-            <div
-              key={dim.key}
-              className="text-center p-4 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow"
-            >
-              <div className={`w-16 h-16 bg-${dim.color} rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3 shadow-lg`}>
-                {dim.icon}
-              </div>
-              <div className="text-3xl font-bold text-gray-900 mb-1">
-                {score.score.toFixed(1)}
-              </div>
-              <div className="text-xs text-gray-500 mb-2">{dim.label}</div>
-              <div className={`text-xs font-bold uppercase text-${dim.color}`}>
-                {score.band.replace('_', ' ')}
-              </div>
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Sample Statement */}
-      <div className="bg-gradient-to-br from-spark-pink/10 to-spark-purple/10 rounded-2xl p-8 mb-8 border-2 border-spark-pink/20">
-        <h3 className="text-2xl font-bold text-gray-900 mb-4">
-          Your Strongest Area: {reportData.statements.self_direction.label}
-        </h3>
-        <p className="text-gray-700 leading-relaxed mb-4">
-          {reportData.statements.self_direction.statement.substring(0, 300)}...
-        </p>
-        <p className="text-sm text-gray-500 italic">
-          This is just a preview. The full SPARK platform provides detailed insights for all five dimensions!
-        </p>
-      </div>
-
-      {/* CTA */}
-      <div className="bg-gradient-to-r from-spark-pink via-spark-purple to-spark-cyan rounded-2xl p-8 text-white text-center">
-        <h3 className="text-3xl font-bold mb-4">Want the Full Experience?</h3>
-        <p className="text-lg mb-6 opacity-90">
-          Imagine this for every student in your school - personalized reports, 40 interactive activities, 
-          real-time dashboards, and progress tracking.
-        </p>
-        <p className="text-xl font-bold">
-          We'll be in touch at <span className="underline">{leadData.email}</span> when SPARK launches!
-        </p>
-      </div>
-
-      {/* Close Button */}
-      <button
-        onClick={onClose}
-        className="mt-8 w-full px-8 py-4 bg-gray-900 text-white text-lg rounded-lg font-bold hover:bg-gray-800 transition-colors"
-      >
-        Close Demo
-      </button>
-    </div>
-  )
-}
 

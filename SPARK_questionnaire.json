@@ -1,5 +1,6 @@
 {
-  "version": "2.0",
+  "version": "2.1.2",
+  "notes": "SPARK Statements (V2) with age-appropriate examples (11–15). Updated examples for A03 and R03 per latest feedback.",
   "scale": {
     "label": "Strongly Agree → Strongly Disagree",
     "options": [
@@ -9,7 +10,7 @@
       "Disagree",
       "Strongly Disagree"
     ],
-    "value_mapping_note": "Map as needed to your scoring system (e.g., SA=5… SD=1)."
+    "value_mapping_note": "Map to your scoring system (e.g., SA=5… SD=1)."
   },
   "themes": [
     {
@@ -19,27 +20,45 @@
       "items": [
         {
           "id": "S01",
-          "text": "I am willing to risk failure to reach my goals."
+          "text": "I am willing to risk failure to reach my goals.",
+          "examples": [
+            "You try out for the school team (or a local club) even if you’re not sure you’ll make it, because you want to improve."
+          ]
         },
         {
           "id": "S02",
-          "text": "When I work at something, I care about doing my best."
+          "text": "When I work at something, I care about doing my best.",
+          "examples": [
+            "You rework a design or paragraph until it’s clear and neat, then ask a friend or teacher for one suggestion to improve it."
+          ]
         },
         {
           "id": "S03",
-          "text": "I like coming up with new ways to solve problems."
+          "text": "I like coming up with new ways to solve problems.",
+          "examples": [
+            "In art you test a different technique to get a texture you want; at home you rearrange your study space to help you focus."
+          ]
         },
         {
           "id": "S04",
-          "text": "I take the initiative myself, rather than relying on others"
+          "text": "I take the initiative myself, rather than relying on others",
+          "examples": [
+            "For a group project, you organise the first meeting time and suggest who does what after asking teammates for their preferences—without waiting for the teacher to tell you."
+          ]
         },
         {
           "id": "S05",
-          "text": "When I set a goal, I immediately start working on it"
+          "text": "When I set a goal, I immediately start working on it",
+          "examples": [
+            "You decide to learn 10 Spanish verbs a week and spend 10 minutes that evening making the first set of flashcards."
+          ]
         },
         {
           "id": "S06",
-          "text": "I make plans that help me accomplish what I aim for."
+          "text": "I make plans that help me accomplish what I aim for.",
+          "examples": [
+            "For a science project or music performance, you break it into mini-deadlines in your planner and tick them off across the week."
+          ]
         }
       ]
     },
@@ -50,27 +69,45 @@
       "items": [
         {
           "id": "P01",
-          "text": "I expect good things to happen to me."
+          "text": "I expect good things to happen to me.",
+          "examples": [
+            "You enter a school competition believing your effort could lead to a positive outcome, even if you don’t win."
+          ]
         },
         {
           "id": "P02",
-          "text": "I am excited about my future."
+          "text": "I am excited about my future.",
+          "examples": [
+            "You look up college courses or careers and enjoy seeing which subjects link to them."
+          ]
         },
         {
           "id": "P03",
-          "text": "I trust that my future will turn out well."
+          "text": "I trust that my future will turn out well.",
+          "examples": [
+            "After a low test score, you believe that with practice and help from teachers you can improve next time."
+          ]
         },
         {
           "id": "P04",
-          "text": "My life will make a difference in the world."
+          "text": "My life will make a difference in the world.",
+          "examples": [
+            "You volunteer for an eco-club litter pick because you feel your actions matter."
+          ]
         },
         {
           "id": "P05",
-          "text": "I am doing things now that will help me to achieve my purpose in life."
+          "text": "I am doing things now that will help me to achieve my purpose in life.",
+          "examples": [
+            "You practise coding 15 minutes a day because you think tech might be part of your future."
+          ]
         },
         {
           "id": "P06",
-          "text": "I have long term dreams, and I am taking steps to achieve them"
+          "text": "I have long term dreams, and I am taking steps to achieve them",
+          "examples": [
+            "If you want to be a nurse, you choose extra science revision sessions and watch short NHS career videos."
+          ]
         }
       ]
     },
@@ -81,31 +118,52 @@
       "items": [
         {
           "id": "A01",
-          "text": "I feel bad when someone gets their feelings hurt."
+          "text": "I feel bad when someone gets their feelings hurt.",
+          "examples": [
+            "You notice a classmate left out at lunch and it bothers you."
+          ]
         },
         {
           "id": "A02",
-          "text": "I understand how those close to me feel."
+          "text": "I understand how those close to me feel.",
+          "examples": [
+            "You can tell your friend is stressed before a test and you check in with them."
+          ]
         },
         {
           "id": "A03",
-          "text": "It is important to me to understand how other people feel."
+          "text": "It is important to me to understand how other people feel.",
+          "examples": [
+            "In a discussion or debate, you listen and try to understand why someone with different views or beliefs thinks that way."
+          ]
         },
         {
           "id": "A04",
-          "text": "I am happy when others succeed."
+          "text": "I am happy when others succeed.",
+          "examples": [
+            "You congratulate a classmate who got a higher grade than you without sarcasm."
+          ]
         },
         {
           "id": "A05",
-          "text": "I go out of my way to help others."
+          "text": "I go out of my way to help others.",
+          "examples": [
+            "You stay behind after club to help tidy equipment that isn’t yours."
+          ]
         },
         {
           "id": "A06",
-          "text": "I help others even if it requires a lot of my time."
+          "text": "I help others even if it requires a lot of my time.",
+          "examples": [
+            "You spend part of break helping a partner catch up on missed notes, then check they understand before the next lesson."
+          ]
         },
         {
           "id": "A07",
-          "text": "I encourage my friends to be the best they can be."
+          "text": "I encourage my friends to be the best they can be.",
+          "examples": [
+            "You remind a friend about their art portfolio deadline and offer to look over it with them after school."
+          ]
         }
       ]
     },
@@ -116,31 +174,52 @@
       "items": [
         {
           "id": "R01",
-          "text": "I put in more effort than many of my peers to achieve success."
+          "text": "I put in more effort than many of my peers to achieve success.",
+          "examples": [
+            "When others stop, you spend an extra 10 minutes practising a few more questions or reading a short article to understand the topic better."
+          ]
         },
         {
           "id": "R02",
-          "text": "I see tasks through to completion even when I encounter obstacles."
+          "text": "I see tasks through to completion even when I encounter obstacles.",
+          "examples": [
+            "When your first attempt goes wrong (e.g., a low mark or a model that breaks), you use the feedback to change your plan and try again instead of giving up."
+          ]
         },
         {
           "id": "R03",
-          "text": "People can count on me to get tasks done"
+          "text": "People can count on me to get tasks done",
+          "examples": [
+            "If you agree to play in a music rehearsal, you arrive on time with your instrument and sheet music."
+          ]
         },
         {
           "id": "R04",
-          "text": "I always do the things that I say I am going to do"
+          "text": "I always do the things that I say I am going to do",
+          "examples": [
+            "You told your teacher you’d attend revision club, so you go—even when you’re tired."
+          ]
         },
         {
           "id": "R05",
-          "text": "I persist and find ways to overcome challenges even when tasks become difficult."
+          "text": "I persist and find ways to overcome challenges even when tasks become difficult.",
+          "examples": [
+            "Stuck on a tricky equation, you try a different method and ask a classmate before asking the teacher."
+          ]
         },
         {
           "id": "R06",
-          "text": "I find creative ways to overcome challenges when things don't go as planned."
+          "text": "I find creative ways to overcome challenges when things don't go as planned.",
+          "examples": [
+            "If the library is full, you use printed notes and a quiet classroom; if your device dies, you switch to paper and keep going."
+          ]
         },
         {
           "id": "R07",
-          "text": "When I face setbacks, I reflect on what went wrong and adjust my approach."
+          "text": "When I face setbacks, I reflect on what went wrong and adjust my approach.",
+          "examples": [
+            "After losing marks for careless errors, you start underlining key words in questions."
+          ]
         }
       ]
     },
@@ -151,31 +230,52 @@
       "items": [
         {
           "id": "K01",
-          "text": "If something interests me, I try to learn more about it."
+          "text": "If something interests me, I try to learn more about it.",
+          "examples": [
+            "After a history lesson, you watch a short video about the same topic at home."
+          ]
         },
         {
           "id": "K02",
-          "text": "I use the knowledge I gain at school in my life."
+          "text": "I use the knowledge I gain at school in my life.",
+          "examples": [
+            "You use budgeting from maths to plan saving for a school trip or to manage pocket money."
+          ]
         },
         {
           "id": "K03",
-          "text": "Being a student is central to my identity "
+          "text": "Being a student is central to my identity ",
+          "examples": [
+            "You keep an organised exercise book and take pride in adding a brief ‘next step’ after feedback."
+          ]
         },
         {
           "id": "K04",
-          "text": "I take charge of my own learning."
+          "text": "I take charge of my own learning.",
+          "examples": [
+            "You set your own practice questions or make flashcards without being told."
+          ]
         },
         {
           "id": "K05",
-          "text": "I care about doing well in school"
+          "text": "I care about doing well in school",
+          "examples": [
+            "You choose to redo a piece of work to move it from ‘good’ to ‘great’."
+          ]
         },
         {
           "id": "K06",
-          "text": "I always pay attention in class"
+          "text": "I always pay attention in class",
+          "examples": [
+            "You face the speaker, listen carefully for key instructions, note them down, and ask a short question if something isn’t clear."
+          ]
         },
         {
           "id": "K07",
-          "text": "I always come to class well-prepared"
+          "text": "I always come to class well-prepared",
+          "examples": [
+            "You pack your bag the night before—with the right books and any printed sheets—without being reminded by parents or carers."
+          ]
         }
       ]
     }
