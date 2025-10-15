@@ -5,11 +5,24 @@ export async function POST(request: NextRequest) {
   try {
     console.log('Waitlist API called')
     
-    // Create Supabase client INSIDE the handler, not at module level
-    // This prevents build-time database connection attempts
+    // Check environment variables
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('Missing environment variables:', {
+        hasUrl: !!supabaseUrl,
+        hasKey: !!supabaseKey,
+      })
+      return NextResponse.json({ 
+        error: 'Server configuration error - missing database credentials' 
+      }, { status: 500 })
+    }
+    
+    // Create Supabase client
     const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      supabaseUrl,
+      supabaseKey,
       {
         auth: {
           autoRefreshToken: false,
