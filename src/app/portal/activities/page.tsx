@@ -29,7 +29,7 @@ export default function ActivitiesPage() {
       setStudent(studentData)
 
       // Fetch assigned activities
-      if (studentData) {
+      if (studentData?.id) {
         const { data: assignmentsData } = await supabase
           .from('activity_assignments')
           .select(`
