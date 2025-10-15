@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import puppeteer from 'puppeteer-core'
-import chromium from '@sparticuz/chromium'
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,6 +9,10 @@ export async function POST(request: NextRequest) {
     if (!name || !reportData) {
       return NextResponse.json({ error: 'Missing required data' }, { status: 400 })
     }
+
+    // Dynamic import - only load at runtime, not build time
+    const puppeteer = (await import('puppeteer-core')).default
+    const chromium = (await import('@sparticuz/chromium')).default
 
     // Encode report data for URL
     const encodedData = encodeURIComponent(JSON.stringify({
