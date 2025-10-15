@@ -2,17 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('PDF Generation API called')
     const body = await request.json()
     const { name, reportData, school } = body
 
     // Validation
     if (!name || !reportData) {
+      console.error('Missing data:', { name: !!name, reportData: !!reportData })
       return NextResponse.json({ error: 'Missing required data' }, { status: 400 })
     }
 
+    console.log('Loading Puppeteer...')
     // Dynamic import - only load at runtime, not build time
     const puppeteer = (await import('puppeteer-core')).default
     const chromium = (await import('@sparticuz/chromium')).default
+    console.log('Puppeteer loaded')
 
     // Encode report data for URL
     const encodedData = encodeURIComponent(JSON.stringify({

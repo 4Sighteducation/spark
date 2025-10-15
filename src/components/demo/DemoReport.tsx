@@ -66,6 +66,12 @@ export function DemoReport({ reportData, leadData, onClose }: DemoReportProps) {
     setIsSendingEmail(true)
 
     try {
+      console.log('Sending email with data:', { 
+        name: emailFormData.name, 
+        email: emailFormData.email,
+        hasReportData: !!reportData 
+      })
+      
       const response = await fetch('/api/leads/email-report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -78,16 +84,20 @@ export function DemoReport({ reportData, leadData, onClose }: DemoReportProps) {
         }),
       })
       
+      console.log('Email API response status:', response.status)
+      
       if (response.ok) {
         setEmailSent(true)
         setShowEmailModal(false)
         setTimeout(() => setEmailSent(false), 5000)
       } else {
-        alert('Failed to send email. Please try again.')
+        const errorData = await response.json().catch(() => ({}))
+        console.error('Email API error:', errorData)
+        alert(`Failed to send email: ${errorData.error || 'Unknown error'}. Check console for details.`)
       }
     } catch (error) {
       console.error('Error sending email:', error)
-      alert('Network error. Please check your connection.')
+      alert(`Network error: ${error}. Please check your connection.`)
     } finally {
       setIsSendingEmail(false)
     }

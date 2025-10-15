@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate PDF using Puppeteer (perfect rendering with all images!)
+    console.log('Calling PDF generation API...')
     const pdfResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/generate-pdf`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -21,12 +22,16 @@ export async function POST(request: NextRequest) {
       }),
     })
 
+    console.log('PDF API response status:', pdfResponse.status)
+
     if (!pdfResponse.ok) {
-      console.error('PDF generation failed')
-      return NextResponse.json({ error: 'Failed to generate PDF' }, { status: 500 })
+      const pdfError = await pdfResponse.json().catch(() => ({}))
+      console.error('PDF generation failed:', pdfError)
+      return NextResponse.json({ error: `Failed to generate PDF: ${pdfError.details || 'Unknown error'}` }, { status: 500 })
     }
 
     const { pdfBase64, fileName } = await pdfResponse.json()
+    console.log('PDF generated successfully:', fileName)
 
     // Generate HTML email
     const htmlEmail = generateReportEmail(name, email, school, role, reportData)
@@ -60,12 +65,15 @@ export async function POST(request: NextRequest) {
       }),
     })
 
+    console.log('SendGrid response status:', sendGridResponse.status)
+
     if (!sendGridResponse.ok) {
       const error = await sendGridResponse.text()
       console.error('SendGrid error:', error)
-      return NextResponse.json({ error: 'Failed to send email' }, { status: 500 })
+      return NextResponse.json({ error: `SendGrid failed: ${error}` }, { status: 500 })
     }
 
+    console.log('✅ Email sent successfully to:', email)
     return NextResponse.json({ success: true }, { status: 200 })
   } catch (error) {
     console.error('Error sending report email:', error)
