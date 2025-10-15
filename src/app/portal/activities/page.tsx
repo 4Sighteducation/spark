@@ -20,28 +20,32 @@ export default function ActivitiesPage() {
       }
 
       // Get student
-      const { data: studentData } = await supabase
+      const { data: studentData, error: studentError } = await supabase
         .from('students')
         .select('*')
         .eq('id', session.user.id)
         .single()
       
+      if (studentError || !studentData) {
+        console.error('Student not found:', studentError)
+        setLoading(false)
+        return
+      }
+      
       setStudent(studentData)
 
       // Fetch assigned activities
-      if (studentData?.id) {
-        const { data: assignmentsData } = await supabase
-          .from('activity_assignments')
-          .select(`
-            *,
-            activities (*),
-            activity_completions (*)
-          `)
-          .eq('student_id', studentData.id)
-          .order('priority', { ascending: true })
-        
-        setAssignments(assignmentsData || [])
-      }
+      const { data: assignmentsData } = await supabase
+        .from('activity_assignments')
+        .select(`
+          *,
+          activities (*),
+          activity_completions (*)
+        `)
+        .eq('student_id', studentData.id)
+        .order('priority', { ascending: true })
+      
+      setAssignments(assignmentsData || [])
 
       setLoading(false)
     }
