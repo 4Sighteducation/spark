@@ -21,8 +21,14 @@ export default function Home() {
   useEffect(() => {
     fetch('/api/leads/count')
       .then(res => res.json())
-      .then(data => setLeadCount(data.count))
-      .catch(() => setLeadCount(null))
+      .then(data => {
+        console.log('Lead count:', data.count)
+        setLeadCount(data.count)
+      })
+      .catch(err => {
+        console.error('Failed to fetch lead count:', err)
+        setLeadCount(null)
+      })
   }, [])
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
@@ -76,7 +82,7 @@ export default function Home() {
       <div className="bg-gradient-to-r from-spark-pink via-spark-purple to-spark-cyan text-white py-3 px-4 text-center font-semibold sticky top-0 z-50 shadow-lg">
         <div className="flex items-center justify-center gap-4 flex-wrap">
           <span>🎉 <strong>Limited Offer:</strong> The first 20 schools to express interest will receive FREE access for the entire first year!</span>
-          {leadCount !== null && leadCount > 0 && (
+          {leadCount !== null && leadCount >= 0 && (
             <span className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-sm backdrop-blur-sm">
               <span className="animate-pulse">🔥</span>
               <strong>{leadCount}</strong> {leadCount === 1 ? 'school has' : 'schools have'} already joined!
