@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js'
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Waitlist API called')
+    
     // Create Supabase client INSIDE the handler, not at module level
     // This prevents build-time database connection attempts
     const supabase = createClient(
@@ -19,8 +21,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { name, email, school, role } = body
 
+    console.log('Waitlist data:', { name, email, school, role })
+
     // Basic validation
     if (!name || !email) {
+      console.error('Validation failed: missing name or email')
       return NextResponse.json({ error: 'Name and email are required' }, { status: 400 })
     }
 
@@ -48,6 +53,13 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
+      console.error('Supabase error details:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      })
+      
       // Check if it's a duplicate email
       if (error.code === '23505') {
         return NextResponse.json(
@@ -56,9 +68,13 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      console.error('Supabase error:', error)
-      return NextResponse.json({ error: 'Failed to save to waitlist' }, { status: 500 })
+      return NextResponse.json({ 
+        error: 'Failed to save to waitlist', 
+        details: error.message 
+      }, { status: 500 })
     }
+
+    console.log('Waitlist signup successful:', email)
 
     // TODO: Send welcome email via SendGrid
     // TODO: Add to mailing list
