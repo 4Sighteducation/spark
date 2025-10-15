@@ -134,7 +134,19 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
         
         return (
           <div key={dim.key} className="mb-8 break-inside-avoid">
-            {/* 1-10 Score Visualization - Styled with theme colors, full width */}
+            {/* Dimension Header Bar */}
+            <div 
+              className="rounded-lg p-3 mb-2 flex items-center gap-3"
+              style={{ backgroundColor: dim.color }}
+            >
+              <Image src={dim.icon} alt={dim.label} width={32} height={32} className="object-contain" />
+              <div className="flex-1">
+                <h3 className="text-white font-bold text-lg">{dim.label}</h3>
+                <p className="text-white text-xs italic">{dim.subtitle}</p>
+              </div>
+            </div>
+
+            {/* 1-10 Score Visualization - UNDER the header, styled with theme colors */}
             <div className="flex gap-1 mb-2 px-4">
               {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
                 <div
@@ -153,18 +165,6 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
                   {num}
                 </div>
               ))}
-            </div>
-
-            {/* Dimension Header Bar */}
-            <div 
-              className="rounded-lg p-3 mb-2 flex items-center gap-3"
-              style={{ backgroundColor: dim.color }}
-            >
-              <Image src={dim.icon} alt={dim.label} width={32} height={32} className="object-contain" />
-              <div className="flex-1">
-                <h3 className="text-white font-bold text-lg">{dim.label}</h3>
-                <p className="text-white text-xs italic">{dim.subtitle}</p>
-              </div>
             </div>
 
             {/* ROW 1: Feedback Statement */}

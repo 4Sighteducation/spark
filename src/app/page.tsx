@@ -143,23 +143,6 @@ export default function Home() {
             >
               Learn More
             </a>
-
-            {/* TEST BUTTON - Remove before launch */}
-            <button
-              onClick={() => {
-                setLeadFormData({
-                  name: 'Test User',
-                  email: 'test@example.com',
-                  school: 'Test School',
-                  role: 'Headteacher'
-                })
-                setShowDemo(true)
-                setShowQuestionnaire(true)
-              }}
-              className="px-6 py-3 bg-yellow-500 text-black text-sm rounded-lg font-bold hover:bg-yellow-400 transition-all border-2 border-yellow-300"
-            >
-              🧪 TEST (Skip Form)
-            </button>
           </div>
 
           {/* Scroll Indicator */}
@@ -743,6 +726,8 @@ export default function Home() {
                 <option>Head of Year</option>
                 <option>Teacher</option>
                 <option>SENCO</option>
+                <option>Student</option>
+                <option>Parent</option>
                 <option>Other</option>
               </select>
               
@@ -872,6 +857,7 @@ export default function Home() {
                     <option>Head of Year</option>
                     <option>Teacher</option>
                     <option>SENCO</option>
+                    <option>Student</option>
                     <option>Parent</option>
                     <option>Other Education Professional</option>
                   </select>
