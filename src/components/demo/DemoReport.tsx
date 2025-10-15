@@ -253,7 +253,7 @@ export function DemoReport({ reportData, leadData, onClose }: DemoReportProps) {
             disabled={emailSent}
             className="px-8 py-4 bg-white text-spark-pink text-lg rounded-lg font-bold hover:bg-gray-100 transition-colors shadow-2xl disabled:opacity-70"
           >
-            {emailSent ? '✅ Email Sent Successfully!' : '📧 Email Me This Report'}
+            {emailSent ? '✅ Email on its way! Check your inbox in 1-2 minutes' : '📧 Email Me This Report'}
           </button>
           
           <button
@@ -274,7 +274,13 @@ export function DemoReport({ reportData, leadData, onClose }: DemoReportProps) {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowEmailModal(false)}>
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">📧 Email Your Report</h3>
-            <p className="text-gray-600 mb-6">We'll send your personalized SPARK report to your email</p>
+            <p className="text-gray-600 mb-4">We'll send your personalized SPARK report to your email</p>
+            <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-3 mb-6">
+              <p className="text-sm text-blue-800">
+                <strong>⏱️ Please note:</strong> Generating your beautiful PDF with all images takes 1-2 minutes. 
+                It's worth the wait—you'll receive a professional, printable report!
+              </p>
+            </div>
             
             <form onSubmit={handleEmailReport} className="space-y-4">
               <div>
