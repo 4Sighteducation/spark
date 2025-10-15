@@ -7,13 +7,15 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.resolve.alias.canvas = false;
+    
+    // Exclude Puppeteer from webpack bundling (serverless incompatible)
+    if (isServer) {
+      config.externals = [...(config.externals || []), 'puppeteer-core', '@sparticuz/chromium'];
+    }
+    
     return config;
-  },
-  // Enable experimental features if needed
-  experimental: {
-    serverActions: true,
   },
 }
 
