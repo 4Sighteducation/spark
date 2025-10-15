@@ -15,7 +15,7 @@ export default function TestConnectionPage() {
 
   useEffect(() => {
     async function test() {
-      const checks = {
+      const checks: any = {
         envUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
         envKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing',
         clientExists: !!supabase,

@@ -30,24 +30,28 @@ export default function ReportsPage() {
       setProfile(profileData)
 
       // Get student
-      const { data: studentData } = await supabase
+      const { data: studentData, error: studentError } = await supabase
         .from('students')
         .select('*')
         .eq('id', session.user.id)
-        .single()
+        .maybeSingle()
       
+      if (studentError || !studentData) {
+        console.error('Student not found:', studentError)
+        setLoading(false)
+        return
+      }
+
       setStudent(studentData)
 
-      // Fetch assessment results
-      if (studentData) {
-        const { data: assessmentsData } = await supabase
-          .from('assessment_results')
-          .select('*')
-          .eq('student_id', studentData.id)
-          .order('calculated_at', { ascending: false })
-        
-        setAssessments(assessmentsData || [])
-      }
+      // Fetch assessment results (studentData guaranteed to exist here)
+      const { data: assessmentsData } = await supabase
+        .from('assessment_results')
+        .select('*')
+        .eq('student_id', (studentData as any).id)
+        .order('calculated_at', { ascending: false })
+      
+      setAssessments(assessmentsData || [])
 
       setLoading(false)
     }

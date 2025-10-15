@@ -22,26 +22,27 @@ export default function QuestionnairePage() {
       }
 
       // Get student
-      const { data: studentData } = await supabase
+      const { data: studentData, error: studentError } = await supabase
         .from('students')
         .select('*')
         .eq('id', session.user.id)
-        .single()
+        .maybeSingle()
       
-      setStudent(studentData)
-
-      if (!studentData) {
+      if (studentError || !studentData) {
+        console.error('Student not found:', studentError)
         setLoading(false)
         return
       }
 
-      // Check for active cycle
+      setStudent(studentData)
+
+      // Check for active cycle (studentData guaranteed to exist here)
       const today = new Date().toISOString().split('T')[0]
       
       const { data: activeCycles } = await supabase
         .from('assessment_cycles')
         .select('*')
-        .eq('organization_id', studentData.organization_id)
+        .eq('organization_id', (studentData as any).organization_id)
         .lte('start_date', today)
         .gte('end_date', today)
         .is('year_group', null)
@@ -61,8 +62,8 @@ export default function QuestionnairePage() {
       const { data: response } = await supabase
         .from('questionnaire_responses')
         .select('*')
-        .eq('student_id', studentData.id)
-        .eq('cycle_number', cycle.cycle_number)
+        .eq('student_id', (studentData as any).id)
+        .eq('cycle_number', (cycle as any).cycle_number)
         .eq('status', 'completed')
         .maybeSingle()
 

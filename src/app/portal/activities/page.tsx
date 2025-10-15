@@ -24,7 +24,7 @@ export default function ActivitiesPage() {
         .from('students')
         .select('*')
         .eq('id', session.user.id)
-        .single()
+        .maybeSingle()
       
       if (studentError || !studentData) {
         console.error('Student not found:', studentError)
@@ -34,7 +34,7 @@ export default function ActivitiesPage() {
       
       setStudent(studentData)
 
-      // Fetch assigned activities
+      // Fetch assigned activities (studentData is guaranteed to exist here)
       const { data: assignmentsData } = await supabase
         .from('activity_assignments')
         .select(`
@@ -42,7 +42,7 @@ export default function ActivitiesPage() {
           activities (*),
           activity_completions (*)
         `)
-        .eq('student_id', studentData.id)
+        .eq('student_id', (studentData as any).id)
         .order('priority', { ascending: true })
       
       setAssignments(assignmentsData || [])
