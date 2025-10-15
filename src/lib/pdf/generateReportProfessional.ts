@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf'
 import statementsData from '@/data/statements.json'
+import { iconBase64 } from './iconBase64'
 
 export function generateReportPDF(
   name: string,
@@ -69,17 +70,8 @@ export function generateReportPDF(
   }
 
   // ===== PAGE HEADER =====
-  // Logo area - black box
-  doc.setFillColor(0, 0, 0)
-  doc.rect(margin, y, 45, 22, 'F')
-  
-  // SPARK text in pink
-  doc.setTextColor(233, 30, 140)
-  doc.setFontSize(20)
-  doc.setFont('helvetica', 'bold')
-  doc.text('SPARK', margin + 22.5, y + 12, { align: 'center' })
-  doc.setFontSize(7)
-  doc.text('DEVELOPING STUDENT MINDSET', margin + 22.5, y + 17, { align: 'center' })
+  // SPARK Logo - Using base64!
+  doc.addImage(iconBase64['spark-logo'], 'PNG', margin, y, 40, 20)
   
   // Student info table
   const tableX = margin + 50
@@ -160,9 +152,19 @@ export function generateReportPDF(
     doc.setLineWidth(0.5)
     doc.roundedRect(cardX, y, cardWidth, cardHeight, 2, 2, 'FD')
     
+    // Dimension icon (if available)
+    const iconKey = theme.key.replace('_', '-')
+    if (iconBase64[iconKey]) {
+      try {
+        doc.addImage(iconBase64[iconKey], 'PNG', cardX + 2, y + 2, 8, 8)
+      } catch (e) {
+        // Icon failed to load, continue without it
+      }
+    }
+    
     // Dimension name
     doc.setTextColor(255, 255, 255)
-    doc.setFontSize(7.5)
+    doc.setFontSize(6.5)
     doc.setFont('helvetica', 'bold')
     doc.text(theme.label, cardX + cardWidth / 2, y + 6, { align: 'center' })
     
@@ -226,13 +228,24 @@ export function generateReportPDF(
     doc.setFillColor(theme.lightBg.r, theme.lightBg.g, theme.lightBg.b)
     doc.roundedRect(margin, y, pageWidth - 2 * margin, row1Height, 2, 2, 'FD')
     
-    // Add theme label
+    // Add theme label with icon
     doc.setFillColor(theme.color.r, theme.color.g, theme.color.b)
-    doc.roundedRect(margin + 3, y + 3, 50, 8, 1, 1, 'F')
+    doc.roundedRect(margin + 3, y + 3, 55, 8, 1, 1, 'F')
+    
+    // Add dimension icon
+    const iconKey = theme.key.replace('_', '-')
+    if (iconBase64[iconKey]) {
+      try {
+        doc.addImage(iconBase64[iconKey], 'PNG', margin + 5, y + 4, 6, 6)
+      } catch (e) {
+        // Icon failed, continue
+      }
+    }
+    
     doc.setTextColor(255, 255, 255)
     doc.setFontSize(8)
     doc.setFont('helvetica', 'bold')
-    doc.text(theme.label, margin + 28, y + 8, { align: 'center' })
+    doc.text(theme.label, margin + 33, y + 8, { align: 'center' })
     
     // Statement text - PROPERLY DISPLAYED
     doc.setTextColor(20, 20, 20)
@@ -246,10 +259,16 @@ export function generateReportPDF(
 
     // ROW 2: Personal Development Question
     const row2Height = 18
-    doc.setFillColor(theme.color.r - 30, theme.color.g - 30, theme.color.b - 30, 40)
+    doc.setDrawColor(233, 30, 140)
+    doc.setLineWidth(1)
+    doc.setFillColor(
+      Math.max(0, theme.lightBg.r - 10),
+      Math.max(0, theme.lightBg.g - 10),
+      Math.max(0, theme.lightBg.b - 10)
+    )
     doc.roundedRect(margin, y, pageWidth - 2 * margin, row2Height, 2, 2, 'FD')
     
-    doc.setTextColor(theme.color.r - 40, theme.color.g - 40, theme.color.b - 40)
+    doc.setTextColor(theme.color.r, theme.color.g, theme.color.b)
     doc.setFontSize(7)
     doc.setFont('helvetica', 'bold')
     doc.text('Personal Development Question:', margin + 4, y + 5)
@@ -266,7 +285,13 @@ export function generateReportPDF(
 
     // ROW 3: Suggested Activities
     const row3Height = 12
-    doc.setFillColor(theme.color.r - 50, theme.color.g - 50, theme.color.b - 50, 50)
+    doc.setDrawColor(233, 30, 140)
+    doc.setLineWidth(1)
+    doc.setFillColor(
+      Math.max(0, theme.lightBg.r - 20),
+      Math.max(0, theme.lightBg.g - 20),
+      Math.max(0, theme.lightBg.b - 20)
+    )
     doc.roundedRect(margin, y, pageWidth - 2 * margin, row3Height, 2, 2, 'FD')
     
     doc.setTextColor(theme.color.r - 40, theme.color.g - 40, theme.color.b - 40)
