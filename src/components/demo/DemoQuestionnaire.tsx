@@ -133,6 +133,23 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
     } catch (error) {
       console.error('Error saving lead:', error)
     }
+
+    // Send notification email to Tony
+    try {
+      await fetch('/api/leads/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: leadData.name,
+          email: leadData.email,
+          school: leadData.school,
+          role: leadData.role,
+          scores,
+        }),
+      })
+    } catch (error) {
+      console.error('Error sending notification:', error)
+    }
   }
 
   const getDimensionColor = (dimension: string) => {

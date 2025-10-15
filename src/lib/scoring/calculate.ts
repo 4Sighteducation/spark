@@ -42,15 +42,15 @@ export function sliderToScore(sliderValue: number): number {
 
 /**
  * Assign band based on score
- * 0-3: Low
- * 3-5: Average
- * 5-8: High
- * 8-10: Very High
+ * 0-3: Low (exclusive of 3)
+ * 3-5: Average (inclusive of 3 and 5)
+ * 5-8: High (exclusive of 5, inclusive of 8)
+ * 8-10: Very High (exclusive of 8)
  */
 export function assignBand(score: number): ScoreBand {
   if (score < 3) return 'low'
-  if (score < 5) return 'average'
-  if (score < 8) return 'high'
+  if (score <= 5) return 'average'  // Fixed: 5 is average, not high!
+  if (score <= 8) return 'high'     // Fixed: 8 is high, not very high!
   return 'very_high'
 }
 
