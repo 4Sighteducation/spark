@@ -27,38 +27,55 @@ function LoginForm() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('STEP 1: Form submitted')
+    
     setError('')
     setLoading(true)
+    console.log('STEP 2: Loading state set to true')
 
-    console.log('🔐 Attempting login for:', email)
+    console.log('STEP 3: Calling Supabase login for:', email)
 
     try {
+      console.log('STEP 4: Inside try block, about to call signInWithPassword')
+      
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      console.log('Login response:', { data, error: signInError })
+      console.log('STEP 5: Got response from Supabase')
+      console.log('Response data:', data)
+      console.log('Response error:', signInError)
 
       if (signInError) {
-        console.error('Login error:', signInError)
+        console.error('STEP 6A: Login error detected:', signInError)
         setError(signInError.message)
         setLoading(false)
         return
       }
 
+      console.log('STEP 6B: No error, checking session...')
+      console.log('Session exists?', !!data.session)
+      console.log('Session data:', data.session)
+
       if (data.session) {
-        console.log('✅ Login successful! Redirecting to:', redirectTo)
-        // Successful login - redirect to portal
-        router.push(redirectTo)
-        router.refresh()
+        console.log('STEP 7: Session confirmed! Preparing redirect...')
+        console.log('Redirect target:', redirectTo)
+        console.log('STEP 8: About to set window.location.href')
+        
+        // Successful login - use window.location for full page reload
+        setTimeout(() => {
+          console.log('STEP 9: Executing redirect NOW')
+          window.location.href = redirectTo
+        }, 100)
       } else {
-        console.error('No session returned')
+        console.error('STEP 7 ERROR: No session in response')
         setError('Login failed - no session created')
         setLoading(false)
       }
     } catch (err) {
-      console.error('Unexpected error during login:', err)
+      console.error('STEP ERROR: Exception caught:', err)
+      console.error('Error details:', err)
       setError('An unexpected error occurred: ' + (err as Error).message)
       setLoading(false)
     }

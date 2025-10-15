@@ -1,34 +1,70 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
-import { getCurrentStudentRecord, getCurrentUserProfile } from '@/lib/auth/helpers'
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase/client'
 import StudentReport from '@/components/portal/StudentReport'
 import Link from 'next/link'
 
-export default async function ReportsPage() {
-  const supabase = createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export default function ReportsPage() {
+  const [loading, setLoading] = useState(true)
+  const [student, setStudent] = useState<any>(null)
+  const [profile, setProfile] = useState<any>(null)
+  const [assessments, setAssessments] = useState<any[]>([])
 
-  if (!user) {
-    redirect('/portal/login')
+  useEffect(() => {
+    async function loadData() {
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        window.location.href = '/portal/login'
+        return
+      }
+
+      // Get profile
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single()
+      
+      setProfile(profileData)
+
+      // Get student
+      const { data: studentData } = await supabase
+        .from('students')
+        .select('*')
+        .eq('id', session.user.id)
+        .single()
+      
+      setStudent(studentData)
+
+      // Fetch assessment results
+      if (studentData) {
+        const { data: assessmentsData } = await supabase
+          .from('assessment_results')
+          .select('*')
+          .eq('student_id', studentData.id)
+          .order('calculated_at', { ascending: false })
+        
+        setAssessments(assessmentsData || [])
+      }
+
+      setLoading(false)
+    }
+
+    loadData()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-cyan-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🔄</div>
+          <p className="text-gray-600 text-xl">Loading your reports...</p>
+        </div>
+      </div>
+    )
   }
-
-  // Get student and profile
-  const student = await getCurrentStudentRecord()
-  const profile = await getCurrentUserProfile()
-  
-  if (!student) {
-    redirect('/portal/dashboard')
-  }
-
-  // Fetch student's assessment results
-  const { data: assessments } = await supabase
-    .from('assessment_results')
-    .select('*')
-    .eq('student_id', student.id)
-    .order('calculated_at', { ascending: false })
 
   // No assessments yet
   if (!assessments || assessments.length === 0) {

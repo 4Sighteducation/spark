@@ -1,36 +1,64 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
-import { getCurrentStudentRecord } from '@/lib/auth/helpers'
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase/client'
 import ActivityCard from '@/components/portal/ActivityCard'
 import Link from 'next/link'
 
-export default async function ActivitiesPage() {
-  const supabase = createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export default function ActivitiesPage() {
+  const [loading, setLoading] = useState(true)
+  const [student, setStudent] = useState<any>(null)
+  const [assignments, setAssignments] = useState<any[]>([])
 
-  if (!user) {
-    redirect('/portal/login')
+  useEffect(() => {
+    async function loadData() {
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        window.location.href = '/portal/login'
+        return
+      }
+
+      // Get student
+      const { data: studentData } = await supabase
+        .from('students')
+        .select('*')
+        .eq('id', session.user.id)
+        .single()
+      
+      setStudent(studentData)
+
+      // Fetch assigned activities
+      if (studentData) {
+        const { data: assignmentsData } = await supabase
+          .from('activity_assignments')
+          .select(`
+            *,
+            activities (*),
+            activity_completions (*)
+          `)
+          .eq('student_id', studentData.id)
+          .order('priority', { ascending: true })
+        
+        setAssignments(assignmentsData || [])
+      }
+
+      setLoading(false)
+    }
+
+    loadData()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-cyan-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🔄</div>
+          <p className="text-gray-600 text-xl">Loading your activities...</p>
+        </div>
+      </div>
+    )
   }
-
-  const student = await getCurrentStudentRecord()
-  
-  if (!student) {
-    redirect('/portal/dashboard')
-  }
-
-  // Fetch assigned activities with completion status
-  const { data: assignments } = await supabase
-    .from('activity_assignments')
-    .select(`
-      *,
-      activities (*),
-      activity_completions (*)
-    `)
-    .eq('student_id', student.id)
-    .order('priority', { ascending: true })
 
   // No activities assigned yet
   if (!assignments || assignments.length === 0) {

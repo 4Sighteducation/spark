@@ -4,7 +4,14 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase/client'
 
 export default function TestConnectionPage() {
-  const [status, setStatus] = useState<any>({})
+  const [status, setStatus] = useState<{
+    envUrl?: string
+    envKey?: string
+    clientExists?: boolean
+    dbConnection?: string
+    authWorks?: string
+    currentSession?: string
+  }>({})
 
   useEffect(() => {
     async function test() {

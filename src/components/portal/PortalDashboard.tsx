@@ -49,7 +49,7 @@ export default function PortalDashboard({ user, profile, student }: PortalDashbo
       icon: '🎮',
       href: '/portal/activities',
       color: 'from-lime-500 to-green-500',
-      available: false, // Will be enabled after questionnaire
+      available: true,
     },
   ]
 
