@@ -56,8 +56,8 @@ export async function POST(request: NextRequest) {
 
     await browser.close()
 
-    // Convert to base64
-    const pdfBase64 = pdf.toString('base64')
+    // Convert Buffer to base64
+    const pdfBase64 = Buffer.from(pdf).toString('base64')
     const fileName = `SPARK_Report_${name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
 
     return NextResponse.json(
