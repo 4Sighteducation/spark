@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { calculateAssessmentScores } from '@/lib/scoring/calculate'
 
+// Mark as dynamic (uses cookies)
+export const dynamic = 'force-dynamic'
+
 /**
  * Submit questionnaire responses
  * Saves answers, calculates scores, creates assessment results

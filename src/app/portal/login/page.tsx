@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirect') || '/portal/dashboard'
@@ -17,10 +17,20 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  // Debug: Check if Supabase is configured
+  useEffect(() => {
+    console.log('🔍 Checking Supabase configuration...')
+    console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+    console.log('Supabase client:', !!supabase)
+    console.log('Window location:', window.location.href)
+  }, [])
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
     setLoading(true)
+
+    console.log('🔐 Attempting login for:', email)
 
     try {
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
@@ -28,19 +38,28 @@ export default function LoginPage() {
         password,
       })
 
+      console.log('Login response:', { data, error: signInError })
+
       if (signInError) {
+        console.error('Login error:', signInError)
         setError(signInError.message)
         setLoading(false)
         return
       }
 
       if (data.session) {
+        console.log('✅ Login successful! Redirecting to:', redirectTo)
         // Successful login - redirect to portal
         router.push(redirectTo)
         router.refresh()
+      } else {
+        console.error('No session returned')
+        setError('Login failed - no session created')
+        setLoading(false)
       }
     } catch (err) {
-      setError('An unexpected error occurred')
+      console.error('Unexpected error during login:', err)
+      setError('An unexpected error occurred: ' + (err as Error).message)
       setLoading(false)
     }
   }
@@ -200,6 +219,21 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-cyan-50">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🔄</div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }
 

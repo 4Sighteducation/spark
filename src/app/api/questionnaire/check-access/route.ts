@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
+// Mark as dynamic (uses cookies)
+export const dynamic = 'force-dynamic'
+
 /**
  * Check if student can access the questionnaire
  * Returns: { canAccess: boolean, reason?: string, cycleInfo?: object }
