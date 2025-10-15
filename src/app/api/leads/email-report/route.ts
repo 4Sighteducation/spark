@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateReportPDF } from '@/lib/pdf/generateReportFinal'
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,8 +10,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    // Generate PDF attachment
-    const { pdfBase64, fileName } = generateReportPDF(name, reportData)
+    // Generate PDF using Puppeteer (perfect rendering with all images!)
+    const pdfResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/generate-pdf`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        reportData,
+        school,
+      }),
+    })
+
+    if (!pdfResponse.ok) {
+      console.error('PDF generation failed')
+      return NextResponse.json({ error: 'Failed to generate PDF' }, { status: 500 })
+    }
+
+    const { pdfBase64, fileName } = await pdfResponse.json()
 
     // Generate HTML email
     const htmlEmail = generateReportEmail(name, email, school, role, reportData)

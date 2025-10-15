@@ -3,6 +3,12 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["lhr1"]
+  "regions": ["lhr1"],
+  "functions": {
+    "api/generate-pdf.ts": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
 }
 
