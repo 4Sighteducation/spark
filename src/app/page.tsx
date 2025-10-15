@@ -428,17 +428,32 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-10 max-w-4xl mx-auto border-2 border-gray-200">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="text-5xl">📖</div>
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+          <div className="bg-white rounded-2xl shadow-xl p-10 max-w-5xl mx-auto border-2 border-gray-200">
+            <div className="grid md:grid-cols-3 gap-8 mb-8">
+              {/* Book Cover */}
+              <div className="flex justify-center">
+                <Image 
+                  src="/flourishing-children-book.png"
+                  alt="Flourishing Children: Defining and Testing Indicators of Positive Development"
+                  width={200}
+                  height={280}
+                  className="shadow-2xl rounded-lg"
+                />
+              </div>
+              
+              {/* Text Content */}
+              <div className="md:col-span-2">
+                <h3 className="text-3xl font-bold text-gray-900 mb-4">
                   Built on Leading Research
                 </h3>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  The Flourishing Children Project responded to a call for <strong>rigorous indicators of positive development 
+                  The <strong>Flourishing Children Project</strong> responded to a call for <strong>rigorous indicators of positive development 
                   in adolescents</strong>. Much research over the last decade has demonstrated that positive (promotive) and 
                   protective factors are linked to positive outcomes for young people.
+                </p>
+                <p className="text-sm text-gray-600 italic border-l-4 border-spark-purple pl-4">
+                  "By providing rigorous statistics on indicators of flourishing, we can help organizations focus on developing 
+                  the strengths that lead to positive outcomes for adolescents."
                 </p>
               </div>
             </div>
