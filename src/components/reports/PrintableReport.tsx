@@ -102,20 +102,20 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
         </p>
       </div>
 
-      {/* Score Cards */}
-      <div className="mb-6">
-        <h3 className="text-base font-bold text-gray-700 mb-3">Your SPARK Scores:</h3>
+      {/* Score Cards - Compact */}
+      <div className="mb-4">
+        <h3 className="text-base font-bold text-gray-700 mb-2">Your SPARK Scores:</h3>
         <div className="grid grid-cols-5 gap-2">
           {dimensions.map((dim) => {
             const score = reportData.scores[dim.key]
             return (
               <div 
                 key={dim.key}
-                className="rounded-xl p-3 text-center shadow-lg border-2 border-gray-800"
+                className="rounded-xl p-2 text-center shadow-lg border-2 border-gray-800"
                 style={{ backgroundColor: dim.color }}
               >
-                <div className="flex justify-center mb-2">
-                  <Image src={dim.icon} alt={dim.label} width={32} height={32} className="object-contain" />
+                <div className="flex justify-center mb-1">
+                  <Image src={dim.icon} alt={dim.label} width={28} height={28} className="object-contain" />
                 </div>
                 <div className="text-white text-xs font-bold mb-1">{dim.label}</div>
                 <div className="text-white text-3xl font-bold">{Math.round(score.score)}</div>
@@ -133,20 +133,21 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
         const statement = reportData.statements[dim.key]
         
         return (
-          <div key={dim.key} className="mb-6 break-inside-avoid">
-            {/* 1-10 Score Visualization */}
-            <div className="flex justify-center gap-1 mb-3">
+          <div key={dim.key} className="mb-8 break-inside-avoid">
+            {/* 1-10 Score Visualization - Styled with theme colors, full width */}
+            <div className="flex gap-1 mb-2 px-4">
               {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
                 <div
                   key={num}
-                  className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center font-bold text-sm ${
+                  className={`flex-1 h-12 rounded-lg border-3 flex items-center justify-center font-bold ${
                     num === wholeScore
-                      ? 'text-white text-lg'
-                      : 'bg-gray-200 border-gray-400 text-gray-600'
+                      ? 'text-white text-xl shadow-lg'
+                      : 'bg-gray-100 border-gray-300 text-gray-500'
                   }`}
                   style={{
                     backgroundColor: num === wholeScore ? dim.color : undefined,
                     borderColor: num === wholeScore ? dim.color : undefined,
+                    borderWidth: num === wholeScore ? '3px' : '1px',
                   }}
                 >
                   {num}
@@ -168,7 +169,7 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
 
             {/* ROW 1: Feedback Statement */}
             <div 
-              className="border-4 border-pink-500 rounded-xl p-4 mb-2"
+              className="border-4 border-pink-500 rounded-xl p-4 mb-1.5"
               style={{ backgroundColor: dim.lightBg }}
             >
               <p className="text-gray-900 text-sm leading-relaxed">
@@ -179,10 +180,10 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
             {/* ROW 2: Personal Development Question */}
             {statement?.personal_development_question && (
               <div 
-                className="border-4 border-pink-500 rounded-xl p-4 mb-2"
+                className="border-4 border-pink-500 rounded-xl p-3 mb-1.5"
                 style={{ backgroundColor: dim.lightBg }}
               >
-                <p className="text-sm font-bold mb-2" style={{ color: dim.color }}>
+                <p className="text-xs font-bold mb-1.5" style={{ color: dim.color }}>
                   💭 Personal Development Question:
                 </p>
                 <p className="text-gray-900 text-sm italic leading-relaxed">
@@ -193,10 +194,10 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
 
             {/* ROW 3: Suggested Activities */}
             <div 
-              className="border-4 border-pink-500 rounded-xl p-4"
+              className="border-4 border-pink-500 rounded-xl p-3"
               style={{ backgroundColor: dim.lightBg }}
             >
-              <p className="text-sm font-bold mb-2" style={{ color: dim.color }}>
+              <p className="text-xs font-bold mb-1.5" style={{ color: dim.color }}>
                 🎯 Suggested Activities:
               </p>
               <p className="text-gray-900 text-sm">
