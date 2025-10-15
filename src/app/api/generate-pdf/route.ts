@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
       timeout: 30000,
     })
 
-    // Wait a bit for images to load
-    await page.waitForTimeout(2000)
+    // Wait for images to load
+    await new Promise(resolve => setTimeout(resolve, 2000))
 
     // Generate PDF
     const pdf = await page.pdf({
