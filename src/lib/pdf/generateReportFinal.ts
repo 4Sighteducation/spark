@@ -159,7 +159,7 @@ export function generateReportPDF(
     const cardX = margin + (idx * (cardWidth + 2))
     
     // BOLD colored card
-    doc.setFillColor(...theme.mainColor)
+    doc.setFillColor(theme.mainColor[0], theme.mainColor[1], theme.mainColor[2])
     doc.setDrawColor(0, 0, 0)
     doc.setLineWidth(0.8)
     doc.roundedRect(cardX, y, cardWidth, cardHeight, 3, 3, 'FD')
@@ -215,8 +215,8 @@ export function generateReportPDF(
       
       if (i === wholeScore) {
         // Highlighted box in theme color
-        doc.setFillColor(...theme.mainColor)
-        doc.setDrawColor(...theme.mainColor)
+        doc.setFillColor(theme.mainColor[0], theme.mainColor[1], theme.mainColor[2])
+        doc.setDrawColor(theme.mainColor[0], theme.mainColor[1], theme.mainColor[2])
         doc.setLineWidth(2)
       } else {
         // Gray box
@@ -237,7 +237,7 @@ export function generateReportPDF(
     y += boxSize + 6
 
     // DIMENSION HEADER BAR - BOLD with theme color and icon
-    doc.setFillColor(...theme.mainColor)
+    doc.setFillColor(theme.mainColor[0], theme.mainColor[1], theme.mainColor[2])
     doc.roundedRect(margin, y, pageWidth - 2 * margin, 12, 2, 2, 'F')
     
     // Add dimension icon to header
@@ -265,7 +265,7 @@ export function generateReportPDF(
     const row1Height = 42
     doc.setDrawColor(233, 30, 140)
     doc.setLineWidth(2)
-    doc.setFillColor(...theme.lightBg)
+    doc.setFillColor(theme.lightBg[0], theme.lightBg[1], theme.lightBg[2])
     doc.roundedRect(margin, y, pageWidth - 2 * margin, row1Height, 3, 3, 'FD')
     
     // Statement text - BLACK, readable
@@ -289,7 +289,7 @@ export function generateReportPDF(
     )
     doc.roundedRect(margin, y, pageWidth - 2 * margin, row2Height, 3, 3, 'FD')
     
-    doc.setTextColor(...theme.mainColor)
+    doc.setTextColor(theme.mainColor[0], theme.mainColor[1], theme.mainColor[2])
     doc.setFontSize(7.5)
     doc.setFont('helvetica', 'bold')
     doc.text('Personal Development Question:', margin + 5, y + 6)
@@ -316,7 +316,7 @@ export function generateReportPDF(
     )
     doc.roundedRect(margin, y, pageWidth - 2 * margin, row3Height, 3, 3, 'FD')
     
-    doc.setTextColor(...theme.mainColor)
+    doc.setTextColor(theme.mainColor[0], theme.mainColor[1], theme.mainColor[2])
     doc.setFontSize(7.5)
     doc.setFont('helvetica', 'bold')
     doc.text('Suggested Activities:', margin + 5, y + 6)
