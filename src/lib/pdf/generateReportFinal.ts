@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf'
 import statementsData from '@/data/statements.json'
+import { iconBase64 } from './iconBase64'
 
 export function generateReportPDF(
   name: string,
@@ -69,16 +70,21 @@ export function generateReportPDF(
   }
 
   // ===== HEADER =====
-  // SPARK logo area (black background, pink text)
-  doc.setFillColor(0, 0, 0)
-  doc.rect(margin, y, 45, 22, 'F')
-  
-  doc.setTextColor(233, 30, 140)
-  doc.setFontSize(22)
-  doc.setFont('helvetica', 'bold')
-  doc.text('SPARK', margin + 22.5, y + 12, { align: 'center' })
-  doc.setFontSize(6.5)
-  doc.text('DEVELOPING STUDENT MINDSET', margin + 22.5, y + 17, { align: 'center' })
+  // SPARK Logo - using base64 image
+  try {
+    const logoKey = 'spark-logo' as keyof typeof iconBase64
+    doc.addImage(iconBase64[logoKey], 'PNG', margin, y, 45, 22)
+  } catch (error) {
+    // Fallback if image fails
+    doc.setFillColor(0, 0, 0)
+    doc.rect(margin, y, 45, 22, 'F')
+    doc.setTextColor(233, 30, 140)
+    doc.setFontSize(22)
+    doc.setFont('helvetica', 'bold')
+    doc.text('SPARK', margin + 22.5, y + 12, { align: 'center' })
+    doc.setFontSize(6.5)
+    doc.text('DEVELOPING STUDENT MINDSET', margin + 22.5, y + 17, { align: 'center' })
+  }
   
   // Student info table
   const tableX = margin + 50
@@ -158,11 +164,21 @@ export function generateReportPDF(
     doc.setLineWidth(0.8)
     doc.roundedRect(cardX, y, cardWidth, cardHeight, 3, 3, 'FD')
     
+    // Add dimension icon at top of card
+    const iconKey = theme.key.replace('_', '-') as keyof typeof iconBase64
+    try {
+      if (iconBase64[iconKey]) {
+        doc.addImage(iconBase64[iconKey], 'PNG', cardX + cardWidth/2 - 4, y + 2, 8, 8)
+      }
+    } catch (error) {
+      // Icon failed - continue without it
+    }
+    
     // Dimension name in white
     doc.setTextColor(255, 255, 255)
-    doc.setFontSize(7)
+    doc.setFontSize(6.5)
     doc.setFont('helvetica', 'bold')
-    doc.text(theme.label, cardX + cardWidth / 2, y + 7, { align: 'center' })
+    doc.text(theme.label, cardX + cardWidth / 2, y + 12, { align: 'center' })
     
     // SCORE - Large and prominent
     doc.setFontSize(22)
@@ -220,14 +236,24 @@ export function generateReportPDF(
     
     y += boxSize + 6
 
-    // DIMENSION HEADER BAR - BOLD with theme color
+    // DIMENSION HEADER BAR - BOLD with theme color and icon
     doc.setFillColor(...theme.mainColor)
     doc.roundedRect(margin, y, pageWidth - 2 * margin, 12, 2, 2, 'F')
+    
+    // Add dimension icon to header
+    const iconKey = theme.key.replace('_', '-') as keyof typeof iconBase64
+    try {
+      if (iconBase64[iconKey]) {
+        doc.addImage(iconBase64[iconKey], 'PNG', margin + 3, y + 2, 8, 8)
+      }
+    } catch (error) {
+      // Icon failed - continue
+    }
     
     doc.setTextColor(255, 255, 255)
     doc.setFontSize(11)
     doc.setFont('helvetica', 'bold')
-    doc.text(theme.label, margin + 5, y + 8)
+    doc.text(theme.label, margin + 15, y + 8)
     
     doc.setFontSize(7)
     doc.setFont('helvetica', 'italic')
