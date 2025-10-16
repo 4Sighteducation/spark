@@ -4,46 +4,8 @@ import type { NextRequest } from 'next/server'
 import type { Database } from '@/types/supabase'
 
 export async function middleware(req: NextRequest) {
-  // TEMPORARILY DISABLED FOR TESTING
-  // TODO: Re-enable after fixing session timing issue
-  
-  const res = NextResponse.next()
-  return res
-  
-  /* DISABLED CODE:
-  // Only run middleware on portal routes
-  if (!req.nextUrl.pathname.startsWith('/portal')) {
-    return NextResponse.next()
-  }
-
-  const supabase = createMiddlewareClient<Database>({ req, res })
-
-  // Refresh session if expired
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  // Allow access to login, reset-password, update-password without auth
-  const publicPortalRoutes = ['/portal/login', '/portal/reset-password', '/portal/update-password', '/portal/test-connection', '/portal/login-direct', '/portal/dashboard-simple']
-  const isPublicRoute = publicPortalRoutes.some(route => req.nextUrl.pathname.startsWith(route))
-
-  if (!session && !isPublicRoute) {
-    // Redirect to login if not authenticated
-    const redirectUrl = req.nextUrl.clone()
-    redirectUrl.pathname = '/portal/login'
-    redirectUrl.searchParams.set('redirect', req.nextUrl.pathname)
-    return NextResponse.redirect(redirectUrl)
-  }
-
-  // If authenticated and trying to access login, redirect to dashboard
-  if (session && req.nextUrl.pathname === '/portal/login') {
-    const redirectUrl = req.nextUrl.clone()
-    redirectUrl.pathname = '/portal/dashboard'
-    return NextResponse.redirect(redirectUrl)
-  }
-
-  return res
-  */
+  // Simple passthrough - auth is handled client-side
+  return NextResponse.next()
 }
 
 export const config = {
