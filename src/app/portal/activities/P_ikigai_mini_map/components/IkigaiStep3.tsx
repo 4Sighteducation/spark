@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getSenseiGuidance } from '@/lib/ai/sensei'
 import SenseiGuide from './SenseiGuide'
 
 interface IkigaiStep3Props {
@@ -18,12 +17,16 @@ export default function IkigaiStep3({ allIdeas, reflection, setReflection, onNex
 
   useEffect(() => {
     async function loadGuidance() {
-      const message = await getSenseiGuidance(3, {
-        currentStep: 3,
-        ideas: allIdeas,
-        conversationHistory: [],
+      const response = await fetch('/api/sensei/guidance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          step: 3,
+          context: { currentStep: 3, ideas: allIdeas, conversationHistory: [] },
+        }),
       })
-      setGuidance(message)
+      const data = await response.json()
+      setGuidance(data.message)
     }
     loadGuidance()
   }, [])

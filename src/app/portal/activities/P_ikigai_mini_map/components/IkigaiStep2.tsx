@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getSenseiGuidance, getSenseiSuggestions } from '@/lib/ai/sensei'
 import SenseiGuide from './SenseiGuide'
 import IdeaInput from './IdeaInput'
 
@@ -22,20 +21,33 @@ export default function IkigaiStep2({ ideas, previousIdeas, addIdea, removeIdea,
 
   useEffect(() => {
     async function loadGuidance() {
-      const message = await getSenseiGuidance(2, {
-        currentStep: 2,
-        ideas: { love: previousIdeas, goodAt: ideas, paidFor: [], worldNeeds: [] },
-        conversationHistory: [],
+      const response = await fetch('/api/sensei/guidance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          step: 2,
+          context: {
+            currentStep: 2,
+            ideas: { love: previousIdeas, goodAt: ideas, paidFor: [], worldNeeds: [] },
+            conversationHistory: [],
+          },
+        }),
       })
-      setGuidance(message)
+      const data = await response.json()
+      setGuidance(data.message)
     }
     loadGuidance()
   }, [])
 
   const handleGetSuggestions = async () => {
     setLoadingSuggestions(true)
-    const suggestions = await getSenseiSuggestions('goodAt', ideas)
-    setAiSuggestions(suggestions)
+    const response = await fetch('/api/sensei/suggestions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ quadrant: 'goodAt', currentIdeas: ideas, studentAge: 13 }),
+    })
+    const data = await response.json()
+    setAiSuggestions(data.suggestions || [])
     setLoadingSuggestions(false)
   }
 

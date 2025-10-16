@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getSenseiGuidance, evaluateIkigai } from '@/lib/ai/sensei'
 import SenseiGuide from './SenseiGuide'
 import Image from 'next/image'
 
@@ -19,16 +18,23 @@ export default function IkigaiStep6({ allIdeas, onComplete, onBack, points }: Ik
 
   useEffect(() => {
     async function loadFinal() {
-      const message = await getSenseiGuidance(6, {
-        currentStep: 6,
-        ideas: allIdeas,
-        conversationHistory: [],
+      // Get guidance
+      const guidanceResponse = await fetch('/api/sensei/guidance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ step: 6, context: { currentStep: 6, ideas: allIdeas, conversationHistory: [] } }),
       })
-      setGuidance(message)
+      const guidanceData = await guidanceResponse.json()
+      setGuidance(guidanceData.message)
 
       // Get AI evaluation
-      const evalResult = await evaluateIkigai(allIdeas)
-      setEvaluation(evalResult)
+      const evalResponse = await fetch('/api/sensei/evaluate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ideas: allIdeas }),
+      })
+      const evalData = await evalResponse.json()
+      setEvaluation(evalData)
       setLoading(false)
     }
     loadFinal()

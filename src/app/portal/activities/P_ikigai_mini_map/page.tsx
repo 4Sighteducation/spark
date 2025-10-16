@@ -10,7 +10,6 @@ import IkigaiStep3 from './components/IkigaiStep3'
 import IkigaiStep4 from './components/IkigaiStep4'
 import IkigaiStep5 from './components/IkigaiStep5'
 import IkigaiStep6 from './components/IkigaiStep6'
-import { getSenseiWelcome } from '@/lib/ai/sensei'
 
 export default function IkigaiQuestPage() {
   const router = useRouter()
@@ -47,9 +46,14 @@ export default function IkigaiQuestPage() {
       
       if (profile) {
         setStudentName(profile.first_name)
-        // Get AI welcome message
-        const welcome = await getSenseiWelcome(profile.first_name)
-        setWelcomeMessage(welcome)
+        // Get AI welcome message from API
+        const response = await fetch('/api/sensei/welcome', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ studentName: profile.first_name }),
+        })
+        const data = await response.json()
+        setWelcomeMessage(data.message)
       }
     }
 
