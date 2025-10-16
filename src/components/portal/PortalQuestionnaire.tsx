@@ -67,6 +67,12 @@ export default function PortalQuestionnaire({ student, cycleInfo }: PortalQuesti
   const submitQuestionnaire = async () => {
     setSubmitting(true)
 
+    console.log('🔄 Submitting questionnaire...', {
+      answersCount: Object.keys(answers).length,
+      cycleId: cycleInfo.id,
+      cycleNumber: cycleInfo.cycle_number,
+    })
+
     try {
       const response = await fetch('/api/questionnaire/submit', {
         method: 'POST',
@@ -78,21 +84,26 @@ export default function PortalQuestionnaire({ student, cycleInfo }: PortalQuesti
         }),
       })
 
+      console.log('📡 Response status:', response.status)
+
       const data = await response.json()
+      console.log('📦 Response data:', data)
 
       if (!response.ok) {
-        console.error('Failed to submit:', data.error)
-        alert('Failed to save your responses. Please try again.')
+        console.error('❌ Failed to submit:', data.error)
+        alert(`Failed to save your responses.\n\nError: ${data.error}\n\nPlease try again or contact support.`)
         setSubmitting(false)
         return
       }
 
+      console.log('✅ Submission successful!')
+      
       // Success! Redirect to reports page
       router.push('/portal/reports')
       router.refresh()
     } catch (error) {
-      console.error('Error submitting questionnaire:', error)
-      alert('An error occurred. Please try again.')
+      console.error('❌ Error submitting questionnaire:', error)
+      alert(`An error occurred: ${error}\n\nPlease try again.`)
       setSubmitting(false)
     }
   }
