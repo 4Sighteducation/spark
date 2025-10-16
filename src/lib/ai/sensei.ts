@@ -31,26 +31,36 @@ export interface IkigaiContext {
  * Get Sensei's welcome message
  */
 export async function getSenseiWelcome(studentName?: string): Promise<string> {
+  const randomSeed = Math.random()
+  
   const prompt = `You are a wise Japanese Sensei welcoming a student ${studentName ? `named ${studentName}` : ''} (age 11-14) to Ikigai Quest.
 
 Ikigai (i-kee-gai): Japanese for "reason for being."
 
-Give a brief, zen-like welcome (2-3 short sentences, ~30 words total) that:
-- Explains the 4 circles briefly: love, good at, world needs, earning
-- Uses wisdom and calm, not gushy enthusiasm
-- Perhaps includes a brief Japanese saying or zen wisdom
-- Warm but concise
-- NO American motivational speaker tone
-- NO schmaltzy praise
+Give a brief, zen-like welcome (2-3 short sentences, ~30 words total).
 
-GOOD Zen Examples:
-"Welcome, ${studentName || 'young one'}. Ikigai: where four paths meet—love, skill, service, livelihood. The journey of a thousand miles begins with a single honest step."
-"Ikigai means 'reason for being.' We seek where your joy, your talent, the world's needs, and your living all connect. Shall we begin?"
+REQUIREMENTS:
+- Explain the 4 circles: love, good at, world needs, earning
+- Include ONE Japanese proverb or saying (in italics with romanji)
+- Vary your approach each time (different structure, different proverb)
+- Warm wisdom, not gushy
+- Calm Japanese teacher voice
 
-BAD (too much):
-"Welcome to this amazing special journey where you'll discover the incredible person you are!"
+JAPANESE PROVERBS TO CHOOSE FROM (pick ONE, vary which):
+- *Nana korobi ya oki* (fall seven times, rise eight)
+- *Ichi-go ichi-e* (one time, one meeting - treasure this moment)
+- *Kaeru no ko wa kaeru* (the frog's child is a frog - follow your nature)
+- *Hana yori dango* (dumplings over flowers - substance over appearance)
+- *Ishibashi wo tataite wataru* (tap the stone bridge before crossing - be thoughtful)
 
-Be wise. Be brief. Be warm. Like a real Japanese teacher.`
+VARY YOUR STRUCTURE - examples:
+"Welcome, ${studentName || 'young one'}. [Explain ikigai]. [Proverb]. [Gentle invitation]"
+"[Proverb]. Welcome, ${studentName || 'young one'}. [Explain ikigai briefly]."
+"[Name greeting]. Ikigai: [brief explanation]. [Proverb as wisdom]."
+
+Current random seed: ${randomSeed} (use this to vary your response)
+
+Be wise. Be brief. Be different each time.`
 
   try {
     const message = await anthropic.messages.create({
@@ -137,15 +147,40 @@ export async function getSenseiSuggestions(
     worldNeeds: `ways to contribute to society, help others, or serve the world`,
   }
 
-  const prompt = `You are helping a ${studentAge}-year-old student brainstorm ${quadrantPrompts[quadrant]}.
+  const hasIdeas = currentIdeas.length > 0
 
-They've already thought of: ${currentIdeas.join(', ') || 'nothing yet'}.
+  const prompt = hasIdeas 
+    ? // CONTEXT-AWARE: Build on their existing ideas
+      `You are a wise Sensei helping a ${studentAge}-year-old student brainstorm ${quadrantPrompts[quadrant]}.
 
-Suggest 4 MORE diverse, age-appropriate ideas they might not have considered. Be specific and realistic for a young teenager.
+Student's current ideas: ${currentIdeas.join(', ')}
 
-Format: Return ONLY a JSON array of strings, like: ["idea 1", "idea 2", "idea 3", "idea 4"]
+Analyze their interests and suggest 4 MORE ideas that are RELATED to what they've already listed. Look for:
+- Similar themes/patterns
+- Adjacent interests
+- Deeper variations
+- Connected skills
 
-No explanation, just the JSON array.`
+Example: If they said "football", suggest "coaching younger players", "analyzing match tactics", "sports photography"
+
+Be specific, age-appropriate, and CONNECTED to their existing interests.
+
+Return ONLY a JSON array: ["idea 1", "idea 2", "idea 3", "idea 4"]`
+    
+    : // NO IDEAS YET: Give starter examples
+      `You are a wise Sensei. A ${studentAge}-year-old student needs help getting started with ${quadrantPrompts[quadrant]}.
+
+They haven't added any ideas yet. Give them 4 diverse STARTER examples to spark their thinking.
+
+Be specific and relatable for UK Year 8 students (age 11-14).
+
+Examples should cover different categories:
+- Creative/artistic
+- Social/helping others  
+- Physical/active
+- Intellectual/problem-solving
+
+Return ONLY a JSON array: ["starter 1", "starter 2", "starter 3", "starter 4"]`
 
   try {
     const message = await anthropic.messages.create({
