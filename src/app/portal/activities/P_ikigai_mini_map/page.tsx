@@ -38,19 +38,20 @@ export default function IkigaiQuestPage() {
       }
 
       // Get student name
-      const { data: profile } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('first_name')
         .eq('id', session.user.id)
-        .single()
+        .maybeSingle()
       
-      if (profile) {
-        setStudentName(profile.first_name)
+      if (profile && !profileError) {
+        const firstName = (profile as any).first_name
+        setStudentName(firstName)
         // Get AI welcome message from API
         const response = await fetch('/api/sensei/welcome', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ studentName: profile.first_name }),
+          body: JSON.stringify({ studentName: firstName }),
         })
         const data = await response.json()
         setWelcomeMessage(data.message)

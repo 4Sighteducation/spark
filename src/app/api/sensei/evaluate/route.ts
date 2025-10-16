@@ -12,9 +12,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(evaluation)
   } catch (error) {
     console.error('Sensei evaluation error:', error)
-    const totalIdeas = Object.values(ideas).flat().length
     return NextResponse.json({
-      score: Math.min(100, totalIdeas * 10),
+      score: 75,
       feedback: "You've taken important steps in discovering your purpose!",
       bonusPoints: 20,
     })
