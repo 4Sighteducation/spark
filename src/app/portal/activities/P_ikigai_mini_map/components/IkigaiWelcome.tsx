@@ -99,20 +99,20 @@ export default function IkigaiWelcome({ studentName, welcomeMessage, onStart }: 
         </p>
       )}
 
-      {/* Falling Cherry Blossoms */}
+      {/* Falling Cherry Blossoms - Gentle & Slow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(12)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <div
             key={i}
             className="absolute animate-fall"
             style={{
               left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${10 + Math.random() * 5}s`,
-              opacity: 0.8,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${20 + Math.random() * 10}s`,
+              opacity: 0.6,
             }}
           >
-            <div className="text-4xl">🌸</div>
+            <div className="text-3xl">🌸</div>
           </div>
         ))}
       </div>

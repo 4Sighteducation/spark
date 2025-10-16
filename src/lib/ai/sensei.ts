@@ -31,16 +31,21 @@ export interface IkigaiContext {
  * Get Sensei's welcome message
  */
 export async function getSenseiWelcome(studentName?: string): Promise<string> {
-  const prompt = `You are a wise, kind Sensei guiding a ${studentName ? `student named ${studentName}` : 'young student'} (age 11-14) through the Ikigai Quest.
+  const prompt = `You are a wise but down-to-earth Sensei guiding a UK secondary school student ${studentName ? `named ${studentName}` : ''} (age 11-14) through the Ikigai Quest.
 
-Ikigai (i-kee-gai) is a Japanese concept meaning "reason for being" - finding joy and purpose in life.
+Ikigai (i-kee-gai) is a Japanese concept meaning "reason for being."
 
-Give a warm, encouraging welcome (2-3 sentences) that:
-- Explains we'll explore what they love, what they're good at, what the world needs, and what they can be paid for
-- Makes them feel safe and excited
-- Uses simple, age-appropriate language
+Give a brief, straightforward welcome (2 sentences max) that:
+- Explains the 4 circles (love, good at, world needs, paid for) 
+- Is friendly but NOT schmaltzy or over-the-top
+- Uses British tone (direct, bit of dry wit, no American motivational speaker vibes)
+- Respects that UK teens are more cynical/direct than American teens
 
-Be warm, wise, and brief. No emojis.`
+Examples of good tone:
+"Right then, ${studentName || 'young one'}. We're going to work out your Ikigai—basically, what makes life worth getting out of bed for."
+"Ikigai: sounds mysterious, but it's just four questions about what you love, what you're decent at, what helps others, and what might pay the bills one day."
+
+Be brief, British, a bit witty. No schmaltzy stuff. No emojis.`
 
   try {
     const message = await anthropic.messages.create({
@@ -52,7 +57,7 @@ Be warm, wise, and brief. No emojis.`
     return message.content[0].type === 'text' ? message.content[0].text : ''
   } catch (error) {
     console.error('Sensei error:', error)
-    return "Welcome, young one. Today we begin a special journey to discover your Ikigai - your reason for being. Together, we will explore what brings you joy, where your strengths lie, and how you might contribute to the world."
+    return `Right then${studentName ? ', ' + studentName : ''}. Let's work out your Ikigai—basically, what makes life worth getting out of bed for. Four simple questions: what you love, what you're good at, what the world needs, and what might pay the bills.`
   }
 }
 
@@ -64,19 +69,31 @@ export async function getSenseiGuidance(
   context: IkigaiContext
 ): Promise<string> {
   const stepPrompts = {
-    1: `The student is on Step 1: "What You LOVE". They need to list things that make them happiest and most excited. Guide them to think deeply and be specific. Give 2-3 sentences of encouragement.`,
-    2: `The student is on Step 2: "What You're GOOD AT". They have listed what they love: ${context.ideas.love.join(', ')}. Now help them think about their strengths and skills. Be encouraging about 'good enough' vs 'the best'. Give 2-3 sentences.`,
-    3: `The student is completing their internal reflection. They've listed what they love (${context.ideas.love.length} items) and what they're good at (${context.ideas.goodAt.length} items). Encourage them to let these ideas rest and look for connections. Give 2-3 sentences of wisdom about patience and synthesis.`,
-    4: `Step 4: "What You Can Be PAID FOR". Help them think practically about careers and earning, but also remind them that freedom, creativity, and autonomy might matter more than money. Give 2-3 sentences.`,
-    5: `Step 5: "What The WORLD NEEDS". They've shared their passions (${context.ideas.love.join(', ')}). Help them think about how their interests could serve others and contribute to society. Be inspiring but realistic for a 11-14 year old. Give 2-3 sentences.`,
-    6: `Final step! They've completed all 4 quadrants. Help them see the patterns and overlaps emerging. Where do their passions, skills, earning potential, and service to the world intersect? Give 2-3 sentences of celebration and guidance.`,
+    1: `Step 1: "What You LOVE". UK student, age 11-14. Guide them to list specific things (not vague). Be direct and friendly, bit of wit. 1-2 sentences max. British tone - no American schmaltzy stuff.`,
+    2: `Step 2: "What You're GOOD AT". They listed: ${context.ideas.love.join(', ')}. Help spot skills. Remind them 'good enough' counts. British direct tone, 1-2 sentences, bit witty.`,
+    3: `Reflection moment. They have ${context.ideas.love.length + context.ideas.goodAt.length} ideas so far. Tell them to look for patterns, not rush. British wit welcome. 1-2 sentences.`,
+    4: `"What You Can Be PAID FOR". Practical career chat. Remind them freedom/creativity > just cash. British direct, 1-2 sentences, slight wit okay.`,
+    5: `"What The WORLD NEEDS". How can their stuff help others? Keep it real for UK 11-14 year olds - not overly noble. 1-2 sentences, British tone.`,
+    6: `Final step! All 4 done. Point out where circles overlap = their Ikigai. Celebrate but keep it real. British, 1-2 sentences, can be slightly cheeky.`,
   }
 
-  const prompt = `You are a wise Sensei guiding a young student through Ikigai Quest.
+  const prompt = `You are a down-to-earth Sensei guiding a UK Year 8 student (age 11-14).
 
 ${stepPrompts[step as keyof typeof stepPrompts]}
 
-Respond in the voice of a wise, kind teacher. Be brief (2-3 sentences), encouraging, and age-appropriate for 11-14 year olds. No emojis.`
+CRITICAL TONE RULES:
+- British, not American (no "awesome", "amazing person", "special journey")
+- Direct and practical, not schmaltzy
+- Bit of dry wit welcome
+- Respect that UK teens are more cynical/direct
+- 1-2 sentences MAX
+- NO emojis
+- NO over-the-top praise
+
+Good: "Right, let's see what actually matters to you. Be specific—'football' is vague, 'scoring goals as a striker' is useful."
+Bad: "You're amazing! This special journey will help you discover the incredible person inside!"
+
+Respond as a wise but real teacher would.`
 
   try {
     const message = await anthropic.messages.create({
@@ -182,17 +199,17 @@ Return JSON only:
   }
 }
 
-// Fallback guidance
+// Fallback guidance - British tone
 function getDefaultGuidance(step: number): string {
   const defaults = {
-    1: "Begin by thinking about what truly makes you happy. What activities make time fly? What do you look forward to? Be honest with yourself - there are no wrong answers here.",
-    2: "Now consider your strengths. What do others ask for your help with? What comes naturally to you? Remember, 'good at' doesn't mean perfect - it means capable.",
-    3: "Take a moment to reflect on what you've discovered. Look for patterns and connections. Sometimes our greatest insights come when we give our minds time to rest and process.",
-    4: "Think practically now. How might your passions and skills translate into earning a living? Money is important, but so are creativity, freedom, and doing work you enjoy.",
-    5: "Consider how your unique combination of interests and abilities might serve others. What problems could you help solve? What needs could you meet in your community or the wider world?",
-    6: "Look at everything you've discovered. Where do all four circles overlap? That space - where your passion, talent, purpose, and livelihood meet - that is your Ikigai.",
+    1: "Right then. What actually makes you happy? Be specific - 'football' is vague, 'scoring goals' is better.",
+    2: "Now then - what are you decent at? 'Good enough' counts. What do people ask you for help with?",
+    3: "Pause here. Look for patterns between what you love and what you're good at. Connections often appear when you stop rushing.",
+    4: "Career time. How might you earn from this? Remember: freedom and creativity matter as much as cash.",
+    5: "World needs - how could your interests actually help people? Keep it real, not preachy.",
+    6: "Look where all four overlap. That's your Ikigai - where passion, skill, service and earning meet. Not bad.",
   }
-  return defaults[step as keyof typeof defaults] || "Continue your journey with an open mind and honest heart."
+  return defaults[step as keyof typeof defaults] || "Keep going. You're doing fine."
 }
 
 // Fallback suggestions
