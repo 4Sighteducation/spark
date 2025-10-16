@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
+import charactersConfig from './SPARK Characters.json'
 
 export const dynamic = 'force-dynamic'
 
@@ -7,34 +8,34 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
 })
 
-// Character personalities
-const CHARACTERS = {
-  sensei: {
-    name: "a wise Sensei",
-    personality: "wise, calm, philosophical, uses Japanese wisdom",
-    style: "Brief guidance (2-3 sentences), encouraging, age-appropriate for 11-14 year olds"
-  },
-  coach: {
-    name: "an energetic Coach", 
-    personality: "motivational, action-focused, direct, enthusiastic",
-    style: "Short, punchy guidance, use sports/action metaphors, keep students moving"
-  },
-  scientist: {
-    name: "a curious Scientist",
-    personality: "analytical, evidence-based, inquisitive, methodical",
-    style: "Ask probing questions, encourage inquiry, use scientific thinking"
-  },
-  friend: {
-    name: "a supportive Friend",
-    personality: "warm, relatable, casual but respectful, peer-like",
-    style: "Conversational, encouraging, like talking to a slightly older student"
-  },
-  mentor: {
-    name: "an experienced Mentor",
-    personality: "professional, knowledgeable, career-focused, practical",
-    style: "Real-world advice, industry insights, future-oriented thinking"
-  }
+// Load character configurations from your detailed JSON
+const CHARACTERS: Record<string, any> = {}
+
+// Meta guide (Sensei)
+CHARACTERS.sensei = {
+  name: charactersConfig.metaGuide.displayName,
+  personality: `${charactersConfig.metaGuide.archetype}, ${charactersConfig.metaGuide.tone}`,
+  baseRules: charactersConfig.metaGuide.baseRules.join('. '),
+  signatureLines: charactersConfig.metaGuide.signatureLines,
+  style: "Brief guidance, ask 1-2 questions before advice, offer one action + one reflection"
 }
+
+// Theme-specific guides
+charactersConfig.guides.forEach((guide: any) => {
+  CHARACTERS[guide.character] = {
+    name: guide.displayName,
+    theme: guide.theme,
+    personality: `${guide.archetype}, ${guide.tone}`,
+    baseRules: guide.baseRules.join('. '),
+    signatureLines: guide.signatureLines,
+    signatureMoves: guide.signatureMoves,
+    humor: guide.humor,
+    style: `${guide.tone} tone, uses ${guide.archetype} metaphors`
+  }
+})
+
+// Global safety guards
+const GLOBAL_GUARDS = charactersConfig.globalGuards.join('\n')
 
 /**
  * Universal AI Guide endpoint
@@ -51,20 +52,33 @@ export async function POST(req: NextRequest) {
 
     const characterConfig = CHARACTERS[character as keyof typeof CHARACTERS] || CHARACTERS.sensei
 
-    // Build system prompt with BASE RULES
+    // Build system prompt with YOUR DETAILED CHARACTER CONFIG
     const systemPrompt = `You are ${characterConfig.name} helping a ${studentAge}-year-old student.
 
 PERSONALITY: ${characterConfig.personality}
 STYLE: ${characterConfig.style}
 
-STRICT RULES (ALWAYS FOLLOW):
-1. Age-appropriate language for ${studentAge} year olds
-2. NO profanity, NO inappropriate content
-3. Encouraging and supportive tone
-4. Brief responses (2-3 sentences maximum)
-5. Educational focus
-6. UK English spelling
-7. Inclusive and respectful of all backgrounds
+YOUR CORE RULES:
+${characterConfig.baseRules}
+
+${characterConfig.signatureLines ? `YOUR SIGNATURE PHRASES (use these naturally):
+${characterConfig.signatureLines.map((line: string) => `- "${line}"`).join('\n')}` : ''}
+
+${characterConfig.humor ? `HUMOR GUIDELINES:
+- Cheeky mode: ${characterConfig.humor.cheeky_mode ? 'Yes' : 'No'}
+- Style: ${characterConfig.humor.style}
+- Guardrails: ${characterConfig.humor.guardrails.join('. ')}
+${characterConfig.humor.examples ? `- Examples: ${characterConfig.humor.examples.join(' | ')}` : ''}` : ''}
+
+GLOBAL SAFETY GUARDS (ALWAYS FOLLOW):
+${GLOBAL_GUARDS}
+
+ADDITIONAL RULES:
+- Age-appropriate for ${studentAge} year olds
+- UK English spelling
+- Brief responses (under 120 words)
+- Give one action + one reflection
+- Offer choices when possible
 
 ${context.activitySpecificRules || ''}
 `
