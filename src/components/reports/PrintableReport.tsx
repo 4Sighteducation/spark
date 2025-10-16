@@ -14,40 +14,40 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
       key: 'self_direction', 
       label: 'SELF-DIRECTION', 
       subtitle: 'Taking initiative and being pro-active',
-      color: '#069BAA',
-      lightBg: '#E6F7FA',
+      color: '#e91e8c',
+      lightBg: '#fdf2f8',
       icon: '/icon-self-direction.png'
     },
     { 
       key: 'purpose', 
       label: 'PURPOSE', 
       subtitle: 'Hope, aspirations and your sense of purpose',
-      color: '#FF8CB4',
-      lightBg: '#FFF0F6',
+      color: '#7f3ae7',
+      lightBg: '#f5f3ff',
       icon: '/icon-purpose.png'
     },
     { 
       key: 'awareness', 
       label: 'AWARENESS', 
       subtitle: 'Working with others, empathy and fostering relationships',
-      color: '#C83296',
-      lightBg: '#FCE6F5',
+      color: '#00b6d7',
+      lightBg: '#ecfeff',
       icon: '/icon-awareness.png'
     },
     { 
       key: 'resilience', 
       label: 'RESILIENCE', 
       subtitle: 'Grit, Perseverance and Reliability',
-      color: '#96B432',
-      lightBg: '#F5FAE6',
+      color: '#83cc0c',
+      lightBg: '#f7fee7',
       icon: '/icon-resilience.png'
     },
     { 
       key: 'knowledge', 
       label: 'KNOWLEDGE', 
       subtitle: 'Curiosity, Attention and How You Value Education',
-      color: '#64C896',
-      lightBg: '#EEF9F5',
+      color: '#fdbe21',
+      lightBg: '#fffbeb',
       icon: '/icon-knowledge.png'
     },
   ]

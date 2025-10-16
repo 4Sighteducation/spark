@@ -90,24 +90,24 @@ const config: Config = {
             900: '#7C2D12',
           },
         },
-        // SPARK Dimension Colors
+        // SPARK Dimension Colors (EXACT brand colors)
         dimension: {
-          S: '#E91E8C', // Self-direction - Pink
-          P: '#7C3AED', // Purpose - Purple
-          A: '#06B6D4', // Awareness - Cyan
-          R: '#84CC16', // Resilience - Lime
-          K: '#FBBF24', // Knowledge - Yellow
+          S: '#e91e8c', // Self-direction - Pink
+          P: '#7f3ae7', // Purpose - Purple  
+          A: '#00b6d7', // Awareness - Cyan
+          R: '#83cc0c', // Resilience - Lime
+          K: '#fdbe21', // Knowledge - Yellow
         },
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'spark-gradient': 'linear-gradient(135deg, #E91E8C 0%, #7C3AED 100%)',
-        'dimension-s': 'linear-gradient(135deg, #E91E8C 0%, #F472B6 100%)',
-        'dimension-p': 'linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%)',
-        'dimension-a': 'linear-gradient(135deg, #06B6D4 0%, #22D3EE 100%)',
-        'dimension-r': 'linear-gradient(135deg, #84CC16 0%, #A3E635 100%)',
-        'dimension-k': 'linear-gradient(135deg, #FBBF24 0%, #FCD34D 100%)',
+        'spark-gradient': 'linear-gradient(135deg, #e91e8c 0%, #7f3ae7 100%)',
+        'dimension-s': 'linear-gradient(135deg, #e91e8c 0%, #f472b6 100%)',
+        'dimension-p': 'linear-gradient(135deg, #7f3ae7 0%, #a78bfa 100%)',
+        'dimension-a': 'linear-gradient(135deg, #00b6d7 0%, #22d3ee 100%)',
+        'dimension-r': 'linear-gradient(135deg, #83cc0c 0%, #a3e635 100%)',
+        'dimension-k': 'linear-gradient(135deg, #fdbe21 0%, #fcd34d 100%)',
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],

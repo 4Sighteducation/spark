@@ -239,7 +239,7 @@ export function DemoQuestionnaire({ leadData, onComplete }: DemoQuestionnairePro
                 transform: 'translate(-50%, -50%)'
               }}
             >
-              <div className="text-6xl drop-shadow-2xl">
+              <div className="drop-shadow-2xl" style={{ fontSize: '2.8rem' }}>
                 {currentAnswer < 20 ? '😢' : 
                  currentAnswer < 35 ? '😟' : 
                  currentAnswer < 50 ? '😐' : 
