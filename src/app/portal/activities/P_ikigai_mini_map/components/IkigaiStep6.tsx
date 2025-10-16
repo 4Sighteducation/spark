@@ -27,8 +27,8 @@ export default function IkigaiStep6({ allIdeas, onComplete, onBack, points }: Ik
       setGuidance(message)
 
       // Get AI evaluation
-      const eval = await evaluateIkigai(allIdeas)
-      setEvaluation(eval)
+      const evalResult = await evaluateIkigai(allIdeas)
+      setEvaluation(evalResult)
       setLoading(false)
     }
     loadFinal()
