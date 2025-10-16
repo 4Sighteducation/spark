@@ -169,8 +169,8 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
 
             {/* ROW 1: Feedback Statement */}
             <div 
-              className="border-4 border-pink-500 rounded-xl p-4 mb-1.5"
-              style={{ backgroundColor: dim.lightBg }}
+              className="border-4 rounded-xl p-4 mb-1.5"
+              style={{ backgroundColor: dim.lightBg, borderColor: dim.color }}
             >
               <p className="text-gray-900 text-sm leading-relaxed">
                 {statement?.statement || `Great work in ${dim.label}!`}
@@ -180,8 +180,8 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
             {/* ROW 2: Personal Development Question */}
             {statement?.personal_development_question && (
               <div 
-                className="border-4 border-pink-500 rounded-xl p-3 mb-1.5"
-                style={{ backgroundColor: dim.lightBg }}
+                className="border-4 rounded-xl p-3 mb-1.5"
+                style={{ backgroundColor: dim.lightBg, borderColor: dim.color }}
               >
                 <p className="text-xs font-bold mb-1.5" style={{ color: dim.color }}>
                   💭 Personal Development Question:
@@ -194,8 +194,8 @@ export function PrintableReport({ name, reportData, school }: PrintableReportPro
 
             {/* ROW 3: Suggested Activities */}
             <div 
-              className="border-4 border-pink-500 rounded-xl p-3"
-              style={{ backgroundColor: dim.lightBg }}
+              className="border-4 rounded-xl p-3"
+              style={{ backgroundColor: dim.lightBg, borderColor: dim.color }}
             >
               <p className="text-xs font-bold mb-1.5" style={{ color: dim.color }}>
                 🎯 Suggested Activities:
