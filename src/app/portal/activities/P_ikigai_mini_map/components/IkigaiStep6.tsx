@@ -14,6 +14,7 @@ interface IkigaiStep6Props {
 export default function IkigaiStep6({ allIdeas, onComplete, onBack, points }: IkigaiStep6Props) {
   const [guidance, setGuidance] = useState('')
   const [evaluation, setEvaluation] = useState<any>(null)
+  const [aiOverlaps, setAiOverlaps] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -35,6 +36,16 @@ export default function IkigaiStep6({ allIdeas, onComplete, onBack, points }: Ik
       })
       const evalData = await evalResponse.json()
       setEvaluation(evalData)
+
+      // Get AI overlap analysis
+      const overlapResponse = await fetch('/api/sensei/analyze-overlaps', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ideas: allIdeas, connections: [] }),
+      })
+      const overlapData = await overlapResponse.json()
+      setAiOverlaps(overlapData.overlaps)
+
       setLoading(false)
     }
     loadFinal()
@@ -186,6 +197,76 @@ export default function IkigaiStep6({ allIdeas, onComplete, onBack, points }: Ik
               </ul>
             </div>
           </div>
+
+          {/* AI Overlap Analysis - PASSION, MISSION, PROFESSION, VOCATION */}
+          {aiOverlaps && (
+            <div className="mb-8">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">🎯 Sensei's Analysis: Your Overlaps</h3>
+                <p className="text-gray-600">Where your circles meet, purpose emerges...</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                {/* PASSION (Love + Good At) */}
+                <div className="bg-gradient-to-br from-pink-100 to-purple-100 rounded-xl p-5 border-3 border-pink-400">
+                  <h4 className="font-bold text-pink-800 text-lg mb-2">💕 PASSION</h4>
+                  <p className="text-xs text-gray-600 mb-3">Love + Good At</p>
+                  <ul className="space-y-1">
+                    {aiOverlaps.passion.map((item: string, i: number) => (
+                      <li key={i} className="text-sm text-gray-800">• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* MISSION (Love + World Needs) */}
+                <div className="bg-gradient-to-br from-pink-100 to-cyan-100 rounded-xl p-5 border-3 border-cyan-400">
+                  <h4 className="font-bold text-cyan-800 text-lg mb-2">🌟 MISSION</h4>
+                  <p className="text-xs text-gray-600 mb-3">Love + World Needs</p>
+                  <ul className="space-y-1">
+                    {aiOverlaps.mission.map((item: string, i: number) => (
+                      <li key={i} className="text-sm text-gray-800">• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* PROFESSION (Good At + Paid For) */}
+                <div className="bg-gradient-to-br from-purple-100 to-yellow-100 rounded-xl p-5 border-3 border-yellow-400">
+                  <h4 className="font-bold text-yellow-800 text-lg mb-2">💼 PROFESSION</h4>
+                  <p className="text-xs text-gray-600 mb-3">Good At + Paid For</p>
+                  <ul className="space-y-1">
+                    {aiOverlaps.profession.map((item: string, i: number) => (
+                      <li key={i} className="text-sm text-gray-800">• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* VOCATION (Paid For + World Needs) */}
+                <div className="bg-gradient-to-br from-cyan-100 to-lime-100 rounded-xl p-5 border-3 border-lime-400">
+                  <h4 className="font-bold text-lime-800 text-lg mb-2">🌍 VOCATION</h4>
+                  <p className="text-xs text-gray-600 mb-3">Paid For + World Needs</p>
+                  <ul className="space-y-1">
+                    {aiOverlaps.vocation.map((item: string, i: number) => (
+                      <li key={i} className="text-sm text-gray-800">• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* IKIGAI CENTER - The Ultimate Purpose */}
+              {aiOverlaps.ikigai_center && aiOverlaps.ikigai_center.length > 0 && (
+                <div className="bg-gradient-to-r from-pink-200 via-purple-200 via-cyan-200 to-yellow-200 rounded-2xl p-8 border-4 border-purple-500 shadow-2xl text-center animate-pulse-gentle">
+                  <div className="text-5xl mb-3">🎌</div>
+                  <h4 className="font-bold text-2xl text-purple-900 mb-3">YOUR IKIGAI</h4>
+                  <p className="text-sm text-gray-700 mb-4">Where ALL four circles meet:</p>
+                  {aiOverlaps.ikigai_center.map((item: string, i: number) => (
+                    <p key={i} className="text-xl font-bold text-purple-900 leading-relaxed">
+                      {item}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* AI Feedback */}
           {evaluation && (

@@ -2,6 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import SenseiGuide from './SenseiGuide'
+import DraggableCanvas from './DraggableCanvas'
+
+interface Connection {
+  fromId: string
+  toId: string
+}
 
 interface IkigaiStep3Props {
   allIdeas: any
@@ -14,6 +20,36 @@ interface IkigaiStep3Props {
 
 export default function IkigaiStep3({ allIdeas, reflection, setReflection, onNext, onBack, points }: IkigaiStep3Props) {
   const [guidance, setGuidance] = useState('')
+  const [connections, setConnections] = useState<Connection[]>([])
+  const [connectionInsight, setConnectionInsight] = useState('')
+
+  // When connections change, ask AI for insight
+  const handleConnectionsChange = async (newConnections: Connection[]) => {
+    setConnections(newConnections)
+    
+    if (newConnections.length > 0) {
+      // Get AI insight about the connection
+      const response = await fetch('/api/ai/guide', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          character: 'sensei',
+          message: `Student connected ${newConnections.length} items in their Ikigai exploration. Provide brief zen wisdom about patterns emerging (1 sentence, 15-20 words).`,
+          context: {
+            studentInput: `Connections made: ${newConnections.length}`,
+          },
+        }),
+      })
+      const data = await response.json()
+      setConnectionInsight(data.message)
+    }
+  }
+
+  const handleAddNote = (text: string, quadrant: 'love' | 'goodAt') => {
+    // Add to parent state
+    // This would call back to main page to add the idea
+    console.log('Add note:', text, quadrant)
+  }
 
   useEffect(() => {
     async function loadGuidance() {
@@ -66,39 +102,27 @@ export default function IkigaiStep3({ allIdeas, reflection, setReflection, onNex
             </p>
           </div>
 
-          {/* Show collected ideas */}
-          <div className="grid md:grid-cols-2 gap-4 mb-8">
-            {/* What you Love */}
-            <div className="bg-pink-50 rounded-2xl p-5 border-3 border-pink-300">
-              <h3 className="font-bold text-pink-800 mb-3 flex items-center gap-2">
-                <span className="text-2xl">💖</span>
-                What You LOVE ({allIdeas.love.length})
-              </h3>
-              <ul className="space-y-2 text-sm text-gray-700">
-                {allIdeas.love.map((idea: string, i: number) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-pink-500">•</span>
-                    <span>{idea}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* What you're Good At */}
-            <div className="bg-purple-50 rounded-2xl p-5 border-3 border-purple-300">
-              <h3 className="font-bold text-purple-800 mb-3 flex items-center gap-2">
-                <span className="text-2xl">🌟</span>
-                What You're GOOD AT ({allIdeas.goodAt.length})
-              </h3>
-              <ul className="space-y-2 text-sm text-gray-700">
-                {allIdeas.goodAt.map((idea: string, i: number) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-purple-500">•</span>
-                    <span>{idea}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Interactive Draggable Canvas */}
+          <div className="mb-8">
+            <p className="text-gray-700 text-center mb-4 font-medium">
+              🎨 <strong>Drag your ideas around!</strong> Position them based on how much you love them (left-right) and how skilled you are (top-bottom).
+              Connect related items to spot patterns.
+            </p>
+            
+            <DraggableCanvas
+              loveIdeas={allIdeas.love}
+              goodAtIdeas={allIdeas.goodAt}
+              onConnectionsChange={handleConnectionsChange}
+              onAddNote={handleAddNote}
+            />
+            
+            {/* AI Insight when connections are made */}
+            {connectionInsight && (
+              <div className="mt-4 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-4 border-2 border-purple-300 animate-fade-in">
+                <p className="text-sm font-semibold text-purple-900 mb-1">🧙‍♂️ Sensei observes:</p>
+                <p className="text-purple-800 italic">{connectionInsight}</p>
+              </div>
+            )}
           </div>
 
           {/* Reflection Area */}
