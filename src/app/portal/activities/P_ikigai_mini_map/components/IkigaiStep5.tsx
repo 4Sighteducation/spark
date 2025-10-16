@@ -33,6 +33,11 @@ export default function IkigaiStep5({ ideas, allPreviousIdeas, addIdea, removeId
   }, [])
 
   const handleGetSuggestions = async () => {
+    if (ideas.length === 0) {
+      const confirmed = confirm("Sensei says: First, name one or two ways you might serve others. Even small acts matter. Then I can suggest related paths.")
+      if (!confirmed) return
+    }
+
     setLoadingSuggestions(true)
     const response = await fetch('/api/sensei/suggestions', {
       method: 'POST',

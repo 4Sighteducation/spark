@@ -45,10 +45,10 @@ export default function IkigaiStep3({ allIdeas, reflection, setReflection, onNex
     }
   }
 
-  const handleAddNote = (text: string, quadrant: 'love' | 'goodAt') => {
-    // Add to parent state
-    // This would call back to main page to add the idea
-    console.log('Add note:', text, quadrant)
+  const handleAddIdea = (text: string, quadrant: 'love' | 'goodAt') => {
+    // This would need to call back to parent page to add idea
+    // For now, just refresh the page to pick up new ideas
+    alert(`New idea added to ${quadrant === 'love' ? 'Love' : 'Good At'}: "${text}"\n\nRefresh to see it on canvas, or continue to next step!`)
   }
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function IkigaiStep3({ allIdeas, reflection, setReflection, onNex
               loveIdeas={allIdeas.love}
               goodAtIdeas={allIdeas.goodAt}
               onConnectionsChange={handleConnectionsChange}
-              onAddNote={handleAddNote}
+              onAddIdea={handleAddIdea}
             />
             
             {/* AI Insight when connections are made */}

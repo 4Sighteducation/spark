@@ -40,6 +40,11 @@ export default function IkigaiStep2({ ideas, previousIdeas, addIdea, removeIdea,
   }, [])
 
   const handleGetSuggestions = async () => {
+    if (ideas.length === 0) {
+      const confirmed = confirm("Sensei says: Add one or two of your own strengths first. What are you decent at? Then I can suggest related skills.")
+      if (!confirmed) return
+    }
+
     setLoadingSuggestions(true)
     const response = await fetch('/api/sensei/suggestions', {
       method: 'POST',

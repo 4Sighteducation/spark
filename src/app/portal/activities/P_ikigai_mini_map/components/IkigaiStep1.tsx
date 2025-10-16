@@ -39,6 +39,12 @@ export default function IkigaiStep1({ ideas, addIdea, removeIdea, onNext, onBack
   }, [])
 
   const handleGetSuggestions = async () => {
+    // If list is empty, Sensei prompts first
+    if (ideas.length === 0) {
+      const confirmed = confirm("Sensei says: First, add one or two of your own ideas. What truly brings you joy? Then I can suggest related paths you might not have considered.")
+      if (!confirmed) return
+    }
+
     setLoadingSuggestions(true)
     const response = await fetch('/api/sensei/suggestions', {
       method: 'POST',

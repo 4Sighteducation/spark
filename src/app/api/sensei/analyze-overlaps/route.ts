@@ -25,24 +25,38 @@ World Needs: ${ideas.worldNeeds.join(', ')}
 
 ${connections && connections.length > 0 ? `Connections they made: ${connections.length} links between related items` : ''}
 
-Analyze and identify specific examples for each overlap category:
+Analyze and identify SPECIFIC CONCRETE examples for each overlap category using THEIR ACTUAL IDEAS:
 
-PASSION (Love + Good At): What they love AND are skilled at
-MISSION (Love + World Needs): What they love AND serves others
-PROFESSION (Good At + Paid For): What they're skilled at AND can earn from
-VOCATION (Paid For + World Needs): What earns money AND serves the world
-IKIGAI CENTER: Where ALL FOUR meet (the ultimate purpose)
+PASSION (Love + Good At): Combine items from "Love" and "Good At" lists
+Example: If they love "football" and are good at "coaching", passion = "Coaching football to younger players"
 
-Return ONLY a JSON object (no explanation):
+MISSION (Love + World Needs): Combine "Love" and "World Needs"
+Example: If they love "music" and world needs "mental health support", mission = "Using music therapy to help people feel better"
+
+PROFESSION (Good At + Paid For): Combine "Good At" and "Paid For"  
+Example: If good at "writing" and paid for "content creator", profession = "Professional content writer or blogger"
+
+VOCATION (Paid For + World Needs): Combine "Paid For" and "World Needs"
+Example: If paid for "teacher" and world needs "education", vocation = "Teacher helping disadvantaged students"
+
+IKIGAI CENTER: Where ALL FOUR genuinely overlap - be VERY SPECIFIC
+Example: "PE teacher who uses football coaching to build confidence in struggling Year 7 students"
+
+CRITICAL:
+- Use THEIR ACTUAL WORDS from the lists
+- Be SPECIFIC, not generic
+- Create real-world examples they can visualize
+- 2-3 items per category max
+- If no clear overlap exists, say ["Keep exploring - your path will emerge"]
+
+Return ONLY JSON (no markdown, no explanation):
 {
-  "passion": ["specific example 1", "example 2"],
-  "mission": ["specific example 1", "example 2"],
-  "profession": ["specific example 1", "example 2"],
-  "vocation": ["specific example 1", "example 2"],
-  "ikigai_center": ["the main overlap where all 4 meet"]
-}
-
-Be specific. Use their actual ideas. If overlap is weak, say ["Not yet clear - needs more exploration"]`
+  "passion": ["specific example using their words"],
+  "mission": ["specific example using their words"],
+  "profession": ["specific example using their words"],
+  "vocation": ["specific example using their words"],
+  "ikigai_center": ["ultra-specific synthesis of all 4"]
+}`
 
     const message = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
