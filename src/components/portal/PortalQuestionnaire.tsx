@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase/client'
+import { calculateAssessmentScores } from '@/lib/scoring/calculate'
 import questionnaireData from '@/data/questionnaire.json'
 
 interface PortalQuestionnaireProps {
@@ -74,36 +76,130 @@ export default function PortalQuestionnaire({ student, cycleInfo }: PortalQuesti
     })
 
     try {
-      const response = await fetch('/api/questionnaire/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          answers,
-          cycleId: cycleInfo.id,
-          cycleNumber: cycleInfo.cycle_number,
-        }),
-      })
+      // Get current session
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (!session) {
+        alert('Session expired. Please login again.')
+        window.location.href = '/portal/login'
+        return
+      }
 
-      console.log('📡 Response status:', response.status)
+      // Get active questionnaire
+      const { data: questionnaire, error: questError } = await supabase
+        .from('questionnaires')
+        .select('id')
+        .eq('is_default', true)
+        .eq('status', 'active')
+        .single()
 
-      const data = await response.json()
-      console.log('📦 Response data:', data)
-
-      if (!response.ok) {
-        console.error('❌ Failed to submit:', data.error)
-        alert(`Failed to save your responses.\n\nError: ${data.error}\n\nPlease try again or contact support.`)
+      if (questError || !questionnaire) {
+        console.error('No active questionnaire:', questError)
+        alert('No active questionnaire found. Please contact support.')
         setSubmitting(false)
         return
       }
 
-      console.log('✅ Submission successful!')
+      console.log('📝 Creating questionnaire response...')
+
+      // Create questionnaire response
+      const { data: response, error: responseError } = await supabase
+        .from('questionnaire_responses')
+        .insert({
+          student_id: student.id,
+          questionnaire_id: questionnaire.id,
+          organization_id: student.organization_id,
+          cycle_id: cycleInfo.id,
+          cycle_number: cycleInfo.cycle_number,
+          status: 'completed',
+          started_at: new Date().toISOString(),
+          completed_at: new Date().toISOString(),
+        })
+        .select()
+        .single()
+
+      if (responseError) {
+        console.error('❌ Error creating response:', responseError)
+        alert(`Failed to save questionnaire response.\n\nError: ${responseError.message}`)
+        setSubmitting(false)
+        return
+      }
+
+      console.log('✅ Response created:', response.id)
+
+      // Save individual answers
+      const questionAnswers = Object.entries(answers).map(([questionId, sliderValue]) => {
+        const dimension = questionId.charAt(0) as 'S' | 'P' | 'A' | 'R' | 'K'
+        return {
+          response_id: response.id,
+          question_id: questionId,
+          dimension,
+          slider_value: sliderValue as number,
+        }
+      })
+
+      const { error: answersError } = await supabase
+        .from('question_answers')
+        .insert(questionAnswers)
+
+      if (answersError) {
+        console.error('❌ Error saving answers:', answersError)
+        alert(`Failed to save answers.\n\nError: ${answersError.message}`)
+        setSubmitting(false)
+        return
+      }
+
+      console.log('✅ Answers saved:', questionAnswers.length)
+
+      // Calculate scores
+      const scores = calculateAssessmentScores(questionAnswers)
+      console.log('📊 Scores calculated:', scores)
+
+      // Save assessment results
+      const { data: assessmentResult, error: resultError } = await supabase
+        .from('assessment_results')
+        .insert({
+          response_id: response.id,
+          student_id: student.id,
+          organization_id: student.organization_id,
+          self_direction_score: scores.self_direction.score,
+          purpose_score: scores.purpose.score,
+          awareness_score: scores.awareness.score,
+          resilience_score: scores.resilience.score,
+          knowledge_score: scores.knowledge.score,
+          overall_score: scores.overall.score,
+          self_direction_band: scores.self_direction.band,
+          purpose_band: scores.purpose.band,
+          awareness_band: scores.awareness.band,
+          resilience_band: scores.resilience.band,
+          knowledge_band: scores.knowledge.band,
+          overall_band: scores.overall.band,
+          report_data: {
+            scores,
+            cycle_number: cycleInfo.cycle_number,
+            completed_at: new Date().toISOString(),
+          },
+        })
+        .select()
+        .single()
+
+      if (resultError) {
+        console.error('❌ Error saving results:', resultError)
+        alert(`Failed to save assessment results.\n\nError: ${resultError.message}`)
+        setSubmitting(false)
+        return
+      }
+
+      console.log('✅ Assessment complete! Results saved:', assessmentResult.id)
       
       // Success! Redirect to reports page
+      alert('✅ Questionnaire complete! Viewing your results...')
       router.push('/portal/reports')
       router.refresh()
+      
     } catch (error) {
-      console.error('❌ Error submitting questionnaire:', error)
-      alert(`An error occurred: ${error}\n\nPlease try again.`)
+      console.error('❌ Unexpected error:', error)
+      alert(`An unexpected error occurred.\n\nError: ${error}\n\nPlease try again or contact support.`)
       setSubmitting(false)
     }
   }
