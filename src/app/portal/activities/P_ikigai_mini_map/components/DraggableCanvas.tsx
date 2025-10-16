@@ -300,6 +300,7 @@ export default function DraggableCanvas({ loveIdeas, goodAtIdeas, onConnectionsC
             Click another note to connect!
           </div>
         )}
+        </div>
       </div>
 
       {/* Info */}
