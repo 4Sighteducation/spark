@@ -57,10 +57,10 @@ export default function IkigaiStep4({ ideas, previousIdeas, addIdea, removeIdea,
           </div>
         </div>
 
-        {/* Sensei Guidance */}
+        {/* Sensei Guidance - Grey Sensei with open arms (guiding wisdom) */}
         <SenseiGuide 
           message={guidance} 
-          senseiImage="/Untitled (32).png"
+          senseiImage="/sensai2openarms.png"
         />
 
         {/* Main Content Card */}

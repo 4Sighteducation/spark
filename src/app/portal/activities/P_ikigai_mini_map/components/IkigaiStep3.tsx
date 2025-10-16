@@ -44,10 +44,10 @@ export default function IkigaiStep3({ allIdeas, reflection, setReflection, onNex
           </div>
         </div>
 
-        {/* Sensei Guidance */}
+        {/* Sensei Guidance - Grey Sensei in meditation (Let It Rest!) */}
         <SenseiGuide 
           message={guidance} 
-          senseiImage="/Untitled (31).png"
+          senseiImage="/sensei2greet.png"
         />
 
         {/* Main Content Card */}

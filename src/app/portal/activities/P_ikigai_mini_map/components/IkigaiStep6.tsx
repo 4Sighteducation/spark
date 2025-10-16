@@ -80,10 +80,10 @@ export default function IkigaiStep6({ allIdeas, onComplete, onBack, points }: Ik
           </div>
         </div>
 
-        {/* Sensei Final Guidance */}
+        {/* Sensei Final Guidance - Red Sensei returns for celebration! */}
         <SenseiGuide 
           message={guidance} 
-          senseiImage="/Untitled (35).png"
+          senseiImage="/Sensaiopenarms.png"
         />
 
         {/* Main Content */}

@@ -56,10 +56,10 @@ export default function IkigaiStep1({ ideas, addIdea, removeIdea, onNext, onBack
           </div>
         </div>
 
-        {/* Sensei Guidance */}
+        {/* Sensei Guidance - Red Sensei greeting warmly */}
         <SenseiGuide 
           message={guidance} 
-          senseiImage="/Untitled (30).png"
+          senseiImage="/Sensaigreet.png"
         />
 
         {/* Main Content Card */}

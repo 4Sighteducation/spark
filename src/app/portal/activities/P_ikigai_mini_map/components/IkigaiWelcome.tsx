@@ -49,27 +49,15 @@ export default function IkigaiWelcome({ studentName, welcomeMessage, onStart }: 
         </p>
       </div>
 
-      {/* Sensei Character */}
+      {/* Sensei Character - Red Robe, Arms Wide (Welcoming!) */}
       <div className={`mb-8 transition-all duration-1000 ${showMessage ? 'scale-100 opacity-100' : 'scale-75 opacity-0'}`}>
-        <div className="relative">
-          {/* Placeholder - will be replaced with transparent PNG */}
-          <div className="w-64 h-96 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center border-4 border-white/30">
-            <div className="text-center">
-              <div className="text-9xl mb-4">🧙‍♂️</div>
-              <p className="text-white text-sm">
-                (Sensei with transparent background<br/>will appear here)
-              </p>
-            </div>
-          </div>
-          {/* When you upload transparent Sensei: */}
-          {/* <Image
-            src="/sensei-welcome.png"
-            alt="Sensei"
-            width={300}
-            height={450}
-            className="drop-shadow-2xl"
-          /> */}
-        </div>
+        <Image
+          src="/Sensaiopenarms.png"
+          alt="Sensei welcomes you"
+          width={280}
+          height={420}
+          className="drop-shadow-2xl"
+        />
       </div>
 
       {/* Speech Bubble */}

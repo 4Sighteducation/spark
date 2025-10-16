@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 interface SenseiGuideProps {
   message: string
@@ -37,9 +38,13 @@ export default function SenseiGuide({ message, senseiImage = '/Untitled (30).png
       <div className="flex items-start gap-6 mb-6">
         {/* Sensei (small) */}
         <div className="flex-shrink-0">
-          <div className="w-24 h-32 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center border-2 border-white/30">
-            <div className="text-5xl">🧙‍♂️</div>
-          </div>
+          <Image
+            src={senseiImage}
+            alt="Sensei"
+            width={100}
+            height={150}
+            className="drop-shadow-xl"
+          />
         </div>
 
         {/* Message Bubble */}
@@ -57,22 +62,13 @@ export default function SenseiGuide({ message, senseiImage = '/Untitled (30).png
     <div className="mb-6">
       {/* Sensei Image */}
       <div className="flex justify-center mb-4">
-        <div className="w-48 h-64 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center border-4 border-white/30 shadow-2xl">
-          <div className="text-center">
-            <div className="text-8xl mb-2">🧙‍♂️</div>
-            <p className="text-white text-xs">
-              Sensei
-            </p>
-          </div>
-        </div>
-        {/* When transparent Sensei uploaded: */}
-        {/* <Image
+        <Image
           src={senseiImage}
           alt="Sensei"
           width={200}
           height={300}
-          className="drop-shadow-2xl"
-        /> */}
+          className="drop-shadow-2xl animate-fade-in"
+        />
       </div>
 
       {/* Speech Bubble */}
