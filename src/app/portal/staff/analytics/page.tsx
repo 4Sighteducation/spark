@@ -155,10 +155,12 @@ export default function AnalyticsPage() {
       const responseIds = responsesForStudents?.map((r: any) => r.id) || []
 
       // Get individual question answers
-      const { data: answersData } = await supabase
+      const { data: answersData, error: answersError } = await supabase
         .from('question_answers')
-        .select('response_id, question_number, slider_value')
-        .in('response_id', responseIds) as { data: any }
+        .select('response_id, question_id, slider_value, dimension')
+        .in('response_id', responseIds) as { data: any; error: any }
+
+      console.log('📝 Question Answers:', { count: answersData?.length, error: answersError })
 
       // Process statement-level data
       const statementMap = new Map<number, {
@@ -168,10 +170,13 @@ export default function AnalyticsPage() {
       }>()
 
       answersData?.forEach((answer: any) => {
-        if (!statementMap.has(answer.question_number)) {
-          statementMap.set(answer.question_number, { total: 0, count: 0, scores: [] })
+        // Extract question number from question_id (e.g., 'S01' -> 1, 'P02' -> 2)
+        const questionNum = parseInt(answer.question_id.substring(1))
+        
+        if (!statementMap.has(questionNum)) {
+          statementMap.set(questionNum, { total: 0, count: 0, scores: [] })
         }
-        const data = statementMap.get(answer.question_number)!
+        const data = statementMap.get(questionNum)!
         const score = answer.slider_value / 10 // Convert 0-100 to 0-10
         data.total += score
         data.count += 1
