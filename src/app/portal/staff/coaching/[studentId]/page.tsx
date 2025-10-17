@@ -69,23 +69,25 @@ export default function IndividualCoachingPage() {
         .eq('id', studentId)
         .single() as { data: any }
 
-      // Get latest assessment result
-      const { data: resultData } = await supabase
+      // Get latest assessment result (use array, then get first)
+      const { data: resultDataArray } = await supabase
         .from('assessment_results')
         .select('*')
         .eq('student_id', studentId)
         .order('created_at', { ascending: false })
-        .limit(1)
-        .single() as { data: any }
+        .limit(1) as { data: any }
 
-      // Get reflections
-      const { data: reflectionData } = await supabase
+      const resultData = resultDataArray && resultDataArray.length > 0 ? resultDataArray[0] : null
+
+      // Get reflections (use array, then get first)
+      const { data: reflectionDataArray } = await supabase
         .from('student_reflections')
         .select('*')
         .eq('student_id', studentId)
         .order('created_at', { ascending: false })
-        .limit(1)
-        .single() as { data: any }
+        .limit(1) as { data: any }
+
+      const reflectionData = reflectionDataArray && reflectionDataArray.length > 0 ? reflectionDataArray[0] : null
 
       // Get goals
       const { data: goalsData } = await supabase

@@ -146,15 +146,19 @@ export default function AnalyticsPage() {
 
       const questions = questionnaireData?.questions || []
 
+      // Get questionnaire responses for these students
+      const { data: responsesForStudents } = await supabase
+        .from('questionnaire_responses')
+        .select('id, student_id, cycle_number')
+        .in('student_id', studentIds) as { data: any }
+
+      const responseIds = responsesForStudents?.map((r: any) => r.id) || []
+
       // Get individual question answers
       const { data: answersData } = await supabase
         .from('question_answers')
-        .select(`
-          question_number,
-          slider_value,
-          questionnaire_responses!inner(student_id, cycle_number)
-        `)
-        .in('questionnaire_responses.student_id', studentIds) as { data: any }
+        .select('response_id, question_number, slider_value')
+        .in('response_id', responseIds) as { data: any }
 
       // Process statement-level data
       const statementMap = new Map<number, {

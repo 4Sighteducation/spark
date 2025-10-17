@@ -152,6 +152,8 @@ export default function CoachingPage() {
       // Now get assessment results for each student
       const studentIds = studentsData?.map((s: any) => s.id) || []
       
+      console.log('👥 Students loaded:', { count: studentsData?.length, studentIds })
+      
       if (studentIds.length === 0) {
         setStudents([])
         setFilteredStudents([])
@@ -160,7 +162,7 @@ export default function CoachingPage() {
       }
 
       // Get latest assessment results for each student
-      const { data: resultsData } = await supabase
+      const { data: resultsData, error: resultsError } = await supabase
         .from('assessment_results')
         .select(`
           student_id,
@@ -174,21 +176,27 @@ export default function CoachingPage() {
           created_at
         `)
         .in('student_id', studentIds)
-        .order('created_at', { ascending: false }) as { data: any }
+        .order('created_at', { ascending: false }) as { data: any; error: any }
+
+      console.log('📊 Assessment Results:', { count: resultsData?.length, error: resultsError })
 
       // Get reflections
-      const { data: reflectionsData } = await supabase
+      const { data: reflectionsData, error: reflectionsError } = await supabase
         .from('student_reflections')
         .select('student_id, reflection_text, created_at')
         .in('student_id', studentIds)
-        .order('created_at', { ascending: false }) as { data: any }
+        .order('created_at', { ascending: false }) as { data: any; error: any }
+
+      console.log('💭 Reflections:', { count: reflectionsData?.length, error: reflectionsError })
 
       // Get goals
-      const { data: goalsData } = await supabase
+      const { data: goalsData, error: goalsError } = await supabase
         .from('student_goals')
         .select('student_id, goal_text, target_date, created_at')
         .in('student_id', studentIds)
-        .order('created_at', { ascending: false }) as { data: any }
+        .order('created_at', { ascending: false }) as { data: any; error: any }
+
+      console.log('🎯 Goals:', { count: goalsData?.length, error: goalsError })
 
       // Combine data
       const studentsWithData: StudentData[] = studentsData.map((s: any) => {
