@@ -17,6 +17,7 @@
     "db:calculate-scores": "tsx scripts/calculate-test-scores.ts",
     "db:import-activities": "tsx scripts/import-activities.ts",
     "db:assign-activities": "tsx scripts/assign-test-activities.ts",
+    "db:import-questionnaire": "node scripts/import-questionnaire.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
