@@ -73,27 +73,14 @@ export default function DashboardPage() {
     return null
   }
 
-  // Staff placeholder
+  // Redirect staff to staff portal
   if (profile.primary_role !== 'student') {
+    window.location.href = '/portal/staff/coaching'
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md">
-          <h1 className="text-2xl font-bold mb-4">Staff Portal</h1>
-          <p className="text-gray-600 mb-6">
-            Welcome, {profile.first_name} {profile.last_name}!
-          </p>
-          <p className="text-sm text-gray-500 mb-6">
-            Staff dashboard coming soon...
-          </p>
-          <button
-            onClick={async () => {
-              await supabase.auth.signOut()
-              window.location.href = '/portal/login'
-            }}
-            className="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded-lg"
-          >
-            Sign Out
-          </button>
+        <div className="text-center">
+          <div className="text-6xl mb-4">🔄</div>
+          <p className="text-gray-600">Redirecting to staff portal...</p>
         </div>
       </div>
     )
