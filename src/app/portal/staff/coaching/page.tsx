@@ -152,6 +152,15 @@ export default function CoachingPage() {
         return
       }
 
+      // DIAGNOSTIC: Try simplest possible query first
+      const { data: testAllResults, error: testError } = await supabase
+        .from('assessment_results')
+        .select('*') as { data: any; error: any }
+      
+      console.log('🧪 TEST: Can we read assessment_results at all?')
+      console.log('  - Count:', testAllResults?.length)
+      console.log('  - Error:', testError?.message)
+      
       // Get latest assessment results for each student
       // NOTE: cycle_number is NOT in assessment_results, it's in questionnaire_responses
       const { data: resultsData, error: resultsError } = await supabase
@@ -166,7 +175,12 @@ export default function CoachingPage() {
       console.log('  - Student IDs queried:', studentIds)
       
       if (resultsError) {
-        console.error('❌ Assessment Results Error Details:', resultsError)
+        console.error('❌ Assessment Results Error Details:')
+        console.error('  Code:', resultsError.code)
+        console.error('  Message:', resultsError.message)
+        console.error('  Details:', resultsError.details)
+        console.error('  Hint:', resultsError.hint)
+        console.error('  Full Error:', JSON.stringify(resultsError, null, 2))
       }
       
       if (!resultsData || resultsData.length === 0) {
