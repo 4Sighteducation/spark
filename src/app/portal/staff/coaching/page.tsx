@@ -153,13 +153,25 @@ export default function CoachingPage() {
       }
 
       // Get latest assessment results for each student
+      // Remove ordering to see if that's causing the 400 error
       const { data: resultsData, error: resultsError } = await supabase
         .from('assessment_results')
         .select('student_id, cycle_number, self_direction_score, purpose_score, awareness_score, resilience_score, knowledge_score, overall_score, created_at')
-        .in('student_id', studentIds)
-        .order('created_at', { ascending: false }) as { data: any; error: any }
+        .in('student_id', studentIds) as { data: any; error: any }
 
-      console.log('📊 Assessment Results:', { count: resultsData?.length, error: resultsError, data: resultsData })
+      console.log('📊 Assessment Results Query Response:')
+      console.log('  - Count:', resultsData?.length)
+      console.log('  - Error:', resultsError)
+      console.log('  - Full Data:', resultsData)
+      console.log('  - Student IDs queried:', studentIds)
+      
+      if (resultsError) {
+        console.error('❌ Assessment Results Error Details:', resultsError)
+      }
+      
+      if (!resultsData || resultsData.length === 0) {
+        console.warn('⚠️ No results data returned! This is the problem.')
+      }
 
       // Get reflections
       const { data: reflectionsData, error: reflectionsError } = await supabase
@@ -185,6 +197,19 @@ export default function CoachingPage() {
         const latestReflection = reflectionsData?.find((r: any) => r.student_id === s.id)
         const latestGoal = goalsData?.find((g: any) => g.student_id === s.id)
 
+        console.log(`  Student ${s.profiles.first_name}:`, {
+          studentId: s.id,
+          hasResult: !!latestResult,
+          scores: latestResult ? {
+            overall: latestResult.overall_score,
+            S: latestResult.self_direction_score,
+            P: latestResult.purpose_score,
+            A: latestResult.awareness_score,
+            R: latestResult.resilience_score,
+            K: latestResult.knowledge_score
+          } : 'NO RESULT FOUND'
+        })
+
         return {
           id: s.id,
           first_name: s.profiles.first_name,
@@ -205,6 +230,8 @@ export default function CoachingPage() {
           completed_at: latestResult?.created_at || null,
         }
       })
+
+      console.log('✅ Final student data:', studentsWithData)
 
       setStudents(studentsWithData)
       setFilteredStudents(studentsWithData)
