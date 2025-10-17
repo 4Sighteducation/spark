@@ -74,7 +74,7 @@ export default function IndividualCoachingPage() {
         .from('assessment_results')
         .select('*')
         .eq('student_id', studentId)
-        .order('created_at', { ascending: false })
+        .order('calculated_at', { ascending: false })
         .limit(1) as { data: any }
 
       const resultData = resultDataArray && resultDataArray.length > 0 ? resultDataArray[0] : null

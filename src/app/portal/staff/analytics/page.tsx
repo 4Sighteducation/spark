@@ -120,13 +120,13 @@ export default function AnalyticsPage() {
 
       const studentIds = studentsData.map((s: any) => s.id)
 
-      // Get assessment results (cycle_number is NOT in this table)
+      // Get assessment results
       const { data: resultsData, error: resultsError } = await supabase
         .from('assessment_results')
-        .select('*')
+        .select('id, student_id, self_direction_score, purpose_score, awareness_score, resilience_score, knowledge_score, overall_score, calculated_at')
         .in('student_id', studentIds) as { data: any; error: any }
 
-      console.log('📊 Assessment Results:', { count: resultsData?.length, error: resultsError })
+      console.log('📊 Assessment Results:', { count: resultsData?.length, error: resultsError, data: resultsData })
 
       // Get questionnaire data for statements
       const { data: questionnaireData, error: questError } = await supabase
