@@ -91,7 +91,7 @@ export default function PortalQuestionnaire({ student, cycleInfo }: PortalQuesti
         .select('id')
         .eq('is_default', true)
         .eq('status', 'active')
-        .single()
+        .single() as { data: any; error: any }
 
       if (questError || !questionnaire) {
         console.error('No active questionnaire:', questError)
@@ -114,11 +114,11 @@ export default function PortalQuestionnaire({ student, cycleInfo }: PortalQuesti
           status: 'completed',
           started_at: new Date().toISOString(),
           completed_at: new Date().toISOString(),
-        })
+        } as any)
         .select()
-        .single()
+        .single() as { data: any; error: any }
 
-      if (responseError) {
+      if (responseError || !response) {
         console.error('❌ Error creating response:', responseError)
         alert(`Failed to save questionnaire response.\n\nError: ${responseError.message}`)
         setSubmitting(false)
@@ -140,7 +140,7 @@ export default function PortalQuestionnaire({ student, cycleInfo }: PortalQuesti
 
       const { error: answersError } = await supabase
         .from('question_answers')
-        .insert(questionAnswers)
+        .insert(questionAnswers as any)
 
       if (answersError) {
         console.error('❌ Error saving answers:', answersError)
@@ -179,11 +179,11 @@ export default function PortalQuestionnaire({ student, cycleInfo }: PortalQuesti
             cycle_number: cycleInfo.cycle_number,
             completed_at: new Date().toISOString(),
           },
-        })
+        } as any)
         .select()
-        .single()
+        .single() as { data: any; error: any }
 
-      if (resultError) {
+      if (resultError || !assessmentResult) {
         console.error('❌ Error saving results:', resultError)
         alert(`Failed to save assessment results.\n\nError: ${resultError.message}`)
         setSubmitting(false)

@@ -81,12 +81,14 @@ export default function StudentGoalsModal({
   }
 
   async function handleUpdateGoalStatus(goalId: string, newStatus: string) {
-    await supabase
+    const updateData: any = { 
+      status: newStatus,
+      ...(newStatus === 'achieved' ? { achieved_at: new Date().toISOString() } : {})
+    }
+    
+    await (supabase as any)
       .from('student_goals')
-      .update({ 
-        status: newStatus,
-        ...(newStatus === 'achieved' ? { achieved_at: new Date().toISOString() } : {})
-      } as any)
+      .update(updateData)
       .eq('id', goalId)
 
     await loadGoals()
