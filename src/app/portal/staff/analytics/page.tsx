@@ -57,6 +57,11 @@ export default function AnalyticsPage() {
         .eq('id', session.user.id)
         .single()
 
+      if (!profileData) {
+        setLoading(false)
+        return
+      }
+
       setProfile(profileData)
 
       // Get students based on role
