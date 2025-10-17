@@ -211,18 +211,20 @@ export default function CoachingPage() {
         const latestReflection = reflectionsData?.find((r: any) => r.student_id === s.id)
         const latestGoal = goalsData?.find((g: any) => g.student_id === s.id)
 
-        console.log(`  Student ${s.profiles.first_name}:`, {
-          studentId: s.id,
-          hasResult: !!latestResult,
-          scores: latestResult ? {
+        console.log(`  Student ${s.profiles.first_name} (${s.id}):`)
+        console.log('    Has Result?', !!latestResult)
+        if (latestResult) {
+          console.log('    Scores:', {
             overall: latestResult.overall_score,
             S: latestResult.self_direction_score,
             P: latestResult.purpose_score,
             A: latestResult.awareness_score,
             R: latestResult.resilience_score,
             K: latestResult.knowledge_score
-          } : 'NO RESULT FOUND'
-        })
+          })
+        } else {
+          console.log('    ❌ NO RESULT FOUND FOR THIS STUDENT')
+        }
 
         return {
           id: s.id,

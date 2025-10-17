@@ -151,7 +151,10 @@ export default function AnalyticsPage() {
         )
       }
       
-      console.log('📋 Parsed Questions:', { count: allQuestions.length, sample: allQuestions[0] })
+      console.log('📋 Parsed Questions:')
+      console.log('  Count:', allQuestions.length)
+      console.log('  Sample:', allQuestions[0])
+      console.log('  All IDs:', allQuestions.map(q => q.id).join(', '))
 
       // Get questionnaire responses for these students
       const { data: responsesForStudents } = await supabase
@@ -236,7 +239,11 @@ export default function AnalyticsPage() {
           })
           .sort((a, b) => a.avg_score - b.avg_score) // Sort by lowest average first
         
-        console.log('📊 Statement Analysis Generated:', { count: statementAnalysis.length, sample: statementAnalysis[0] })
+        console.log('📊 Statement Analysis Generated:')
+        console.log('  Count:', statementAnalysis.length)
+        console.log('  First 3:', statementAnalysis.slice(0, 3))
+        console.log('  Lowest:', statementAnalysis[0])
+        console.log('  Highest:', statementAnalysis[statementAnalysis.length - 1])
       } else {
         console.warn('⚠️ Cannot generate statement analysis:', { 
           hasQuestions: allQuestions.length > 0, 
