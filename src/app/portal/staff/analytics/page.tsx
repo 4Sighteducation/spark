@@ -138,13 +138,17 @@ export default function AnalyticsPage() {
       const { data: resultsData } = await resultsQuery as { data: any }
 
       // Get questionnaire data for statements
-      const { data: questionnaireData } = await supabase
+      const { data: questionnaireData, error: questError } = await supabase
         .from('questionnaires')
         .select('questions')
         .eq('is_default', true)
-        .single() as { data: any }
+        .single() as { data: any; error: any }
 
-      const questions = questionnaireData?.questions || []
+      console.log('📋 Questionnaire:', { hasData: !!questionnaireData, hasQuestions: !!questionnaireData?.questions, error: questError })
+
+      // Ensure questions is always an array
+      const questions = Array.isArray(questionnaireData?.questions) ? questionnaireData.questions : []
+      console.log('📋 Questions array:', { count: questions.length, isArray: Array.isArray(questions) })
 
       // Get questionnaire responses for these students
       const { data: responsesForStudents } = await supabase
@@ -183,23 +187,28 @@ export default function AnalyticsPage() {
         data.scores.push(score)
       })
 
-      const statementAnalysis: StatementAnalysis[] = Array.from(statementMap.entries())
-        .map(([questionNum, data]) => {
-          const question = questions.find((q: any) => q.number === questionNum)
-          return {
-            question_number: questionNum,
-            statement: question?.text || `Question ${questionNum}`,
-            dimension: question?.dimension || 'Unknown',
-            avg_score: data.count > 0 ? data.total / data.count : 0,
-            responses_count: data.count,
-            score_distribution: data.scores.reduce((acc, score) => {
-              const bucket = Math.floor(score)
-              acc[bucket] = (acc[bucket] || 0) + 1
-              return acc
-            }, {} as Record<number, number>)
-          }
-        })
-        .sort((a, b) => a.avg_score - b.avg_score) // Sort by lowest average first
+      // Only process if we have questions array
+      let statementAnalysis: StatementAnalysis[] = []
+      
+      if (Array.isArray(questions) && questions.length > 0) {
+        statementAnalysis = Array.from(statementMap.entries())
+          .map(([questionNum, data]) => {
+            const question = questions.find((q: any) => q.number === questionNum)
+            return {
+              question_number: questionNum,
+              statement: question?.text || `Question ${questionNum}`,
+              dimension: question?.dimension || 'Unknown',
+              avg_score: data.count > 0 ? data.total / data.count : 0,
+              responses_count: data.count,
+              score_distribution: data.scores.reduce((acc, score) => {
+                const bucket = Math.floor(score)
+                acc[bucket] = (acc[bucket] || 0) + 1
+                return acc
+              }, {} as Record<number, number>)
+            }
+          })
+          .sort((a, b) => a.avg_score - b.avg_score) // Sort by lowest average first
+      }
 
       setStatementData(statementAnalysis)
 

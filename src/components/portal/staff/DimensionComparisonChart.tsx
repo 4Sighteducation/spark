@@ -11,46 +11,47 @@ interface DimensionComparisonChartProps {
 }
 
 export default function DimensionComparisonChart({ dimensions }: DimensionComparisonChartProps) {
+  // Ensure all values are numbers with defaults
   const dimensionData = [
     { 
       key: 'self_direction', 
       label: 'Self-Direction', 
-      value: dimensions.self_direction,
+      value: dimensions?.self_direction || 0,
       color: 'bg-pink-500',
       lightColor: 'bg-pink-100'
     },
     { 
       key: 'purpose', 
       label: 'Purpose', 
-      value: dimensions.purpose,
+      value: dimensions?.purpose || 0,
       color: 'bg-purple-500',
       lightColor: 'bg-purple-100'
     },
     { 
       key: 'awareness', 
       label: 'Awareness', 
-      value: dimensions.awareness,
+      value: dimensions?.awareness || 0,
       color: 'bg-cyan-500',
       lightColor: 'bg-cyan-100'
     },
     { 
       key: 'resilience', 
       label: 'Resilience', 
-      value: dimensions.resilience,
+      value: dimensions?.resilience || 0,
       color: 'bg-lime-500',
       lightColor: 'bg-lime-100'
     },
     { 
       key: 'knowledge', 
       label: 'Knowledge', 
-      value: dimensions.knowledge,
+      value: dimensions?.knowledge || 0,
       color: 'bg-yellow-500',
       lightColor: 'bg-yellow-100'
     },
   ]
 
   const maxScore = 10
-  const avgOfAll = dimensionData.reduce((sum, d) => sum + d.value, 0) / dimensionData.length
+  const avgOfAll = dimensionData.reduce((sum, d) => sum + (d.value || 0), 0) / dimensionData.length
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
