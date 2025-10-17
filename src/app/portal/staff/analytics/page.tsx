@@ -137,9 +137,21 @@ export default function AnalyticsPage() {
 
       console.log('📋 Questionnaire:', { hasData: !!questionnaireData, hasQuestions: !!questionnaireData?.questions, error: questError })
 
-      // Ensure questions is always an array
-      const questions = Array.isArray(questionnaireData?.questions) ? questionnaireData.questions : []
-      console.log('📋 Questions array:', { count: questions.length, isArray: Array.isArray(questions) })
+      // Parse questionnaire structure: themes -> items
+      let allQuestions: any[] = []
+      if (questionnaireData?.questions?.themes) {
+        // Flatten themes into questions array
+        allQuestions = questionnaireData.questions.themes.flatMap((theme: any) =>
+          theme.items.map((item: any) => ({
+            id: item.id,
+            text: item.text,
+            dimension: theme.code,
+            examples: item.examples || []
+          }))
+        )
+      }
+      
+      console.log('📋 Parsed Questions:', { count: allQuestions.length, sample: allQuestions[0] })
 
       // Get questionnaire responses for these students
       const { data: responsesForStudents } = await supabase
@@ -178,17 +190,41 @@ export default function AnalyticsPage() {
         data.scores.push(score)
       })
 
-      // Only process if we have questions array
+      // Process statement-level analysis
       let statementAnalysis: StatementAnalysis[] = []
       
-      if (Array.isArray(questions) && questions.length > 0) {
-        statementAnalysis = Array.from(statementMap.entries())
-          .map(([questionNum, data]) => {
-            const question = questions.find((q: any) => q.number === questionNum)
+      if (allQuestions.length > 0 && answersData && answersData.length > 0) {
+        // Build map from question_id to statement data
+        const questionStatsMap = new Map<string, {
+          total: number
+          count: number
+          scores: number[]
+        }>()
+
+        answersData.forEach((answer: any) => {
+          const questionId = answer.question_id
+          
+          if (!questionStatsMap.has(questionId)) {
+            questionStatsMap.set(questionId, { total: 0, count: 0, scores: [] })
+          }
+          const data = questionStatsMap.get(questionId)!
+          const score = answer.slider_value / 10 // Convert 0-100 to 0-10
+          data.total += score
+          data.count += 1
+          data.scores.push(score)
+        })
+
+        // Map to statement analysis
+        statementAnalysis = Array.from(questionStatsMap.entries())
+          .map(([questionId, data]) => {
+            const question = allQuestions.find((q: any) => q.id === questionId)
+            // Extract number from question ID (e.g., 'S01' -> 1)
+            const questionNum = parseInt(questionId.substring(1))
+            
             return {
               question_number: questionNum,
-              statement: question?.text || `Question ${questionNum}`,
-              dimension: question?.dimension || 'Unknown',
+              statement: question?.text || `Question ${questionId}`,
+              dimension: question?.dimension || questionId.charAt(0),
               avg_score: data.count > 0 ? data.total / data.count : 0,
               responses_count: data.count,
               score_distribution: data.scores.reduce((acc, score) => {
@@ -199,6 +235,13 @@ export default function AnalyticsPage() {
             }
           })
           .sort((a, b) => a.avg_score - b.avg_score) // Sort by lowest average first
+        
+        console.log('📊 Statement Analysis Generated:', { count: statementAnalysis.length, sample: statementAnalysis[0] })
+      } else {
+        console.warn('⚠️ Cannot generate statement analysis:', { 
+          hasQuestions: allQuestions.length > 0, 
+          hasAnswers: answersData && answersData.length > 0 
+        })
       }
 
       setStatementData(statementAnalysis)

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import statementsData from '@/data/statements.json'
 
 interface StudentReport {
   id: string
@@ -183,6 +184,32 @@ export default function IndividualCoachingPage() {
     return colors[dimension] || 'border-l-4 border-gray-500'
   }
 
+  // Get statement based on dimension and score
+  function getStatement(dimKey: string, score: number) {
+    const dimensionName = dimKey.split('_').map((word: string) => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join('')
+    
+    const data = (statementsData as any).SPARK[dimensionName]
+    if (!data) return null
+    
+    const breakpoint = data.breakpoints.find((bp: any) => {
+      const [min, max] = bp.range.split('-').map(Number)
+      return score >= min && score <= max
+    })
+    
+    return breakpoint
+  }
+
+  // Get AI coaching questions for this dimension/score
+  function getCoachingQuestions(dimKey: string, score: number): string[] {
+    const statement = getStatement(dimKey, score)
+    if (!statement || !statement.reflectionQuestions) return []
+    
+    // Return up to 3 coaching questions
+    return statement.reflectionQuestions.slice(0, 3)
+  }
+
   if (loading) {
     return (
       <div className="text-center py-12">
@@ -268,16 +295,56 @@ export default function IndividualCoachingPage() {
         </div>
       </div>
 
-      {/* AI-Generated Statements */}
+      {/* Report Insights */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">AI-Generated Insights</h2>
-        <div className="space-y-4">
-          {dimensions.map((dim) => dim.statement && (
-            <div key={dim.key} className={`border-l-4 ${dim.color} bg-gray-50 p-4 rounded-r-lg`}>
-              <div className="font-semibold text-gray-900 mb-2">{dim.label}</div>
-              <p className="text-gray-700 text-sm leading-relaxed">{dim.statement}</p>
-            </div>
-          ))}
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Report Insights</h2>
+        <div className="space-y-6">
+          {dimensions.map((dim) => {
+            const score = dim.score
+            if (!score) return null
+            
+            const statement = getStatement(dim.key, score)
+            const coachingQuestions = getCoachingQuestions(dim.key, score)
+            
+            if (!statement) return null
+
+            return (
+              <div key={dim.key} className={`border-l-4 ${dim.color} bg-gray-50 p-6 rounded-r-lg`}>
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div className="font-bold text-gray-900 text-lg">{dim.label}</div>
+                    <div className="text-sm text-gray-600">{statement.label}</div>
+                  </div>
+                  <div className="text-3xl font-bold" style={{ color: dim.color.replace('border-', '').replace('500', '600') }}>
+                    {score.toFixed(1)}
+                  </div>
+                </div>
+                
+                {/* Statement Text */}
+                <div className="bg-white p-4 rounded-lg mb-4 border border-gray-200">
+                  <p className="text-gray-800 leading-relaxed">{statement.statement}</p>
+                </div>
+
+                {/* AI Coaching Questions */}
+                {coachingQuestions.length > 0 && (
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-purple-900 mb-3 flex items-center">
+                      <span className="text-xl mr-2">💬</span>
+                      Coaching Questions
+                    </h4>
+                    <ul className="space-y-2">
+                      {coachingQuestions.map((question, idx) => (
+                        <li key={idx} className="text-sm text-purple-800 flex items-start">
+                          <span className="mr-2 font-bold">{idx + 1}.</span>
+                          <span>{question}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
 
