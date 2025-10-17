@@ -113,7 +113,7 @@ export default function IndividualCoachingPage() {
         email: profileData.email,
         year_group: studentData?.year_group || 0,
         tutor_group: studentData?.tutor_group || null,
-        cycle_number: resultData?.cycle_number || null,
+        cycle_number: null, // cycle_number not in assessment_results table
         self_direction_score: resultData?.self_direction_score || null,
         purpose_score: resultData?.purpose_score || null,
         awareness_score: resultData?.awareness_score || null,

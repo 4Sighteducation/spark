@@ -153,10 +153,10 @@ export default function CoachingPage() {
       }
 
       // Get latest assessment results for each student
-      // Remove ordering to see if that's causing the 400 error
+      // NOTE: cycle_number is NOT in assessment_results, it's in questionnaire_responses
       const { data: resultsData, error: resultsError } = await supabase
         .from('assessment_results')
-        .select('student_id, cycle_number, self_direction_score, purpose_score, awareness_score, resilience_score, knowledge_score, overall_score, created_at')
+        .select('student_id, self_direction_score, purpose_score, awareness_score, resilience_score, knowledge_score, overall_score, created_at')
         .in('student_id', studentIds) as { data: any; error: any }
 
       console.log('📊 Assessment Results Query Response:')
@@ -226,7 +226,7 @@ export default function CoachingPage() {
           reflection_text: latestReflection?.reflection_text || null,
           goal_text: latestGoal?.goal_text || null,
           goal_target_date: latestGoal?.target_date || null,
-          cycle_number: latestResult?.cycle_number || null,
+          cycle_number: null, // cycle_number not in assessment_results
           completed_at: latestResult?.created_at || null,
         }
       })
