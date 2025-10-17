@@ -119,7 +119,7 @@ export default function CoachingPage() {
           .eq('user_id', session.user.id)
           .eq('role', 'head_of_year')
           .eq('is_active', true)
-          .single()
+          .single() as { data: any }
 
         if (roleData?.scope?.year) {
           query = query.eq('year_group', roleData.scope.year)
@@ -131,7 +131,7 @@ export default function CoachingPage() {
           .select('classes(name)')
           .eq('staff_id', session.user.id)
           .eq('role', 'tutor')
-          .eq('is_active', true)
+          .eq('is_active', true) as { data: any }
 
         if (classData && classData.length > 0) {
           const tutorGroups = classData.map((c: any) => c.classes?.name).filter(Boolean)

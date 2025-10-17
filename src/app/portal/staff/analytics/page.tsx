@@ -88,7 +88,7 @@ export default function AnalyticsPage() {
           .eq('user_id', session.user.id)
           .eq('role', 'head_of_year')
           .eq('is_active', true)
-          .single()
+          .single() as { data: any }
 
         if (roleData?.scope?.year) {
           studentQuery = studentQuery.eq('year_group', roleData.scope.year)
@@ -99,7 +99,7 @@ export default function AnalyticsPage() {
           .select('classes(name)')
           .eq('staff_id', session.user.id)
           .eq('role', 'tutor')
-          .eq('is_active', true)
+          .eq('is_active', true) as { data: any }
 
         if (classData && classData.length > 0) {
           const tutorGroups = classData.map((c: any) => c.classes?.name).filter(Boolean)
