@@ -85,7 +85,12 @@ export default function CoachingPage() {
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
-        .single()
+        .single() as { data: any }
+
+      if (!profileData) {
+        setLoading(false)
+        return
+      }
 
       setProfile(profileData)
 
@@ -137,7 +142,7 @@ export default function CoachingPage() {
       }
       // org_admin and super_admin see all students in org
 
-      const { data: studentsData, error } = await query
+      const { data: studentsData, error } = await query as { data: any; error: any }
 
       if (error) {
         console.error('Error loading students:', error)
@@ -169,21 +174,21 @@ export default function CoachingPage() {
           created_at
         `)
         .in('student_id', studentIds)
-        .order('created_at', { ascending: false })
+        .order('created_at', { ascending: false }) as { data: any }
 
       // Get reflections
       const { data: reflectionsData } = await supabase
         .from('student_reflections')
         .select('student_id, reflection_text, created_at')
         .in('student_id', studentIds)
-        .order('created_at', { ascending: false })
+        .order('created_at', { ascending: false }) as { data: any }
 
       // Get goals
       const { data: goalsData } = await supabase
         .from('student_goals')
         .select('student_id, goal_text, target_date, created_at')
         .in('student_id', studentIds)
-        .order('created_at', { ascending: false })
+        .order('created_at', { ascending: false }) as { data: any }
 
       // Combine data
       const studentsWithData: StudentData[] = studentsData.map((s: any) => {
@@ -285,7 +290,7 @@ export default function CoachingPage() {
                 <option key={year} value={`Year ${year}`}>Year {year}</option>
               ))}
               {tutorGroups.map(group => (
-                <option key={group} value={group}>{group}</option>
+                <option key={group} value={group as string}>{group}</option>
               ))}
             </select>
           </div>

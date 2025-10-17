@@ -51,16 +51,20 @@ export default function AnalyticsPage() {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) return
 
-      const { data: profileData } = await supabase
+      const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
-        .single()
+        .single() as { data: any; error: any }
 
-      if (!profileData) {
+      if (profileError || !profileData) {
+        console.error('Profile error:', profileError)
         setLoading(false)
         return
       }
+
+      const organizationId = profileData.organization_id as string
+      const userRole = profileData.primary_role as string
 
       setProfile(profileData)
 
@@ -74,10 +78,10 @@ export default function AnalyticsPage() {
           profiles!inner(first_name, last_name, organization_id)
         `)
         .eq('is_active', true)
-        .eq('profiles.organization_id', profileData.organization_id)
+        .eq('profiles.organization_id', organizationId)
 
       // Apply role-based filters
-      if (profileData.primary_role === 'head_of_year') {
+      if (userRole === 'head_of_year') {
         const { data: roleData } = await supabase
           .from('user_roles')
           .select('scope')
@@ -89,7 +93,7 @@ export default function AnalyticsPage() {
         if (roleData?.scope?.year) {
           studentQuery = studentQuery.eq('year_group', roleData.scope.year)
         }
-      } else if (profileData.primary_role === 'tutor') {
+      } else if (userRole === 'tutor') {
         const { data: classData } = await supabase
           .from('staff_class_assignments')
           .select('classes(name)')
@@ -113,7 +117,7 @@ export default function AnalyticsPage() {
         studentQuery = studentQuery.eq('tutor_group', filterTutorGroup)
       }
 
-      const { data: studentsData } = await studentQuery
+      const { data: studentsData } = await studentQuery as { data: any }
       if (!studentsData || studentsData.length === 0) {
         setLoading(false)
         return
@@ -131,14 +135,14 @@ export default function AnalyticsPage() {
         resultsQuery = resultsQuery.eq('cycle_number', parseInt(filterCycle))
       }
 
-      const { data: resultsData } = await resultsQuery
+      const { data: resultsData } = await resultsQuery as { data: any }
 
       // Get questionnaire data for statements
       const { data: questionnaireData } = await supabase
         .from('questionnaires')
         .select('questions')
         .eq('is_default', true)
-        .single()
+        .single() as { data: any }
 
       const questions = questionnaireData?.questions || []
 
@@ -150,7 +154,7 @@ export default function AnalyticsPage() {
           slider_value,
           questionnaire_responses!inner(student_id, cycle_number)
         `)
-        .in('questionnaire_responses.student_id', studentIds)
+        .in('questionnaire_responses.student_id', studentIds) as { data: any }
 
       // Process statement-level data
       const statementMap = new Map<number, {
@@ -294,7 +298,7 @@ export default function AnalyticsPage() {
             >
               <option value="all">All Groups</option>
               {tutorGroups.map(group => (
-                <option key={group} value={group}>{group}</option>
+                <option key={group} value={group as string}>{group}</option>
               ))}
             </select>
           </div>

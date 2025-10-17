@@ -30,7 +30,7 @@ export default function StaffLayout({ children }: StaffLayoutProps) {
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
-        .single()
+        .single() as { data: any; error: any }
       
       if (error || !profileData) {
         console.error('Profile error:', error)

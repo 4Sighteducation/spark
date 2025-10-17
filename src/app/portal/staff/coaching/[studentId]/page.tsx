@@ -54,7 +54,7 @@ export default function IndividualCoachingPage() {
         .from('profiles')
         .select('*')
         .eq('id', studentId)
-        .single()
+        .single() as { data: any }
 
       if (!profileData) {
         alert('Student not found')
@@ -67,7 +67,7 @@ export default function IndividualCoachingPage() {
         .from('students')
         .select('*')
         .eq('id', studentId)
-        .single()
+        .single() as { data: any }
 
       // Get latest assessment result
       const { data: resultData } = await supabase
@@ -76,7 +76,7 @@ export default function IndividualCoachingPage() {
         .eq('student_id', studentId)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single()
+        .single() as { data: any }
 
       // Get reflections
       const { data: reflectionData } = await supabase
@@ -85,14 +85,14 @@ export default function IndividualCoachingPage() {
         .eq('student_id', studentId)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single()
+        .single() as { data: any }
 
       // Get goals
       const { data: goalsData } = await supabase
         .from('student_goals')
         .select('*')
         .eq('student_id', studentId)
-        .order('created_at', { ascending: false })
+        .order('created_at', { ascending: false }) as { data: any }
 
       // Get staff notes
       const { data: notesData } = await supabase
@@ -102,7 +102,7 @@ export default function IndividualCoachingPage() {
           author:profiles!staff_notes_author_id_fkey(first_name, last_name)
         `)
         .eq('student_id', studentId)
-        .order('created_at', { ascending: false })
+        .order('created_at', { ascending: false }) as { data: any }
 
       setStudent({
         id: studentId,
