@@ -64,7 +64,7 @@ export default function StudentResponseModal({
           note_text: staffComment,
           visibility: visibleToStudent ? 'student_visible' : 'staff_only',
           note_type: 'coaching',
-        })
+        } as any)
 
       if (!error) {
         setStaffComment('')

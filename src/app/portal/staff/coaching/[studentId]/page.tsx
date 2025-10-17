@@ -150,7 +150,7 @@ export default function IndividualCoachingPage() {
           note_text: newComment,
           visibility: commentVisible ? 'student_visible' : 'staff_only',
           note_type: 'coaching',
-        })
+        } as any)
 
       setNewComment('')
       setCommentVisible(false)

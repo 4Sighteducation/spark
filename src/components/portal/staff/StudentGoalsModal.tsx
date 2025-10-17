@@ -64,7 +64,7 @@ export default function StudentGoalsModal({
           dimension: newGoalDimension || null,
           cycle_number: student.cycle_number,
           status: 'not_started',
-        })
+        } as any)
 
       if (!error) {
         setNewGoalText('')
@@ -86,7 +86,7 @@ export default function StudentGoalsModal({
       .update({ 
         status: newStatus,
         ...(newStatus === 'achieved' ? { achieved_at: new Date().toISOString() } : {})
-      })
+      } as any)
       .eq('id', goalId)
 
     await loadGoals()
