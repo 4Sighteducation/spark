@@ -97,16 +97,7 @@ export default function CoachingPage() {
       // Build query based on role
       let query = supabase
         .from('students')
-        .select(`
-          id,
-          year_group,
-          tutor_group,
-          profiles!inner (
-            first_name,
-            last_name,
-            email
-          )
-        `)
+        .select('id, year_group, tutor_group, profiles!inner(first_name, last_name, email)')
         .eq('is_active', true)
         .eq('profiles.organization_id', profileData.organization_id)
 
@@ -164,21 +155,11 @@ export default function CoachingPage() {
       // Get latest assessment results for each student
       const { data: resultsData, error: resultsError } = await supabase
         .from('assessment_results')
-        .select(`
-          student_id,
-          cycle_number,
-          self_direction_score,
-          purpose_score,
-          awareness_score,
-          resilience_score,
-          knowledge_score,
-          overall_score,
-          created_at
-        `)
+        .select('student_id, cycle_number, self_direction_score, purpose_score, awareness_score, resilience_score, knowledge_score, overall_score, created_at')
         .in('student_id', studentIds)
         .order('created_at', { ascending: false }) as { data: any; error: any }
 
-      console.log('📊 Assessment Results:', { count: resultsData?.length, error: resultsError })
+      console.log('📊 Assessment Results:', { count: resultsData?.length, error: resultsError, data: resultsData })
 
       // Get reflections
       const { data: reflectionsData, error: reflectionsError } = await supabase

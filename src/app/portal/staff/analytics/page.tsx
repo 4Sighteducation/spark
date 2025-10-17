@@ -68,15 +68,10 @@ export default function AnalyticsPage() {
 
       setProfile(profileData)
 
-      // Get students based on role
+      // Get students based on role  
       let studentQuery = supabase
         .from('students')
-        .select(`
-          id,
-          year_group,
-          tutor_group,
-          profiles!inner(first_name, last_name, organization_id)
-        `)
+        .select('id, year_group, tutor_group, profiles!inner(first_name, last_name, organization_id)')
         .eq('is_active', true)
         .eq('profiles.organization_id', organizationId)
 
